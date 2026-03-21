@@ -204,7 +204,7 @@ header{
   </header>
 
   <div id="topbar">
-    <input type="password" id="apiKeyInput" placeholder="Clé Anthropic (sk-ant-...)" spellcheck="false">
+    <input type="password" id="apiKeyInput" placeholder="Clé Anthropic (sk-ant-...)" spellcheck="false"><input type="password" id="openaiKeyInput" placeholder="Clé OpenAI (sk-proj-...)" spellcheck="false" style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:6px 12px;color:var(--text);font-family:var(--sans);font-size:13px;outline:none;width:220px;">
     <span id="keyStatus">—</span>
     <div style="margin-left:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
       <select class="sel gpt-sel" id="gptRole" onchange="updateRoles()">
@@ -460,7 +460,8 @@ async function sendMessage(){
   var gptEl=addAIMsg("gpt");
   var gptText="";
   try{
-    gptText=await callAI(gptHistory,getGptSystem());
+    var hasOpenAI = document.getElementById("openaiKeyInput").value.trim().length > 20;
+    gptText = hasOpenAI ? await callGPT(gptHistory, getGptSystem()) : await callAI(gptHistory, getGptSystem());
     await streamResponse(gptEl,gptText,3,14);
     finalizeMsg(gptEl,gptText);
     playSound("gpt");
