@@ -229,6 +229,7 @@
 
   function loginSuccess(email, msgsUsed = 0) {
     currentUser = email; msgCount = msgsUsed;
+    localStorage.setItem('dm_user', email);
     document.getElementById('auth-btn').textContent = 'Déconnexion';
     document.getElementById('auth-btn').className = 'connected';
     counter.style.display = 'block';
@@ -241,6 +242,7 @@
   function handleAuthBtn() {
     if (!currentUser) return;
     currentUser = null; msgCount = 0; history = [];
+    localStorage.removeItem('dm_user');
     document.getElementById('auth-btn').textContent = 'Connexion';
     document.getElementById('auth-btn').className = '';
     counter.style.display = 'none';
@@ -331,6 +333,25 @@
   }
 
   document.getElementById('user-input').addEventListener('keydown', e => { if(e.key==='Enter') sendMessage(); });
+
+  // Restaurer la session au chargement
+  (async function restoreSession() {
+    const savedEmail = localStorage.getItem('dm_user');
+    if (!savedEmail) return;
+    try {
+      const res = await fetch(WORKER + '/login-check', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: savedEmail })
+      });
+      const data = await res.json();
+      if (data.success) {
+        loginSuccess(savedEmail, data.msgsUsed || 0);
+      } else {
+        localStorage.removeItem('dm_user');
+      }
+    } catch(e) { localStorage.removeItem('dm_user'); }
+  })();
 </script>
 </body>
 </html>
