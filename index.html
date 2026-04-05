@@ -140,6 +140,37 @@
   .mode-btn.active.expert { background:#10b981; border-color:#10b981; }
   .mode-btn.active.debate { background:#f59e0b; border-color:#f59e0b; color:#000; }
 
+  /* ── VERIFY BOX ── */
+  #verify-box {
+    display:none; padding:24px; width:100%; max-width:400px;
+    margin:0 auto; animation:slideIn .25s ease;
+  }
+  .verify-title { font-family:'Orbitron',sans-serif; color:var(--orange); font-size:13px; letter-spacing:3px; margin-bottom:6px; }
+  .verify-sub { color:var(--muted); font-size:12px; margin-bottom:20px; }
+  .code-input {
+    width:100%; background:var(--bg); border:2px solid var(--orange);
+    color:var(--orange); font-family:'Inter',sans-serif;
+    font-size:28px; font-weight:700; padding:12px;
+    outline:none; border-radius:6px; text-align:center;
+    letter-spacing:10px; -webkit-appearance:none;
+  }
+  .code-input::placeholder { color:#3a2a1a; letter-spacing:4px; font-size:16px; }
+  .verify-btn {
+    width:100%; background:var(--orange); color:#000; border:none;
+    font-family:'Inter',sans-serif; font-size:13px; font-weight:700;
+    padding:12px; cursor:pointer; border-radius:6px; margin-top:12px;
+    transition:all .2s; letter-spacing:.5px;
+  }
+  .verify-btn:active { opacity:.8; }
+  .resend-btn {
+    width:100%; background:none; border:1px solid var(--border);
+    color:var(--muted); font-family:'Inter',sans-serif; font-size:12px;
+    padding:10px; cursor:pointer; border-radius:6px; margin-top:8px;
+    transition:all .2s;
+  }
+  .resend-btn:hover { border-color:var(--blue); color:var(--blue); }
+  #verify-message { font-size:12px; margin-top:10px; min-height:16px; text-align:center; }
+
   #limit-wall { display:none; flex-direction:column; align-items:center; justify-content:center; gap:8px; padding:16px; text-align:center; border-top:1px solid var(--red); background:#100008; flex-shrink:0; }
   #limit-wall p { color:var(--red); font-size:13px; font-weight:500; }
   #limit-wall small { color:var(--muted); font-size:11px; }
@@ -185,6 +216,17 @@
     </div>
     <div class="auth-error" id="auth-error"></div>
     <button class="auth-submit" id="auth-submit-btn" onclick="submitAuth()">Se connecter</button>
+    <div id="verify-box">
+    <div class="verify-title">// VÉRIFICATION EMAIL</div>
+    <div class="verify-sub">Entrez le code à 6 chiffres reçu par email</div>
+    <div class="field">
+      <label>EMAIL</label>
+      <input type="email" id="verify-email" placeholder="votre@email.com" readonly style="opacity:.6;" />
+    </div>
+    <input class="code-input" type="text" id="verify-code" maxlength="6" placeholder="000000" inputmode="numeric" autocomplete="one-time-code" />
+    <button class="verify-btn" onclick="verifyCode()">Valider mon inscription</button>
+    <button class="resend-btn" onclick="resendCode()">Renvoyer le code</button>
+    <div id="verify-message"></div>
   </div>
 </div>
 
@@ -255,8 +297,15 @@
       const data = await res.json();
       if (data.error) { errEl.textContent = '⚠ '+data.error; return; }
       if (tab==='register') {
-        errEl.style.color = 'var(--blue)';
-        errEl.textContent = '✓ Email de confirmation envoyé ! (valable 15 min)';
+        if (data.needsVerification) {
+          document.getElementById('auth-screen').style.display = 'none';
+          document.getElementById('verify-box').style.display = 'block';
+          document.getElementById('verify-email').value = data.email || email;
+          document.getElementById('verify-code').focus();
+        } else {
+          errEl.style.color = 'var(--blue)';
+          errEl.textContent = '✓ Code envoyé par email !';
+        }
         document.getElementById('auth-submit-btn').disabled = false;
         return;
       }
@@ -373,6 +422,44 @@
   }
 
   document.getElementById('user-input').addEventListener('keydown', e => { if(e.key==='Enter') sendMessage(); });
+
+  async function verifyCode() {
+    const email = document.getElementById('verify-email').value.trim();
+    const code = document.getElementById('verify-code').value.trim();
+    const msg = document.getElementById('verify-message');
+    if (code.length !== 6) { msg.style.color='var(--red)'; msg.textContent='⚠ Entrez un code à 6 chiffres'; return; }
+    msg.style.color = 'var(--muted)'; msg.textContent = 'Vérification...';
+    try {
+      const res = await fetch(WORKER+'/verify-code', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email, code}) });
+      const data = await res.json();
+      if (data.success) {
+        msg.style.color = '#4dff88';
+        msg.textContent = '✓ Compte confirmé ! Connectez-vous.';
+        setTimeout(() => {
+          document.getElementById('verify-box').style.display = 'none';
+          document.getElementById('auth-screen').style.display = 'flex';
+          switchTab('login');
+        }, 1500);
+      } else {
+        msg.style.color = 'var(--red)';
+        msg.textContent = '⚠ ' + (data.error || 'Erreur');
+      }
+    } catch(e) { msg.style.color='var(--red)'; msg.textContent='⚠ Erreur réseau'; }
+  }
+
+  async function resendCode() {
+    const email = document.getElementById('verify-email').value.trim();
+    const msg = document.getElementById('verify-message');
+    msg.style.color = 'var(--muted)'; msg.textContent = 'Envoi en cours...';
+    try {
+      const res = await fetch(WORKER+'/resend-code', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email}) });
+      const data = await res.json();
+      if (data.success) { msg.style.color='#4dff88'; msg.textContent='✓ Nouveau code envoyé !'; }
+      else { msg.style.color='var(--red)'; msg.textContent='⚠ '+(data.error||'Erreur'); }
+    } catch(e) { msg.style.color='var(--red)'; msg.textContent='⚠ Erreur réseau'; }
+  }
+
+  document.getElementById('verify-code').addEventListener('keydown', e => { if(e.key==='Enter') verifyCode(); });
 
   // Restaurer la session au chargement
   (async function restoreSession() {
