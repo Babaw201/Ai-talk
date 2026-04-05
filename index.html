@@ -117,6 +117,29 @@
   #send-btn:active { opacity:.8; }
   #send-btn:disabled { opacity:.4; cursor:not-allowed; }
 
+  /* ── MODE SELECTOR ── */
+  #mode-bar {
+    flex-shrink:0; border-bottom:1px solid var(--border);
+    background:var(--panel); padding:8px 12px;
+    display:none; gap:6px; align-items:center; overflow-x:auto;
+    scrollbar-width:none;
+  }
+  #mode-bar::-webkit-scrollbar { display:none; }
+  .mode-label { font-size:10px; color:var(--muted); font-weight:600; white-space:nowrap; letter-spacing:1px; flex-shrink:0; }
+  .mode-btn {
+    background:var(--bg); border:1px solid var(--border);
+    color:var(--muted); font-family:'Inter',sans-serif;
+    font-size:11px; font-weight:500; padding:5px 12px;
+    cursor:pointer; border-radius:20px; transition:all .2s;
+    white-space:nowrap; flex-shrink:0;
+  }
+  .mode-btn:hover { border-color:var(--blue); color:var(--blue); }
+  .mode-btn.active { background:var(--blue); color:#000; border-color:var(--blue); font-weight:700; }
+  .mode-btn.active.clash { background:var(--orange); border-color:var(--orange); }
+  .mode-btn.active.creative { background:#a855f7; border-color:#a855f7; }
+  .mode-btn.active.expert { background:#10b981; border-color:#10b981; }
+  .mode-btn.active.debate { background:#f59e0b; border-color:#f59e0b; color:#000; }
+
   #limit-wall { display:none; flex-direction:column; align-items:center; justify-content:center; gap:8px; padding:16px; text-align:center; border-top:1px solid var(--red); background:#100008; flex-shrink:0; }
   #limit-wall p { color:var(--red); font-size:13px; font-weight:500; }
   #limit-wall small { color:var(--muted); font-size:11px; }
@@ -166,6 +189,14 @@
 </div>
 
 <div id="chat-screen">
+  <div id="mode-bar">
+    <span class="mode-label">MODE :</span>
+    <button class="mode-btn active" data-mode="classic" onclick="setMode(this)">🔵 Classique</button>
+    <button class="mode-btn" data-mode="debate" onclick="setMode(this)">⚔️ Débat</button>
+    <button class="mode-btn expert" data-mode="expert" onclick="setMode(this)">🧠 Expert</button>
+    <button class="mode-btn creative" data-mode="creative" onclick="setMode(this)">🎨 Créatif</button>
+    <button class="mode-btn clash" data-mode="clash" onclick="setMode(this)">🔥 Clash</button>
+  </div>
   <div id="chat-area">
     <div class="msg system"><div class="bubble">— Posez votre question, GPT et Claude vont s'affronter —</div></div>
   </div>
@@ -184,7 +215,14 @@
   const WORKER = "https://ai-talk-proxy.baptiste-werner.workers.dev";
   const ADMIN = "admin@ai-terminal.io";
 
-  let currentUser = null, msgCount = 0, isWaiting = false, history = [], tab = 'login';
+  let currentUser = null, msgCount = 0, isWaiting = false, history = [], tab = 'login', currentMode = 'classic';
+
+  function setMode(btn) {
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentMode = btn.dataset.mode;
+    addSys('Mode : ' + btn.textContent);
+  }
 
   const chatArea = document.getElementById('chat-area');
   const counter = document.getElementById('msg-counter');
@@ -236,6 +274,7 @@
     updateCounter();
     document.getElementById('auth-screen').style.display = 'none';
     document.getElementById('chat-screen').style.display = 'flex';
+    document.getElementById('mode-bar').style.display = 'flex';
     setTimeout(() => document.getElementById('user-input').focus(), 100);
   }
 
@@ -250,6 +289,7 @@
     document.getElementById('chat-screen').style.display = 'none';
     limitWall.style.display = 'none';
     bottomBar.style.display = 'flex';
+    document.getElementById('mode-bar').style.display = 'none';
     document.getElementById('auth-email').value = '';
     document.getElementById('auth-password').value = '';
     document.getElementById('auth-error').textContent = '';
@@ -307,7 +347,7 @@
     try {
       const res = await fetch(WORKER+'/chat', {
         method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({messages:history.slice(-8), email:currentUser})
+        body: JSON.stringify({messages:history.slice(-8), email:currentUser, mode:currentMode})
       });
       const data = await res.json();
       removeTyping();
