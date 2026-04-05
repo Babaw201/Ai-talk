@@ -321,9 +321,18 @@
     document.getElementById('auth-btn').className = 'connected';
     counter.style.display = 'block';
     updateCounter();
+    // Cacher tous les écrans d'abord
     document.getElementById('auth-screen').style.display = 'none';
-    document.getElementById('chat-screen').style.display = 'flex';
+    document.getElementById('verify-box').style.display = 'none';
+    // Afficher le chat
+    const chatScreen = document.getElementById('chat-screen');
+    chatScreen.style.display = 'flex';
+    chatScreen.style.flexDirection = 'column';
+    chatScreen.style.flex = '1';
+    chatScreen.style.overflow = 'hidden';
     document.getElementById('mode-bar').style.display = 'flex';
+    document.getElementById('bottom-bar').style.display = 'flex';
+    limitWall.style.display = 'none';
     setTimeout(() => document.getElementById('user-input').focus(), 100);
   }
 
