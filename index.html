@@ -11,8 +11,8 @@
     :root {
       --bg: #05070d;
       --bg-2: #09101b;
-      --panel: rgba(10, 14, 24, 0.92);
-      --panel-2: rgba(13, 20, 34, 0.9);
+      --panel: rgba(10, 14, 24, 0.94);
+      --panel-2: rgba(13, 20, 34, 0.92);
       --border: rgba(109, 140, 197, 0.16);
       --border-strong: rgba(109, 140, 197, 0.28);
 
@@ -21,11 +21,9 @@
       --muted-2: #6b7892;
 
       --blue: #5aa8ff;
-      --blue-2: #2d6dff;
       --blue-bg: rgba(24, 66, 130, 0.18);
 
       --orange: #ff9b45;
-      --orange-2: #ff7a1a;
       --orange-bg: rgba(118, 54, 4, 0.22);
 
       --green: #39d98a;
@@ -35,10 +33,6 @@
       --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.22);
       --shadow-blue: 0 0 0 1px rgba(90, 168, 255, 0.08), 0 14px 34px rgba(18, 52, 112, 0.18);
       --shadow-orange: 0 0 0 1px rgba(255, 155, 69, 0.08), 0 14px 34px rgba(118, 54, 4, 0.18);
-
-      --radius: 18px;
-      --radius-sm: 12px;
-      --radius-xs: 10px;
     }
 
     * {
@@ -74,7 +68,7 @@
         );
       pointer-events: none;
       z-index: 9999;
-      opacity: 0.25;
+      opacity: 0.22;
     }
 
     #app {
@@ -86,45 +80,40 @@
     }
 
     header {
-      position: relative;
-      z-index: 10;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
-      padding: 14px 18px;
+      gap: 12px;
+      padding: 12px 16px;
       background: linear-gradient(180deg, rgba(7, 12, 22, 0.96), rgba(7, 12, 22, 0.78));
       border-bottom: 1px solid var(--border);
       backdrop-filter: blur(10px);
       flex-shrink: 0;
+      z-index: 10;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       min-width: 0;
     }
 
     .brand-logo {
-      width: 42px;
-      height: 42px;
+      width: 40px;
+      height: 40px;
       border-radius: 12px;
       object-fit: cover;
       box-shadow: var(--shadow-soft);
       flex-shrink: 0;
     }
 
-    .brand-text-wrap {
-      min-width: 0;
-    }
-
     .brand-title {
       font-family: "Orbitron", sans-serif;
-      font-weight: 900;
-      font-size: 23px;
+      font-size: 22px;
       line-height: 1;
-      letter-spacing: 1.5px;
+      font-weight: 900;
+      letter-spacing: 1px;
       white-space: nowrap;
     }
 
@@ -132,14 +121,13 @@
     .brand-title .orange { color: var(--orange); }
 
     .brand-subtitle {
-      margin-top: 5px;
       color: var(--muted);
       font-size: 12px;
-      letter-spacing: 0.4px;
+      margin-top: 4px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 420px;
+      max-width: 360px;
     }
 
     .header-right {
@@ -164,8 +152,8 @@
       height: 8px;
       border-radius: 50%;
       background: var(--green);
-      box-shadow: 0 0 10px rgba(57, 217, 138, 0.45);
-      animation: pulse 2.1s infinite;
+      box-shadow: 0 0 10px rgba(57,217,138,0.45);
+      animation: pulse 2s infinite;
     }
 
     @keyframes pulse {
@@ -174,11 +162,11 @@
     }
 
     #msg-counter {
-      font-size: 12px;
-      color: var(--muted);
-      font-weight: 700;
       display: none;
-      min-width: 52px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      min-width: 48px;
       text-align: center;
     }
 
@@ -191,21 +179,16 @@
       color: var(--white);
       font-weight: 700;
       font-size: 13px;
-      padding: 11px 15px;
+      padding: 10px 14px;
       border-radius: 12px;
       cursor: pointer;
       transition: 0.2s ease;
     }
 
-    #auth-btn:hover {
-      border-color: rgba(255,255,255,0.18);
-      transform: translateY(-1px);
-    }
-
     #auth-btn.connected {
       color: #ffd4dc;
-      border-color: rgba(255, 92, 122, 0.32);
-      background: rgba(255, 92, 122, 0.08);
+      border-color: rgba(255,92,122,0.32);
+      background: rgba(255,92,122,0.08);
     }
 
     #auth-screen {
@@ -213,13 +196,13 @@
       display: none;
       align-items: center;
       justify-content: center;
-      padding: 26px 18px;
+      padding: 20px 14px;
       overflow-y: auto;
     }
 
     .auth-shell {
       width: 100%;
-      max-width: 480px;
+      max-width: 470px;
     }
 
     .auth-panel {
@@ -229,7 +212,7 @@
       border: 1px solid var(--border-strong);
       border-radius: 24px;
       box-shadow: var(--shadow-soft);
-      padding: 28px;
+      padding: 24px;
     }
 
     .auth-panel::before {
@@ -242,11 +225,16 @@
       pointer-events: none;
     }
 
-    .auth-head {
+    .auth-head,
+    #auth-form-box,
+    #verify-box {
       position: relative;
       z-index: 1;
+    }
+
+    .auth-head {
       text-align: center;
-      margin-bottom: 22px;
+      margin-bottom: 20px;
     }
 
     .auth-logo {
@@ -257,8 +245,8 @@
     }
 
     .auth-logo img {
-      width: 46px;
-      height: 46px;
+      width: 44px;
+      height: 44px;
       border-radius: 13px;
       object-fit: cover;
     }
@@ -266,7 +254,7 @@
     .auth-logo-text {
       font-family: "Orbitron", sans-serif;
       font-weight: 900;
-      font-size: 22px;
+      font-size: 21px;
       letter-spacing: 1px;
     }
 
@@ -312,13 +300,6 @@
       line-height: 1.4;
     }
 
-    #auth-form-box,
-    #verify-box {
-      position: relative;
-      z-index: 1;
-      margin-top: 22px;
-    }
-
     .tabs {
       display: flex;
       gap: 8px;
@@ -339,11 +320,10 @@
       font-size: 13px;
       font-weight: 700;
       cursor: pointer;
-      transition: 0.2s ease;
     }
 
     .tab-btn.active {
-      background: linear-gradient(180deg, rgba(78, 138, 255, 0.22), rgba(78, 138, 255, 0.12));
+      background: linear-gradient(180deg, rgba(78,138,255,0.22), rgba(78,138,255,0.12));
       color: var(--white);
       box-shadow: inset 0 0 0 1px rgba(90,168,255,0.18);
     }
@@ -371,12 +351,6 @@
       border-radius: 14px;
       outline: none;
       font-size: 15px;
-      transition: 0.2s ease;
-    }
-
-    .field input:focus {
-      border-color: rgba(90,168,255,0.45);
-      box-shadow: 0 0 0 4px rgba(90,168,255,0.08);
     }
 
     .auth-error {
@@ -397,19 +371,12 @@
       padding: 14px;
       border-radius: 14px;
       cursor: pointer;
-      transition: 0.2s ease;
       box-shadow: var(--shadow-blue);
-    }
-
-    .auth-submit:hover,
-    .verify-btn:hover {
-      transform: translateY(-1px);
     }
 
     .auth-submit:disabled {
       opacity: 0.5;
       cursor: not-allowed;
-      transform: none;
     }
 
     #verify-box {
@@ -448,12 +415,6 @@
       text-align: center;
       letter-spacing: 9px;
       outline: none;
-      transition: 0.2s ease;
-    }
-
-    .code-input:focus {
-      box-shadow: 0 0 0 4px rgba(255,155,69,0.08);
-      border-color: rgba(255,155,69,0.48);
     }
 
     .resend-btn {
@@ -467,12 +428,6 @@
       font-size: 13px;
       font-weight: 700;
       cursor: pointer;
-      transition: 0.2s ease;
-    }
-
-    .resend-btn:hover {
-      border-color: rgba(90,168,255,0.25);
-      color: var(--white);
     }
 
     #verify-message {
@@ -502,9 +457,9 @@
       display: none;
       align-items: center;
       gap: 10px;
-      padding: 12px 18px;
+      padding: 10px 14px;
       border-bottom: 1px solid var(--border);
-      background: rgba(8, 13, 22, 0.72);
+      background: rgba(8,13,22,0.72);
       backdrop-filter: blur(8px);
       overflow-x: auto;
       scrollbar-width: none;
@@ -533,14 +488,7 @@
       font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
-      transition: 0.2s ease;
       flex-shrink: 0;
-    }
-
-    .mode-btn:hover {
-      transform: translateY(-1px);
-      color: var(--white);
-      border-color: rgba(255,255,255,0.18);
     }
 
     .mode-btn.active {
@@ -552,17 +500,17 @@
 
     .mode-btn.active.debate {
       background: linear-gradient(180deg, #ffd06d, #f4a82f);
-      box-shadow: 0 0 0 1px rgba(255, 188, 88, 0.08), 0 14px 34px rgba(120, 82, 12, 0.18);
+      box-shadow: 0 14px 34px rgba(120,82,12,0.18);
     }
 
     .mode-btn.active.expert {
       background: linear-gradient(180deg, #5fe2b6, #27c98c);
-      box-shadow: 0 0 0 1px rgba(57, 217, 138, 0.08), 0 14px 34px rgba(17, 85, 60, 0.18);
+      box-shadow: 0 14px 34px rgba(17,85,60,0.18);
     }
 
     .mode-btn.active.creative {
       background: linear-gradient(180deg, #d58bff, #ae63ff);
-      box-shadow: 0 0 0 1px rgba(188, 113, 255, 0.08), 0 14px 34px rgba(71, 24, 110, 0.18);
+      box-shadow: 0 14px 34px rgba(71,24,110,0.18);
     }
 
     .mode-btn.active.clash {
@@ -573,10 +521,10 @@
     #chat-area {
       flex: 1;
       overflow-y: auto;
-      padding: 18px 18px 26px;
+      padding: 16px 14px 18px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
       scroll-behavior: smooth;
       min-height: 0;
     }
@@ -592,12 +540,11 @@
 
     .hero-card {
       max-width: 860px;
-      margin: 12px auto 2px;
+      margin: 8px auto 2px;
       text-align: center;
-      padding: 28px 24px;
-      border-radius: 26px;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+      padding: 24px 20px;
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
       border: 1px solid var(--border);
       box-shadow: var(--shadow-soft);
     }
@@ -617,7 +564,7 @@
     }
 
     .hero-title {
-      font-size: 33px;
+      font-size: 31px;
       line-height: 1.15;
       font-weight: 800;
       margin-bottom: 10px;
@@ -636,7 +583,7 @@
     }
 
     .hero-grid {
-      margin-top: 20px;
+      margin-top: 18px;
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 10px;
@@ -657,17 +604,17 @@
     }
 
     .hero-mode span {
+      display: block;
       font-size: 11px;
       color: var(--muted);
       line-height: 1.5;
-      display: block;
     }
 
     .msg {
       display: flex;
-      gap: 12px;
+      gap: 10px;
       max-width: 88%;
-      animation: fadeIn 0.24s ease;
+      animation: fadeIn 0.22s ease;
     }
 
     @keyframes fadeIn {
@@ -691,9 +638,9 @@
     }
 
     .avatar {
-      width: 38px;
-      height: 38px;
-      border-radius: 14px;
+      width: 36px;
+      height: 36px;
+      border-radius: 13px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -705,7 +652,7 @@
     }
 
     .user-av {
-      background: rgba(130, 130, 255, 0.08);
+      background: rgba(130,130,255,0.08);
       color: #cfd3ff;
       border: 1px solid rgba(130,130,255,0.18);
     }
@@ -750,32 +697,30 @@
     }
 
     .bubble {
-      position: relative;
       border-radius: 18px;
-      padding: 16px 18px;
+      padding: 14px 16px;
       font-size: 15px;
-      line-height: 1.75;
+      line-height: 1.7;
       word-break: break-word;
       white-space: pre-wrap;
       backdrop-filter: blur(8px);
     }
 
     .user-msg .bubble {
-      background: linear-gradient(180deg, rgba(39, 48, 85, 0.7), rgba(22, 29, 55, 0.92));
-      border: 1px solid rgba(132, 146, 240, 0.18);
+      background: linear-gradient(180deg, rgba(39,48,85,0.7), rgba(22,29,55,0.92));
+      border: 1px solid rgba(132,146,240,0.18);
       color: #e6eaff;
-      box-shadow: 0 14px 34px rgba(11, 14, 34, 0.18);
     }
 
     .gpt .bubble {
-      background: linear-gradient(180deg, rgba(20, 52, 105, 0.34), rgba(12, 28, 56, 0.92));
+      background: linear-gradient(180deg, rgba(20,52,105,0.34), rgba(12,28,56,0.92));
       border: 1px solid rgba(90,168,255,0.18);
       color: #dcecff;
       box-shadow: var(--shadow-blue);
     }
 
     .claude .bubble {
-      background: linear-gradient(180deg, rgba(94, 43, 0, 0.24), rgba(48, 22, 2, 0.95));
+      background: linear-gradient(180deg, rgba(94,43,0,0.24), rgba(48,22,2,0.95));
       border: 1px solid rgba(255,155,69,0.18);
       color: #ffe2c0;
       box-shadow: var(--shadow-orange);
@@ -817,7 +762,7 @@
       align-items: center;
       gap: 10px;
       flex-wrap: wrap;
-      padding: 0 18px 14px;
+      padding: 0 14px 12px;
       flex-shrink: 0;
     }
 
@@ -825,17 +770,11 @@
       border: 1px solid var(--border);
       background: rgba(255,255,255,0.03);
       color: var(--white);
-      padding: 11px 14px;
+      padding: 10px 13px;
       border-radius: 14px;
       font-size: 13px;
       font-weight: 700;
       cursor: pointer;
-      transition: 0.2s ease;
-    }
-
-    .control-btn:hover {
-      transform: translateY(-1px);
-      border-color: rgba(255,255,255,0.18);
     }
 
     .control-btn.primary {
@@ -852,7 +791,7 @@
       justify-content: center;
       gap: 8px;
       text-align: center;
-      margin: 0 18px 14px;
+      margin: 0 14px 12px;
       padding: 16px;
       border-radius: 18px;
       border: 1px solid rgba(255,92,122,0.22);
@@ -873,24 +812,25 @@
 
     #bottom-bar {
       flex-shrink: 0;
-      padding: 14px 18px 18px;
+      padding: 10px 12px 12px;
       border-top: 1px solid var(--border);
-      background: linear-gradient(180deg, rgba(8, 12, 21, 0.78), rgba(8, 12, 21, 0.98));
+      background: linear-gradient(180deg, rgba(8,12,21,0.78), rgba(8,12,21,0.98));
       backdrop-filter: blur(10px);
     }
 
     .composer-options {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 12px;
+      gap: 10px;
+      margin-bottom: 10px;
     }
 
     .option-card {
       background: rgba(255,255,255,0.03);
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 12px;
+      padding: 11px;
+      min-width: 0;
     }
 
     .option-title {
@@ -917,7 +857,7 @@
       font-size: 12px;
       font-weight: 700;
       cursor: pointer;
-      transition: 0.2s ease;
+      white-space: nowrap;
     }
 
     .pill-btn.active {
@@ -941,10 +881,10 @@
     .input-shell {
       display: flex;
       align-items: flex-end;
-      gap: 12px;
+      gap: 10px;
       border: 1px solid var(--border-strong);
       background: rgba(255,255,255,0.03);
-      border-radius: 20px;
+      border-radius: 18px;
       padding: 10px;
       box-shadow: var(--shadow-soft);
     }
@@ -982,8 +922,8 @@
       font-size: 15px;
       font-family: "Inter", sans-serif;
       resize: none;
-      min-height: 28px;
-      max-height: 160px;
+      min-height: 26px;
+      max-height: 130px;
       overflow-y: auto;
       padding: 2px 4px 4px;
     }
@@ -994,30 +934,24 @@
 
     #send-btn {
       flex-shrink: 0;
-      width: 54px;
-      height: 54px;
+      width: 50px;
+      height: 50px;
       border: 0;
-      border-radius: 16px;
+      border-radius: 15px;
       cursor: pointer;
       font-size: 18px;
       font-weight: 800;
       color: #08111f;
       background: linear-gradient(180deg, #69b4ff, #4f88ff);
       box-shadow: var(--shadow-blue);
-      transition: 0.2s ease;
-    }
-
-    #send-btn:hover {
-      transform: translateY(-1px);
     }
 
     #send-btn:disabled {
       opacity: 0.5;
       cursor: not-allowed;
-      transform: none;
     }
 
-    @media (max-width: 920px) {
+    @media (max-width: 980px) {
       .hero-grid {
         grid-template-columns: repeat(2, 1fr);
       }
@@ -1029,30 +963,30 @@
 
     @media (max-width: 720px) {
       header {
-        padding: 12px;
+        padding: 10px 12px;
+      }
+
+      .brand-logo {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
       }
 
       .brand-title {
         font-size: 18px;
       }
 
-      .brand-logo {
-        width: 36px;
-        height: 36px;
-        border-radius: 10px;
-      }
-
       .status-wrap {
-        padding: 7px 9px;
+        padding: 7px 8px;
       }
 
       #auth-btn {
-        padding: 10px 12px;
+        padding: 9px 11px;
         font-size: 12px;
       }
 
       .auth-panel {
-        padding: 20px;
+        padding: 18px;
         border-radius: 20px;
       }
 
@@ -1065,11 +999,11 @@
       }
 
       .hero-card {
-        padding: 22px 18px;
+        padding: 18px 14px;
       }
 
       .hero-title {
-        font-size: 25px;
+        font-size: 23px;
       }
 
       .hero-grid {
@@ -1078,51 +1012,87 @@
 
       .msg {
         max-width: 100%;
+        gap: 8px;
+      }
+
+      .avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 11px;
+        margin-top: 18px;
       }
 
       .bubble {
         font-size: 14px;
-        line-height: 1.68;
-        padding: 14px 15px;
-      }
-
-      .avatar {
-        width: 34px;
-        height: 34px;
-        border-radius: 12px;
-        margin-top: 18px;
+        line-height: 1.62;
+        padding: 13px 14px;
       }
 
       #chat-area {
-        padding: 14px 12px 20px;
+        padding: 12px 10px 14px;
       }
 
       #mode-bar {
-        padding: 10px 12px;
+        padding: 9px 10px;
+        gap: 8px;
+      }
+
+      .mode-btn {
+        padding: 9px 12px;
+        font-size: 12px;
+      }
+
+      .conversation-controls {
+        padding: 0 10px 10px;
+      }
+
+      .control-btn {
+        flex: 1;
+        min-width: 0;
+        text-align: center;
+        font-size: 12px;
+        padding: 10px 11px;
       }
 
       #bottom-bar {
-        padding: 12px;
+        padding: 8px 8px 10px;
       }
 
       .composer-options {
         grid-template-columns: 1fr;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+
+      .option-card {
+        padding: 10px;
+        border-radius: 14px;
+      }
+
+      .pill-row {
+        gap: 6px;
+      }
+
+      .pill-btn {
+        font-size: 11px;
+        padding: 8px 10px;
       }
 
       .input-shell {
-        border-radius: 18px;
-        padding: 9px;
+        padding: 8px;
+        gap: 8px;
+        border-radius: 16px;
       }
 
       #send-btn {
-        width: 48px;
-        height: 48px;
+        width: 46px;
+        height: 46px;
         border-radius: 14px;
       }
 
       .code-input {
         font-size: 24px;
-        letter-spacing: 7px;
+        letter-spacing: 6px;
       }
     }
   </style>
@@ -1133,7 +1103,7 @@
     <header>
       <div class="brand">
         <img src="logo.png" class="brand-logo" alt="Double Mind" onerror="this.style.display='none'">
-        <div class="brand-text-wrap">
+        <div>
           <div class="brand-title">
             <span class="blue">Double</span> <span class="orange">Mind</span>
           </div>
@@ -1163,7 +1133,7 @@
 
             <div class="auth-title">Deux IA. Plusieurs points de vue.</div>
             <div class="auth-subtitle">
-              Pose une question, choisis un mode, décide qui répond, qui commence, et laisse le débat évoluer.
+              Pose une question, choisis qui répond, choisis qui commence, puis laisse le débat évoluer.
             </div>
 
             <div class="auth-highlight">
@@ -1173,11 +1143,11 @@
               </div>
               <div class="mini-card">
                 <strong>Ordre</strong>
-                <span>Choisis qui lance la réflexion.</span>
+                <span>Décide qui parle en premier.</span>
               </div>
               <div class="mini-card">
-                <strong>Débat</strong>
-                <span>Laisse-les continuer après la première réponse.</span>
+                <strong>Suite</strong>
+                <span>Continue le débat sans réécrire.</span>
               </div>
             </div>
           </div>
@@ -1245,7 +1215,7 @@
           </div>
 
           <div class="hero-subtitle">
-            Double Mind ne sert pas seulement à comparer deux réponses : tu contrôles l’ordre, le type de réponse, et la suite du débat.
+            Double Mind te permet de comparer deux réponses, de choisir l’ordre, et de laisser le débat continuer sans intervention.
           </div>
 
           <div class="hero-grid">
@@ -1255,25 +1225,25 @@
             </div>
             <div class="hero-mode">
               <strong>Ordre</strong>
-              <span>Choisis qui prend la parole en premier.</span>
+              <span>Choisis qui commence.</span>
             </div>
             <div class="hero-mode">
               <strong>Débat</strong>
-              <span>Un vrai échange entre les deux IA.</span>
+              <span>Observe le vrai contraste entre les deux.</span>
             </div>
             <div class="hero-mode">
-              <strong>Contraste</strong>
-              <span>Observe les nuances et les désaccords.</span>
+              <strong>Modes</strong>
+              <span>Classique, Débat, Expert, Créatif, Clash.</span>
             </div>
             <div class="hero-mode">
-              <strong>Continuation</strong>
-              <span>Laisse-les continuer sans réécrire un message.</span>
+              <strong>Suite</strong>
+              <span>Continue le débat sans nouveau message.</span>
             </div>
           </div>
         </div>
 
         <div class="msg system">
-          <div class="bubble">— Choisis le mode, choisis qui répond, choisis qui commence, puis regarde le débat évoluer —</div>
+          <div class="bubble">— Choisis le mode, choisis qui répond, choisis qui commence, puis regarde les deux IA confronter leurs idées —</div>
         </div>
       </div>
 
@@ -1284,7 +1254,7 @@
 
       <div id="limit-wall">
         <p>⛔ Limite de 5 messages atteinte</p>
-        <small>Reviens demain pour continuer, ou utilise le compte admin.</small>
+        <small>Reviens demain pour continuer.</small>
       </div>
 
       <div id="bottom-bar">
@@ -1319,7 +1289,6 @@
         </div>
       </div>
     </div>
-
   </div>
 
   <script>
@@ -1354,10 +1323,7 @@
     const conversationControls = document.getElementById("conversation-controls");
 
     function setMode(btn) {
-      document.querySelectorAll(".mode-btn").forEach(b => {
-        b.classList.remove("active");
-      });
-
+      document.querySelectorAll(".mode-btn").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
       currentMode = btn.dataset.mode;
       modeDescription.textContent = modeDescriptions[currentMode] || modeDescriptions.classic;
@@ -1372,18 +1338,16 @@
       currentResponseMode = btn.dataset.responseMode;
       btn.classList.add("active");
 
-      if (currentResponseMode === "gpt") {
-        btn.classList.add("blue");
-      } else if (currentResponseMode === "claude") {
-        btn.classList.add("orange");
-      }
+      if (currentResponseMode === "gpt") btn.classList.add("blue");
+      if (currentResponseMode === "claude") btn.classList.add("orange");
 
-      if (currentResponseMode === "gpt") {
-        addSys("Réponse sélectionnée : GPT seul");
-      } else if (currentResponseMode === "claude") {
-        addSys("Réponse sélectionnée : Claude seul");
-      } else {
-        addSys("Réponse sélectionnée : les deux IA");
+      if (currentResponseMode === "gpt") addSys("Réponse sélectionnée : GPT seul");
+      else if (currentResponseMode === "claude") addSys("Réponse sélectionnée : Claude seul");
+      else addSys("Réponse sélectionnée : les deux IA");
+
+      if (currentResponseMode !== "duo") {
+        lastDebateContext = null;
+        updateConversationControls();
       }
     }
 
@@ -1458,9 +1422,7 @@
         <div class="avatar ${left ? "claude-av" : "gpt-av"}">${left ? "CLD" : "GPT"}</div>
         <div class="msg-body">
           <div class="sender-label">${left ? "Claude" : "GPT-4o"}</div>
-          <div class="bubble">
-            <div class="typing-dots"><span></span><span></span><span></span></div>
-          </div>
+          <div class="bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div>
         </div>
       `;
       chatArea.appendChild(d);
@@ -1476,7 +1438,7 @@
 
     function resizeTextarea() {
       userInput.style.height = "auto";
-      userInput.style.height = Math.min(userInput.scrollHeight, 160) + "px";
+      userInput.style.height = Math.min(userInput.scrollHeight, 130) + "px";
     }
 
     function resetConversationState() {
@@ -1602,7 +1564,6 @@
       document.getElementById("auth-email").value = "";
       document.getElementById("auth-password").value = "";
       document.getElementById("auth-error").textContent = "";
-
       conversationControls.style.display = "none";
 
       if (heroCard) heroCard.style.display = "";
@@ -1703,13 +1664,16 @@
       addMsg("user-msg", "Vous", "user-av", "YOU", text);
       history.push({ role: "user", content: text });
 
-      if (currentResponseMode === "gpt") {
-        addTyping("gpt");
-      } else if (currentResponseMode === "claude") {
-        addTyping("claude");
-      } else {
-        addTyping("gpt");
-        addTyping("claude");
+      if (currentResponseMode === "gpt") addTyping("gpt");
+      else if (currentResponseMode === "claude") addTyping("claude");
+      else {
+        if (currentStarter === "gpt") {
+          addTyping("gpt");
+          addTyping("claude");
+        } else {
+          addTyping("claude");
+          addTyping("gpt");
+        }
       }
 
       try {
@@ -1717,7 +1681,7 @@
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            messages: history.slice(-8),
+            messages: history.slice(-12),
             email: currentUser,
             mode: currentMode,
             responseMode: currentResponseMode,
@@ -1736,33 +1700,48 @@
             addSys("⚠ " + data.error);
           }
         } else {
-          if (data.gpt && currentResponseMode !== "claude") {
-            addMsg("gpt", "GPT-4o", "gpt-av", "GPT", data.gpt);
-          }
-
-          if (data.claude && currentResponseMode !== "gpt") {
-            if (data.gpt && currentResponseMode === "duo") {
-              await new Promise(r => setTimeout(r, 420));
+          if (currentResponseMode === "gpt") {
+            if (data.gpt) {
+              addMsg("gpt", "GPT-4o", "gpt-av", "GPT", data.gpt);
+              history.push({ role: "assistant", content: data.gpt, ai: "gpt" });
             }
-            addMsg("claude", "Claude", "claude-av", "CLD", data.claude);
-          }
+          } else if (currentResponseMode === "claude") {
+            if (data.claude) {
+              addMsg("claude", "Claude", "claude-av", "CLD", data.claude);
+              history.push({ role: "assistant", content: data.claude, ai: "claude" });
+            }
+          } else {
+            if (currentStarter === "gpt") {
+              if (data.gpt) {
+                addMsg("gpt", "GPT-4o", "gpt-av", "GPT", data.gpt);
+                history.push({ role: "assistant", content: data.gpt, ai: "gpt" });
+              }
+              if (data.claude) {
+                await new Promise(r => setTimeout(r, 380));
+                addMsg("claude", "Claude", "claude-av", "CLD", data.claude);
+                history.push({ role: "assistant", content: data.claude, ai: "claude" });
+              }
+            } else {
+              if (data.claude) {
+                addMsg("claude", "Claude", "claude-av", "CLD", data.claude);
+                history.push({ role: "assistant", content: data.claude, ai: "claude" });
+              }
+              if (data.gpt) {
+                await new Promise(r => setTimeout(r, 380));
+                addMsg("gpt", "GPT-4o", "gpt-av", "GPT", data.gpt);
+                history.push({ role: "assistant", content: data.gpt, ai: "gpt" });
+              }
+            }
 
-          history.push({
-            role: "assistant",
-            content: JSON.stringify({
-              gpt: data.gpt || "",
-              claude: data.claude || ""
-            })
-          });
-
-          if (currentResponseMode === "duo") {
             lastDebateContext = {
               starter: currentStarter,
               lastUserMessage: text,
               gpt: data.gpt || "",
               claude: data.claude || ""
             };
-          } else {
+          }
+
+          if (currentResponseMode !== "duo") {
             lastDebateContext = null;
           }
 
@@ -1771,7 +1750,7 @@
           updateConversationControls();
 
           if (!isAdmin && msgCount >= 5) {
-            await new Promise(r => setTimeout(r, 500));
+            await new Promise(r => setTimeout(r, 450));
             limitWall.style.display = "flex";
             bottomBar.style.display = "none";
           }
@@ -1802,15 +1781,21 @@
       document.getElementById("send-btn").disabled = true;
 
       addSys("Les deux IA poursuivent leur débat...");
-      addTyping("gpt");
-      addTyping("claude");
+
+      if (currentStarter === "gpt") {
+        addTyping("gpt");
+        addTyping("claude");
+      } else {
+        addTyping("claude");
+        addTyping("gpt");
+      }
 
       try {
         const res = await fetch(WORKER + "/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            messages: history.slice(-8),
+            messages: history.slice(-12),
             email: currentUser,
             mode: currentMode,
             responseMode: "duo",
@@ -1826,22 +1811,27 @@
         if (data.error) {
           addSys("⚠ " + data.error);
         } else {
-          if (data.gpt) {
-            addMsg("gpt", "GPT-4o", "gpt-av", "GPT", data.gpt);
+          if (currentStarter === "gpt") {
+            if (data.gpt) {
+              addMsg("gpt", "GPT-4o", "gpt-av", "GPT", data.gpt);
+              history.push({ role: "assistant", content: data.gpt, ai: "gpt" });
+            }
+            if (data.claude) {
+              await new Promise(r => setTimeout(r, 380));
+              addMsg("claude", "Claude", "claude-av", "CLD", data.claude);
+              history.push({ role: "assistant", content: data.claude, ai: "claude" });
+            }
+          } else {
+            if (data.claude) {
+              addMsg("claude", "Claude", "claude-av", "CLD", data.claude);
+              history.push({ role: "assistant", content: data.claude, ai: "claude" });
+            }
+            if (data.gpt) {
+              await new Promise(r => setTimeout(r, 380));
+              addMsg("gpt", "GPT-4o", "gpt-av", "GPT", data.gpt);
+              history.push({ role: "assistant", content: data.gpt, ai: "gpt" });
+            }
           }
-
-          if (data.claude) {
-            await new Promise(r => setTimeout(r, 420));
-            addMsg("claude", "Claude", "claude-av", "CLD", data.claude);
-          }
-
-          history.push({
-            role: "assistant",
-            content: JSON.stringify({
-              gpt: data.gpt || "",
-              claude: data.claude || ""
-            })
-          });
 
           lastDebateContext = {
             starter: currentStarter,
