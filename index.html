@@ -85,7 +85,6 @@
       position: relative;
     }
 
-    /* HEADER */
     header {
       position: relative;
       z-index: 10;
@@ -209,7 +208,6 @@
       background: rgba(255, 92, 122, 0.08);
     }
 
-    /* AUTH SCREEN */
     #auth-screen {
       flex: 1;
       display: none;
@@ -492,7 +490,6 @@
       line-height: 1.5;
     }
 
-    /* CHAT */
     #chat-screen {
       flex: 1;
       display: none;
@@ -815,6 +812,39 @@
       40% { transform: translateY(-2px); opacity: 1; }
     }
 
+    .conversation-controls {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 0 18px 14px;
+      flex-shrink: 0;
+    }
+
+    .control-btn {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      color: var(--white);
+      padding: 11px 14px;
+      border-radius: 14px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .control-btn:hover {
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,0.18);
+    }
+
+    .control-btn.primary {
+      background: linear-gradient(180deg, #69b4ff, #4f88ff);
+      color: #08111f;
+      border-color: transparent;
+      box-shadow: var(--shadow-blue);
+    }
+
     #limit-wall {
       display: none;
       flex-direction: column;
@@ -847,6 +877,65 @@
       border-top: 1px solid var(--border);
       background: linear-gradient(180deg, rgba(8, 12, 21, 0.78), rgba(8, 12, 21, 0.98));
       backdrop-filter: blur(10px);
+    }
+
+    .composer-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .option-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px;
+    }
+
+    .option-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      font-weight: 800;
+      margin-bottom: 9px;
+    }
+
+    .pill-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .pill-btn {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.025);
+      color: var(--muted);
+      padding: 9px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .pill-btn.active {
+      background: rgba(255,255,255,0.1);
+      color: var(--white);
+      border-color: rgba(255,255,255,0.18);
+    }
+
+    .pill-btn.blue.active {
+      background: linear-gradient(180deg, #69b4ff, #4f88ff);
+      color: #08111f;
+      border-color: transparent;
+    }
+
+    .pill-btn.orange.active {
+      background: linear-gradient(180deg, #ffba73, #ff8b2f);
+      color: #08111f;
+      border-color: transparent;
     }
 
     .input-shell {
@@ -928,7 +1017,6 @@
       transform: none;
     }
 
-    /* MOBILE */
     @media (max-width: 920px) {
       .hero-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -1017,6 +1105,10 @@
         padding: 12px;
       }
 
+      .composer-options {
+        grid-template-columns: 1fr;
+      }
+
       .input-shell {
         border-radius: 18px;
         padding: 9px;
@@ -1058,7 +1150,6 @@
       </div>
     </header>
 
-    <!-- AUTH -->
     <div id="auth-screen">
       <div class="auth-shell">
         <div class="auth-panel">
@@ -1072,21 +1163,21 @@
 
             <div class="auth-title">Deux IA. Plusieurs points de vue.</div>
             <div class="auth-subtitle">
-              Pose une question, choisis un mode, et laisse GPT et Claude confronter leurs idées pour t’aider à décider.
+              Pose une question, choisis un mode, décide qui répond, qui commence, et laisse le débat évoluer.
             </div>
 
             <div class="auth-highlight">
               <div class="mini-card">
+                <strong>Choix libre</strong>
+                <span>GPT seul, Claude seul, ou les deux.</span>
+              </div>
+              <div class="mini-card">
+                <strong>Ordre</strong>
+                <span>Choisis qui lance la réflexion.</span>
+              </div>
+              <div class="mini-card">
                 <strong>Débat</strong>
-                <span>Deux réponses qui s’opposent et se répondent.</span>
-              </div>
-              <div class="mini-card">
-                <strong>Expert</strong>
-                <span>Plus stratégique, plus utile, plus structuré.</span>
-              </div>
-              <div class="mini-card">
-                <strong>Clash</strong>
-                <span>Des positions plus directes et plus tranchées.</span>
+                <span>Laisse-les continuer après la première réponse.</span>
               </div>
             </div>
           </div>
@@ -1132,7 +1223,6 @@
       </div>
     </div>
 
-    <!-- CHAT -->
     <div id="chat-screen">
       <div id="mode-bar">
         <span class="mode-label">Modes</span>
@@ -1147,44 +1237,49 @@
         <div class="hero-card" id="hero-card">
           <div class="hero-badge">
             <span>⚡</span>
-            <span>Compare deux intelligences en temps réel</span>
+            <span>Pilote le débat entre deux intelligences</span>
           </div>
 
           <div class="hero-title">
-            Pose une question. Laisse <span class="blue">GPT</span> et <span class="orange">Claude</span> s’affronter.
+            Décide qui répond, qui commence, puis laisse <span class="blue">GPT</span> et <span class="orange">Claude</span> confronter leurs idées.
           </div>
 
           <div class="hero-subtitle">
-            Double Mind te permet de comparer deux réponses, de repérer les nuances, et de choisir le style de réflexion qui te convient le mieux.
+            Double Mind ne sert pas seulement à comparer deux réponses : tu contrôles l’ordre, le type de réponse, et la suite du débat.
           </div>
 
           <div class="hero-grid">
             <div class="hero-mode">
-              <strong>🔵 Classique</strong>
-              <span>Réponses naturelles et équilibrées.</span>
+              <strong>Réponse</strong>
+              <span>GPT seul, Claude seul, ou les deux.</span>
             </div>
             <div class="hero-mode">
-              <strong>⚔️ Débat</strong>
-              <span>Deux points de vue opposés sur la même question.</span>
+              <strong>Ordre</strong>
+              <span>Choisis qui prend la parole en premier.</span>
             </div>
             <div class="hero-mode">
-              <strong>🧠 Expert</strong>
-              <span>Des réponses plus sérieuses et plus stratégiques.</span>
+              <strong>Débat</strong>
+              <span>Un vrai échange entre les deux IA.</span>
             </div>
             <div class="hero-mode">
-              <strong>🎨 Créatif</strong>
-              <span>Des idées plus originales et plus audacieuses.</span>
+              <strong>Contraste</strong>
+              <span>Observe les nuances et les désaccords.</span>
             </div>
             <div class="hero-mode">
-              <strong>🔥 Clash</strong>
-              <span>Une confrontation plus directe entre les deux IA.</span>
+              <strong>Continuation</strong>
+              <span>Laisse-les continuer sans réécrire un message.</span>
             </div>
           </div>
         </div>
 
         <div class="msg system">
-          <div class="bubble">— Pose une question, choisis un mode, et regarde les deux IA confronter leurs idées —</div>
+          <div class="bubble">— Choisis le mode, choisis qui répond, choisis qui commence, puis regarde le débat évoluer —</div>
         </div>
+      </div>
+
+      <div class="conversation-controls" id="conversation-controls">
+        <button class="control-btn primary" id="continue-debate-btn" onclick="continueDebate()">Continuer le débat</button>
+        <button class="control-btn" onclick="resetConversationState()">Nouveau départ</button>
       </div>
 
       <div id="limit-wall">
@@ -1193,13 +1288,32 @@
       </div>
 
       <div id="bottom-bar">
+        <div class="composer-options">
+          <div class="option-card">
+            <div class="option-title">Qui répond ?</div>
+            <div class="pill-row">
+              <button class="pill-btn blue" data-response-mode="gpt" onclick="setResponseMode(this)">GPT seul</button>
+              <button class="pill-btn orange" data-response-mode="claude" onclick="setResponseMode(this)">Claude seul</button>
+              <button class="pill-btn active" data-response-mode="duo" onclick="setResponseMode(this)">Les deux</button>
+            </div>
+          </div>
+
+          <div class="option-card">
+            <div class="option-title">Qui commence ?</div>
+            <div class="pill-row">
+              <button class="pill-btn blue active" data-starter="gpt" onclick="setStarter(this)">GPT commence</button>
+              <button class="pill-btn orange" data-starter="claude" onclick="setStarter(this)">Claude commence</button>
+            </div>
+          </div>
+        </div>
+
         <div class="input-shell">
           <div class="input-main">
             <div class="input-topline">
               <div class="input-dot"></div>
               <span id="mode-description">Mode Classique · Réponses équilibrées</span>
             </div>
-            <textarea id="user-input" rows="1" placeholder="Pose une question... GPT et Claude vont confronter leurs idées."></textarea>
+            <textarea id="user-input" rows="1" placeholder="Pose une question... puis choisis qui répond et qui commence."></textarea>
           </div>
           <button id="send-btn" onclick="sendMessage()">➜</button>
         </div>
@@ -1218,6 +1332,9 @@
     let history = [];
     let tab = "login";
     let currentMode = "classic";
+    let currentResponseMode = "duo";
+    let currentStarter = "gpt";
+    let lastDebateContext = null;
 
     const modeDescriptions = {
       classic: "Mode Classique · Réponses équilibrées",
@@ -1234,6 +1351,7 @@
     const heroCard = document.getElementById("hero-card");
     const modeDescription = document.getElementById("mode-description");
     const userInput = document.getElementById("user-input");
+    const conversationControls = document.getElementById("conversation-controls");
 
     function setMode(btn) {
       document.querySelectorAll(".mode-btn").forEach(b => {
@@ -1244,6 +1362,41 @@
       currentMode = btn.dataset.mode;
       modeDescription.textContent = modeDescriptions[currentMode] || modeDescriptions.classic;
       addSys("Mode activé : " + btn.textContent.trim());
+    }
+
+    function setResponseMode(btn) {
+      document.querySelectorAll("[data-response-mode]").forEach(b => {
+        b.classList.remove("active", "blue", "orange");
+      });
+
+      currentResponseMode = btn.dataset.responseMode;
+      btn.classList.add("active");
+
+      if (currentResponseMode === "gpt") {
+        btn.classList.add("blue");
+      } else if (currentResponseMode === "claude") {
+        btn.classList.add("orange");
+      }
+
+      if (currentResponseMode === "gpt") {
+        addSys("Réponse sélectionnée : GPT seul");
+      } else if (currentResponseMode === "claude") {
+        addSys("Réponse sélectionnée : Claude seul");
+      } else {
+        addSys("Réponse sélectionnée : les deux IA");
+      }
+    }
+
+    function setStarter(btn) {
+      document.querySelectorAll("[data-starter]").forEach(b => {
+        b.classList.remove("active", "blue", "orange");
+      });
+
+      currentStarter = btn.dataset.starter;
+      btn.classList.add("active");
+      btn.classList.add(currentStarter === "gpt" ? "blue" : "orange");
+
+      addSys((currentStarter === "gpt" ? "GPT" : "Claude") + " commencera.");
     }
 
     function switchTab(t) {
@@ -1326,6 +1479,20 @@
       userInput.style.height = Math.min(userInput.scrollHeight, 160) + "px";
     }
 
+    function resetConversationState() {
+      lastDebateContext = null;
+      conversationControls.style.display = "none";
+      addSys("Contexte de débat réinitialisé.");
+    }
+
+    function canContinueDebate() {
+      return currentResponseMode === "duo" && !!lastDebateContext;
+    }
+
+    function updateConversationControls() {
+      conversationControls.style.display = canContinueDebate() ? "flex" : "none";
+    }
+
     async function submitAuth() {
       const email = document.getElementById("auth-email").value.trim();
       const password = document.getElementById("auth-password").value;
@@ -1396,6 +1563,7 @@
       currentUser = email;
       msgCount = msgsUsed;
       history = [];
+      lastDebateContext = null;
 
       localStorage.setItem("dm_user", email);
 
@@ -1408,6 +1576,7 @@
       bottomBar.style.display = "block";
 
       updateCounter();
+      updateConversationControls();
       setTimeout(() => userInput.focus(), 120);
     }
 
@@ -1417,6 +1586,7 @@
       currentUser = null;
       msgCount = 0;
       history = [];
+      lastDebateContext = null;
 
       localStorage.removeItem("dm_user");
 
@@ -1432,6 +1602,8 @@
       document.getElementById("auth-email").value = "";
       document.getElementById("auth-password").value = "";
       document.getElementById("auth-error").textContent = "";
+
+      conversationControls.style.display = "none";
 
       if (heroCard) heroCard.style.display = "";
     }
@@ -1531,8 +1703,14 @@
       addMsg("user-msg", "Vous", "user-av", "YOU", text);
       history.push({ role: "user", content: text });
 
-      addTyping("gpt");
-      addTyping("claude");
+      if (currentResponseMode === "gpt") {
+        addTyping("gpt");
+      } else if (currentResponseMode === "claude") {
+        addTyping("claude");
+      } else {
+        addTyping("gpt");
+        addTyping("claude");
+      }
 
       try {
         const res = await fetch(WORKER + "/chat", {
@@ -1541,7 +1719,9 @@
           body: JSON.stringify({
             messages: history.slice(-8),
             email: currentUser,
-            mode: currentMode
+            mode: currentMode,
+            responseMode: currentResponseMode,
+            starter: currentStarter
           })
         });
 
@@ -1556,23 +1736,123 @@
             addSys("⚠ " + data.error);
           }
         } else {
-          addMsg("gpt", "GPT-4o", "gpt-av", "GPT", data.gpt);
-          await new Promise(r => setTimeout(r, 420));
-          addMsg("claude", "Claude", "claude-av", "CLD", data.claude);
+          if (data.gpt && currentResponseMode !== "claude") {
+            addMsg("gpt", "GPT-4o", "gpt-av", "GPT", data.gpt);
+          }
+
+          if (data.claude && currentResponseMode !== "gpt") {
+            if (data.gpt && currentResponseMode === "duo") {
+              await new Promise(r => setTimeout(r, 420));
+            }
+            addMsg("claude", "Claude", "claude-av", "CLD", data.claude);
+          }
 
           history.push({
             role: "assistant",
-            content: "GPT: " + data.gpt + "\nClaude: " + data.claude
+            content: JSON.stringify({
+              gpt: data.gpt || "",
+              claude: data.claude || ""
+            })
           });
+
+          if (currentResponseMode === "duo") {
+            lastDebateContext = {
+              starter: currentStarter,
+              lastUserMessage: text,
+              gpt: data.gpt || "",
+              claude: data.claude || ""
+            };
+          } else {
+            lastDebateContext = null;
+          }
 
           msgCount++;
           updateCounter();
+          updateConversationControls();
 
           if (!isAdmin && msgCount >= 5) {
             await new Promise(r => setTimeout(r, 500));
             limitWall.style.display = "flex";
             bottomBar.style.display = "none";
           }
+        }
+      } catch (e) {
+        removeTyping();
+        addSys("⚠ Erreur réseau : " + e.message);
+      }
+
+      isWaiting = false;
+      userInput.disabled = false;
+      document.getElementById("send-btn").disabled = false;
+      userInput.focus();
+    }
+
+    async function continueDebate() {
+      if (!currentUser || !lastDebateContext || isWaiting) return;
+
+      const isAdmin = currentUser.toLowerCase() === ADMIN;
+      if (!isAdmin && msgCount >= 5) {
+        limitWall.style.display = "flex";
+        bottomBar.style.display = "none";
+        return;
+      }
+
+      isWaiting = true;
+      userInput.disabled = true;
+      document.getElementById("send-btn").disabled = true;
+
+      addSys("Les deux IA poursuivent leur débat...");
+      addTyping("gpt");
+      addTyping("claude");
+
+      try {
+        const res = await fetch(WORKER + "/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            messages: history.slice(-8),
+            email: currentUser,
+            mode: currentMode,
+            responseMode: "duo",
+            starter: currentStarter,
+            continueDebate: true,
+            debateContext: lastDebateContext
+          })
+        });
+
+        const data = await res.json();
+        removeTyping();
+
+        if (data.error) {
+          addSys("⚠ " + data.error);
+        } else {
+          if (data.gpt) {
+            addMsg("gpt", "GPT-4o", "gpt-av", "GPT", data.gpt);
+          }
+
+          if (data.claude) {
+            await new Promise(r => setTimeout(r, 420));
+            addMsg("claude", "Claude", "claude-av", "CLD", data.claude);
+          }
+
+          history.push({
+            role: "assistant",
+            content: JSON.stringify({
+              gpt: data.gpt || "",
+              claude: data.claude || ""
+            })
+          });
+
+          lastDebateContext = {
+            starter: currentStarter,
+            lastUserMessage: lastDebateContext.lastUserMessage,
+            gpt: data.gpt || "",
+            claude: data.claude || ""
+          };
+
+          msgCount++;
+          updateCounter();
+          updateConversationControls();
         }
       } catch (e) {
         removeTyping();
