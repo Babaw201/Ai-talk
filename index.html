@@ -227,7 +227,8 @@
 
     .auth-head,
     #auth-form-box,
-    #verify-box {
+    #verify-box,
+    #forgot-box {
       position: relative;
       z-index: 1;
     }
@@ -353,6 +354,48 @@
       font-size: 15px;
     }
 
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-wrap input {
+      padding-right: 52px;
+    }
+
+    .eye-btn {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      color: var(--muted);
+      border-radius: 10px;
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .inline-link {
+      display: inline-block;
+      margin-top: -2px;
+      color: var(--muted);
+      font-size: 12px;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    .inline-link:hover {
+      color: var(--white);
+    }
+
+    .auth-links-row {
+      display: flex;
+      justify-content: flex-end;
+      margin: -4px 0 10px;
+    }
+
     .auth-error {
       min-height: 18px;
       color: var(--red);
@@ -374,12 +417,15 @@
       box-shadow: var(--shadow-blue);
     }
 
-    .auth-submit:disabled {
+    .auth-submit:disabled,
+    .verify-btn:disabled,
+    .resend-btn:disabled {
       opacity: 0.5;
       cursor: not-allowed;
     }
 
-    #verify-box {
+    #verify-box,
+    #forgot-box {
       display: none;
       margin-top: 8px;
       padding: 18px;
@@ -403,18 +449,38 @@
       line-height: 1.6;
     }
 
+    .code-wrap {
+      position: relative;
+      margin-bottom: 12px;
+    }
+
     .code-input {
       width: 100%;
       border: 1px solid rgba(255,155,69,0.28);
       background: rgba(255,155,69,0.07);
       color: #ffd8b0;
-      padding: 16px 14px;
+      padding: 16px 60px 16px 14px;
       border-radius: 16px;
       font-size: 28px;
       font-weight: 800;
       text-align: center;
       letter-spacing: 9px;
       outline: none;
+    }
+
+    .code-eye {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 1px solid rgba(255,155,69,0.22);
+      background: rgba(255,255,255,0.04);
+      color: #ffd8b0;
+      border-radius: 10px;
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
     }
 
     .resend-btn {
@@ -430,7 +496,8 @@
       cursor: pointer;
     }
 
-    #verify-message {
+    #verify-message,
+    #forgot-message {
       min-height: 18px;
       font-size: 13px;
       margin-top: 12px;
@@ -443,6 +510,18 @@
       color: var(--muted-2);
       text-align: center;
       line-height: 1.5;
+    }
+
+    .back-link {
+      margin-top: 14px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .back-link:hover {
+      color: var(--white);
     }
 
     #chat-screen {
@@ -818,7 +897,6 @@
       backdrop-filter: blur(10px);
     }
 
-    /* Desktop: always visible */
     .composer-options {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -952,12 +1030,10 @@
       cursor: not-allowed;
     }
 
-    /* ===== OPTIONS TOGGLE BUTTON (mobile only) ===== */
     #options-toggle-btn {
       display: none;
     }
 
-    /* ===== OPTIONS PANEL OVERLAY (mobile only) ===== */
     #options-panel {
       display: none;
     }
@@ -972,10 +1048,7 @@
       }
     }
 
-    /* ===== MOBILE ===== */
     @media (max-width: 720px) {
-
-      /* Header */
       header {
         padding: 8px 10px;
         gap: 8px;
@@ -1019,7 +1092,6 @@
         border-radius: 10px;
       }
 
-      /* Mode bar */
       #mode-bar {
         padding: 7px 8px;
         gap: 6px;
@@ -1034,7 +1106,6 @@
         font-size: 11px;
       }
 
-      /* Chat area */
       #chat-area {
         padding: 10px 8px 10px;
         gap: 10px;
@@ -1086,7 +1157,6 @@
         border-radius: 14px;
       }
 
-      /* Conversation controls */
       .conversation-controls {
         padding: 0 8px 7px;
         gap: 6px;
@@ -1105,17 +1175,14 @@
         padding: 12px;
       }
 
-      /* Bottom bar — compact */
       #bottom-bar {
         padding: 6px 8px 8px;
       }
 
-      /* Hide desktop options */
       .composer-options {
         display: none;
       }
 
-      /* Show the options toggle button on mobile */
       #options-toggle-btn {
         display: flex;
         align-items: center;
@@ -1148,7 +1215,6 @@
         transform: rotate(180deg);
       }
 
-      /* Options panel — shown when open */
       #options-panel {
         display: none;
         flex-direction: column;
@@ -1166,7 +1232,6 @@
         to { opacity: 1; transform: translateY(0); }
       }
 
-      /* Mobile options cards in a row */
       .options-panel-inner {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -1193,7 +1258,6 @@
         padding: 7px 9px;
       }
 
-      /* Input shell */
       .input-shell {
         padding: 6px 6px 6px 10px;
         gap: 6px;
@@ -1220,7 +1284,6 @@
         font-size: 16px;
       }
 
-      /* Auth */
       .auth-panel {
         padding: 16px;
         border-radius: 18px;
@@ -1238,7 +1301,7 @@
       .code-input {
         font-size: 22px;
         letter-spacing: 5px;
-        padding: 14px 10px;
+        padding: 14px 54px 14px 10px;
       }
     }
 
@@ -1337,7 +1400,34 @@
 
             <div class="field">
               <label>Mot de passe</label>
-              <input type="password" id="auth-password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')submitAuth()">
+              <div class="input-wrap">
+                <input
+                  type="password"
+                  id="auth-password"
+                  placeholder="••••••••"
+                  autocomplete="current-password"
+                  onkeydown="if(event.key==='Enter')submitAuth()"
+                >
+                <button type="button" class="eye-btn" onclick="togglePassword('auth-password', this)">Voir</button>
+              </div>
+            </div>
+
+            <div class="field" id="confirm-password-field" style="display:none;">
+              <label>Confirmer le mot de passe</label>
+              <div class="input-wrap">
+                <input
+                  type="password"
+                  id="auth-password-confirm"
+                  placeholder="••••••••"
+                  autocomplete="new-password"
+                  onkeydown="if(event.key==='Enter')submitAuth()"
+                >
+                <button type="button" class="eye-btn" onclick="togglePassword('auth-password-confirm', this)">Voir</button>
+              </div>
+            </div>
+
+            <div class="auth-links-row" id="forgot-link-row">
+              <span class="inline-link" onclick="showForgotBox()">J’ai oublié mon mot de passe</span>
             </div>
 
             <div class="auth-error" id="auth-error"></div>
@@ -1355,11 +1445,80 @@
               <input type="email" id="verify-email" readonly style="opacity:.7;">
             </div>
 
-            <input class="code-input" type="text" id="verify-code" maxlength="6" placeholder="000000" inputmode="numeric" autocomplete="one-time-code">
+            <div class="code-wrap">
+              <input
+                class="code-input"
+                type="password"
+                id="verify-code"
+                maxlength="6"
+                placeholder="000000"
+                inputmode="numeric"
+                autocomplete="one-time-code"
+              >
+              <button type="button" class="code-eye" onclick="togglePassword('verify-code', this)">Voir</button>
+            </div>
+
             <button class="verify-btn" onclick="verifyCode()">Valider mon inscription</button>
             <button class="resend-btn" onclick="resendCode()">Renvoyer le code</button>
             <div id="verify-message"></div>
             <div class="verify-tip">Pense à vérifier tes spams si tu ne vois pas l'email.</div>
+            <div class="back-link" onclick="backToAuthForm()">← Retour à la connexion</div>
+          </div>
+
+          <div id="forgot-box">
+            <div class="verify-title">// RESET PASSWORD</div>
+            <div class="verify-sub">
+              Entrez votre email, recevez un code, puis choisissez un nouveau mot de passe.
+            </div>
+
+            <div class="field">
+              <label>Email</label>
+              <input type="email" id="forgot-email" placeholder="votre@email.com" autocomplete="email" autocapitalize="none">
+            </div>
+
+            <button class="verify-btn" id="forgot-send-btn" onclick="sendResetCode()">Envoyer le code</button>
+
+            <div id="forgot-step-2" style="display:none; margin-top:14px;">
+              <div class="field">
+                <label>Email</label>
+                <input type="email" id="forgot-email-readonly" readonly style="opacity:.7;">
+              </div>
+
+              <div class="code-wrap">
+                <input
+                  class="code-input"
+                  type="password"
+                  id="reset-code"
+                  maxlength="6"
+                  placeholder="000000"
+                  inputmode="numeric"
+                  autocomplete="one-time-code"
+                >
+                <button type="button" class="code-eye" onclick="togglePassword('reset-code', this)">Voir</button>
+              </div>
+
+              <div class="field">
+                <label>Nouveau mot de passe</label>
+                <div class="input-wrap">
+                  <input type="password" id="new-password" placeholder="••••••••" autocomplete="new-password">
+                  <button type="button" class="eye-btn" onclick="togglePassword('new-password', this)">Voir</button>
+                </div>
+              </div>
+
+              <div class="field">
+                <label>Confirmer le nouveau mot de passe</label>
+                <div class="input-wrap">
+                  <input type="password" id="new-password-confirm" placeholder="••••••••" autocomplete="new-password">
+                  <button type="button" class="eye-btn" onclick="togglePassword('new-password-confirm', this)">Voir</button>
+                </div>
+              </div>
+
+              <button class="verify-btn" onclick="resetPassword()">Changer le mot de passe</button>
+            </div>
+
+            <div id="forgot-message"></div>
+            <div class="verify-tip">Le code expire dans 10 minutes.</div>
+            <div class="back-link" onclick="backToAuthForm()">← Retour à la connexion</div>
           </div>
         </div>
       </div>
@@ -1430,8 +1589,6 @@
       </div>
 
       <div id="bottom-bar">
-
-        <!-- DESKTOP: always visible options -->
         <div class="composer-options">
           <div class="option-card">
             <div class="option-title">Qui répond ?</div>
@@ -1451,7 +1608,6 @@
           </div>
         </div>
 
-        <!-- MOBILE: collapsible options toggle -->
         <button id="options-toggle-btn" onclick="toggleOptions()">
           <span class="toggle-left">
             <span id="options-summary">⚙ Les deux · GPT commence</span>
@@ -1459,7 +1615,6 @@
           <span class="toggle-arrow">▼</span>
         </button>
 
-        <!-- MOBILE: collapsible options panel -->
         <div id="options-panel">
           <div class="options-panel-inner">
             <div class="option-card">
@@ -1527,7 +1682,13 @@
     const userInput = document.getElementById("user-input");
     const conversationControls = document.getElementById("conversation-controls");
 
-    // ---- Options toggle (mobile) ----
+    function togglePassword(id, btn) {
+      const input = document.getElementById(id);
+      if (!input) return;
+      const isHidden = input.type === "password";
+      input.type = isHidden ? "text" : "password";
+      if (btn) btn.textContent = isHidden ? "Masquer" : "Voir";
+    }
 
     function toggleOptions() {
       optionsOpen = !optionsOpen;
@@ -1544,7 +1705,6 @@
       if (el) el.textContent = "⚙ " + respLabel + " · " + startLabel;
     }
 
-    // Mobile response mode buttons
     function setResponseModeM(btn) {
       document.querySelectorAll("[data-response-mode-m]").forEach(b => {
         b.classList.remove("active", "blue", "orange");
@@ -1554,7 +1714,6 @@
       if (currentResponseMode === "gpt") btn.classList.add("blue");
       if (currentResponseMode === "claude") btn.classList.add("orange");
 
-      // Sync desktop buttons
       document.querySelectorAll("[data-response-mode]").forEach(b => {
         b.classList.remove("active", "blue", "orange");
         if (b.dataset.responseMode === currentResponseMode) {
@@ -1572,7 +1731,6 @@
       addSys(currentResponseMode === "gpt" ? "Réponse : GPT seul" : currentResponseMode === "claude" ? "Réponse : Claude seul" : "Réponse : les deux IA");
     }
 
-    // Mobile starter buttons
     function setStarterM(btn) {
       document.querySelectorAll("[data-starter-m]").forEach(b => {
         b.classList.remove("active", "blue", "orange");
@@ -1581,7 +1739,6 @@
       btn.classList.add("active");
       btn.classList.add(currentStarter === "gpt" ? "blue" : "orange");
 
-      // Sync desktop buttons
       document.querySelectorAll("[data-starter]").forEach(b => {
         b.classList.remove("active", "blue", "orange");
         if (b.dataset.starter === currentStarter) {
@@ -1593,8 +1750,6 @@
       updateOptionsSummary();
       addSys((currentStarter === "gpt" ? "GPT" : "Claude") + " commencera.");
     }
-
-    // ---- Existing functions ----
 
     function setMode(btn) {
       document.querySelectorAll(".mode-btn").forEach(b => b.classList.remove("active"));
@@ -1615,7 +1770,6 @@
       if (currentResponseMode === "gpt") btn.classList.add("blue");
       if (currentResponseMode === "claude") btn.classList.add("orange");
 
-      // Sync mobile buttons
       document.querySelectorAll("[data-response-mode-m]").forEach(b => {
         b.classList.remove("active", "blue", "orange");
         if (b.dataset.responseModeM === currentResponseMode) {
@@ -1645,7 +1799,6 @@
       btn.classList.add("active");
       btn.classList.add(currentStarter === "gpt" ? "blue" : "orange");
 
-      // Sync mobile buttons
       document.querySelectorAll("[data-starter-m]").forEach(b => {
         b.classList.remove("active", "blue", "orange");
         if (b.dataset.starterM === currentStarter) {
@@ -1664,6 +1817,9 @@
       document.getElementById("tab-login").className = "tab-btn" + (t === "login" ? " active" : "");
       document.getElementById("tab-register").className = "tab-btn" + (t === "register" ? " active" : "");
       document.getElementById("auth-submit-btn").textContent = t === "login" ? "Se connecter" : "S'inscrire";
+      document.getElementById("confirm-password-field").style.display = t === "register" ? "block" : "none";
+      document.getElementById("forgot-link-row").style.display = t === "login" ? "flex" : "none";
+      document.getElementById("auth-password").setAttribute("autocomplete", t === "login" ? "current-password" : "new-password");
     }
 
     function updateCounter() {
@@ -1750,9 +1906,33 @@
       conversationControls.style.display = canContinueDebate() ? "flex" : "none";
     }
 
+    function backToAuthForm() {
+      document.getElementById("verify-box").style.display = "none";
+      document.getElementById("forgot-box").style.display = "none";
+      document.getElementById("auth-form-box").style.display = "block";
+      document.getElementById("verify-message").textContent = "";
+      document.getElementById("forgot-message").textContent = "";
+      document.getElementById("forgot-step-2").style.display = "none";
+      document.getElementById("forgot-send-btn").disabled = false;
+      switchTab("login");
+    }
+
+    function showForgotBox() {
+      document.getElementById("auth-form-box").style.display = "none";
+      document.getElementById("verify-box").style.display = "none";
+      document.getElementById("forgot-box").style.display = "block";
+      document.getElementById("forgot-message").textContent = "";
+      document.getElementById("forgot-step-2").style.display = "none";
+      document.getElementById("forgot-email-readonly").value = "";
+      document.getElementById("reset-code").value = "";
+      document.getElementById("new-password").value = "";
+      document.getElementById("new-password-confirm").value = "";
+    }
+
     async function submitAuth() {
       const email = document.getElementById("auth-email").value.trim();
       const password = document.getElementById("auth-password").value;
+      const confirmPassword = document.getElementById("auth-password-confirm").value;
       const errEl = document.getElementById("auth-error");
       const btn = document.getElementById("auth-submit-btn");
 
@@ -1770,9 +1950,21 @@
         return;
       }
 
-      if (tab === "register" && password.length < 6) {
-        errEl.textContent = "⚠ Mot de passe trop court (6 caractères min)";
-        return;
+      if (tab === "register") {
+        if (password.length < 6) {
+          errEl.textContent = "⚠ Mot de passe trop court (6 caractères min)";
+          return;
+        }
+
+        if (!confirmPassword) {
+          errEl.textContent = "⚠ Confirme ton mot de passe";
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          errEl.textContent = "⚠ Les mots de passe ne correspondent pas";
+          return;
+        }
       }
 
       btn.disabled = true;
@@ -1797,6 +1989,7 @@
             document.getElementById("auth-form-box").style.display = "none";
             document.getElementById("verify-box").style.display = "block";
             document.getElementById("verify-email").value = data.email || email;
+            document.getElementById("verify-code").value = "";
             document.getElementById("verify-message").style.color = "#67e6a5";
             document.getElementById("verify-message").textContent = "✓ Code envoyé par email";
             document.getElementById("verify-code").focus();
@@ -1857,10 +2050,15 @@
       document.getElementById("mode-bar").style.display = "none";
       document.getElementById("auth-form-box").style.display = "block";
       document.getElementById("verify-box").style.display = "none";
+      document.getElementById("forgot-box").style.display = "none";
       document.getElementById("auth-email").value = "";
       document.getElementById("auth-password").value = "";
+      document.getElementById("auth-password-confirm").value = "";
       document.getElementById("auth-error").textContent = "";
+      document.getElementById("verify-message").textContent = "";
+      document.getElementById("forgot-message").textContent = "";
       conversationControls.style.display = "none";
+      switchTab("login");
 
       if (heroCard) heroCard.style.display = "";
     }
@@ -1896,6 +2094,7 @@
             document.getElementById("verify-box").style.display = "none";
             document.getElementById("auth-form-box").style.display = "block";
             document.getElementById("auth-password").value = "";
+            document.getElementById("auth-password-confirm").value = "";
             document.getElementById("auth-error").style.color = "#67e6a5";
             document.getElementById("auth-error").textContent = "✓ Compte confirmé, connectez-vous.";
             switchTab("login");
@@ -1939,11 +2138,121 @@
       }
     }
 
+    async function sendResetCode() {
+      const email = document.getElementById("forgot-email").value.trim();
+      const msg = document.getElementById("forgot-message");
+      const btn = document.getElementById("forgot-send-btn");
+
+      msg.style.color = "var(--red)";
+      msg.textContent = "";
+
+      if (!email) {
+        msg.textContent = "⚠ Entrez votre email";
+        return;
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        msg.textContent = "⚠ Email invalide";
+        return;
+      }
+
+      btn.disabled = true;
+      msg.style.color = "var(--muted)";
+      msg.textContent = "Envoi en cours...";
+
+      try {
+        const res = await fetch(WORKER + "/forgot-password", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          msg.style.color = "#67e6a5";
+          msg.textContent = "✓ Code envoyé par email";
+          document.getElementById("forgot-step-2").style.display = "block";
+          document.getElementById("forgot-email-readonly").value = email;
+          document.getElementById("reset-code").focus();
+        } else {
+          msg.style.color = "var(--red)";
+          msg.textContent = "⚠ " + (data.error || "Erreur");
+        }
+      } catch (e) {
+        msg.style.color = "var(--red)";
+        msg.textContent = "⚠ Erreur réseau";
+      }
+
+      btn.disabled = false;
+    }
+
+    async function resetPassword() {
+      const email = document.getElementById("forgot-email-readonly").value.trim();
+      const code = document.getElementById("reset-code").value.trim();
+      const newPassword = document.getElementById("new-password").value;
+      const confirmPassword = document.getElementById("new-password-confirm").value;
+      const msg = document.getElementById("forgot-message");
+
+      msg.style.color = "var(--red)";
+      msg.textContent = "";
+
+      if (!email || !code || !newPassword || !confirmPassword) {
+        msg.textContent = "⚠ Remplis tous les champs";
+        return;
+      }
+
+      if (code.length !== 6) {
+        msg.textContent = "⚠ Entrez un code à 6 chiffres";
+        return;
+      }
+
+      if (newPassword.length < 6) {
+        msg.textContent = "⚠ Nouveau mot de passe trop court (6 caractères min)";
+        return;
+      }
+
+      if (newPassword !== confirmPassword) {
+        msg.textContent = "⚠ Les mots de passe ne correspondent pas";
+        return;
+      }
+
+      msg.style.color = "var(--muted)";
+      msg.textContent = "Changement en cours...";
+
+      try {
+        const res = await fetch(WORKER + "/reset-password", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, code, newPassword })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          msg.style.color = "#67e6a5";
+          msg.textContent = "✓ Mot de passe changé. Vous pouvez vous connecter.";
+          setTimeout(() => {
+            backToAuthForm();
+            document.getElementById("auth-email").value = email;
+            document.getElementById("auth-error").style.color = "#67e6a5";
+            document.getElementById("auth-error").textContent = "✓ Mot de passe changé, connectez-vous.";
+          }, 1200);
+        } else {
+          msg.style.color = "var(--red)";
+          msg.textContent = "⚠ " + (data.error || "Erreur");
+        }
+      } catch (e) {
+        msg.style.color = "var(--red)";
+        msg.textContent = "⚠ Erreur réseau";
+      }
+    }
+
     async function sendMessage() {
       const text = userInput.value.trim();
       if (!text || isWaiting || !currentUser) return;
 
-      // Close options panel on send
       if (optionsOpen) {
         optionsOpen = false;
         document.getElementById("options-toggle-btn").classList.remove("open");
@@ -2166,8 +2475,17 @@
     });
 
     userInput.addEventListener("input", resizeTextarea);
+
     document.getElementById("verify-code").addEventListener("keydown", e => {
       if (e.key === "Enter") verifyCode();
+    });
+
+    document.getElementById("reset-code").addEventListener("keydown", e => {
+      if (e.key === "Enter") resetPassword();
+    });
+
+    document.getElementById("new-password-confirm").addEventListener("keydown", e => {
+      if (e.key === "Enter") resetPassword();
     });
 
     document.getElementById("auth-screen").style.display = "flex";
