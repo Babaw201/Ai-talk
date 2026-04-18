@@ -546,7 +546,6 @@
 
   <script>
     const WORKER = "https://ai-talk-proxy.baptiste-werner.workers.dev";
-    const CLAUDE_API = "https://api.anthropic.com/v1/messages";
     const ADMIN = "baptiste.werner@gmail.com";
 
     let currentUser = null;
@@ -594,53 +593,27 @@
 
       addSys("⚖️ L'IA juge analyse les deux réponses...");
 
-      const judgePrompt = `Tu es un juge IA expert et neutre. Tu dois analyser deux réponses d'IA différentes à la même question et donner un verdict structuré.
-
-Question posée : "${question}"
-
-Réponse de GPT :
-"${gptResp}"
-
-Réponse de Claude :
-"${claudeResp}"
-
-Réponds UNIQUEMENT avec un JSON valide, sans markdown, sans backticks, avec exactement cette structure :
-{
-  "resume_gpt": "Résumé de la réponse GPT en 2-3 phrases avec emoji pertinent.",
-  "resume_claude": "Résumé de la réponse Claude en 2-3 phrases avec emoji pertinent.",
-  "score_gpt": 8.5,
-  "score_claude": 7.5,
-  "gagnant": "GPT",
-  "raison_gagnant": "Explication courte et précise du pourquoi.",
-  "recommandation": "Conseil final actionnable pour l'utilisateur, avec émojis. 2-3 phrases max."
-}`;
-
       try {
-        const res = await fetch(CLAUDE_API, {
+        const res = await fetch(WORKER + "/judge", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            model: "claude-sonnet-4-20250514",
-            max_tokens: 1000,
-            messages: [{ role: "user", content: judgePrompt }]
+            email: currentUser,
+            question: question,
+            gpt: gptResp,
+            claude: claudeResp
           })
         });
 
         const data = await res.json();
-        const rawText = (data.content || []).map(b => b.text || "").join("").trim();
 
-        let verdict;
-        try {
-          verdict = JSON.parse(rawText);
-        } catch (e) {
-          const match = rawText.match(/\{[\s\S]*\}/);
-          if (match) verdict = JSON.parse(match[0]);
-          else throw new Error("JSON invalide");
+        if (data.error) {
+          addSys("⚠️ Erreur du juge : " + data.error);
+        } else {
+          displayJudgeCard(data);
         }
-
-        displayJudgeCard(verdict);
       } catch (err) {
-        addSys("⚠️ Erreur du juge : " + err.message);
+        addSys("⚠️ Erreur réseau du juge : " + err.message);
       }
 
       judgeBtn.disabled = false;
