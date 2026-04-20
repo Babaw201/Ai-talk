@@ -326,6 +326,28 @@
       #send-btn { width: 40px; height: 40px; }
     }
 
+    /* ─── NOUVELLE CONVERSATION ─── */
+
+    function startNewConversation() {
+      lastDebateContext = null;
+      currentConversationId = 0;
+      history = [];
+      chatArea.innerHTML = "";
+      if (heroCard) {
+        heroCard.style.display = "";
+        chatArea.appendChild(heroCard);
+      }
+      // Remet le message système initial
+      const sys = document.createElement("div");
+      sys.className = "msg system";
+      sys.innerHTML = '<div class="bubble">— Choisis le mode, choisis qui répond, choisis qui commence, puis regarde les deux IA confronter leurs idées —</div>';
+      chatArea.appendChild(sys);
+      conversationControls.style.display = "none";
+      userInput.value = "";
+      resizeTextarea();
+      userInput.focus();
+    }
+
     /* ─── HISTORY DRAWER ─── */
     #history-overlay {
       display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55);
@@ -391,14 +413,24 @@
     .share-social-btn .s-icon { font-size: 17px; }
     .share-loading { text-align: center; color: var(--muted); font-size: 13px; padding: 20px 0; }
 
-    /* ─── BOUTON HISTORY DANS HEADER ─── */
+    /* ─── BOUTONS HEADER CONNECTÉ ─── */
     #history-btn {
-      border: 1px solid var(--border); background: rgba(255,255,255,0.03);
-      color: var(--muted); font-weight: 700; font-size: 13px; padding: 10px 14px;
+      border: 1px solid rgba(90,168,255,0.35);
+      background: linear-gradient(180deg, rgba(90,168,255,0.14), rgba(90,168,255,0.07));
+      color: var(--blue); font-weight: 700; font-size: 13px; padding: 10px 14px;
       border-radius: 12px; cursor: pointer; transition: 0.2s ease; display: none;
     }
-    #history-btn:hover { color: var(--white); border-color: var(--border-strong); }
-    @media (max-width: 720px) { #history-btn { padding: 8px 10px; font-size: 11px; border-radius: 10px; } }
+    #history-btn:hover { background: linear-gradient(180deg, rgba(90,168,255,0.22), rgba(90,168,255,0.12)); border-color: rgba(90,168,255,0.5); }
+    #new-conv-btn {
+      border: 1px solid rgba(57,217,138,0.32);
+      background: linear-gradient(180deg, rgba(57,217,138,0.12), rgba(57,217,138,0.06));
+      color: var(--green); font-weight: 700; font-size: 13px; padding: 10px 14px;
+      border-radius: 12px; cursor: pointer; transition: 0.2s ease; display: none;
+    }
+    #new-conv-btn:hover { background: linear-gradient(180deg, rgba(57,217,138,0.2), rgba(57,217,138,0.1)); border-color: rgba(57,217,138,0.5); }
+    @media (max-width: 720px) {
+      #history-btn, #new-conv-btn { padding: 8px 10px; font-size: 11px; border-radius: 10px; }
+    }
   </style>
 </head>
 <body>
@@ -415,6 +447,7 @@
         </div>
       </div>
       <div class="header-right">
+        <button id="new-conv-btn" onclick="startNewConversation()" title="Nouvelle conversation">✦ Nouvelle</button>
         <button id="history-btn" onclick="openHistoryDrawer()" title="Mes conversations">🕐 Historique</button>
         <div class="status-wrap">
           <div id="msg-counter">0 / 5</div>
@@ -1057,6 +1090,7 @@
       document.getElementById("chat-screen").style.display = "flex";
       document.getElementById("mode-bar").style.display = "flex";
       document.getElementById("history-btn").style.display = "block";
+      document.getElementById("new-conv-btn").style.display = "block";
       limitWall.style.display = "none";
       bottomBar.style.display = "block";
       updateCounter(); updateConversationControls(); updateOptionsSummary();
@@ -1070,6 +1104,7 @@
       document.getElementById("auth-btn").textContent = "Connexion";
       document.getElementById("auth-btn").className = "";
       document.getElementById("history-btn").style.display = "none";
+      document.getElementById("new-conv-btn").style.display = "none";
       counter.style.display = "none";
       document.getElementById("auth-screen").style.display = "flex";
       document.getElementById("chat-screen").style.display = "none";
