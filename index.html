@@ -325,6 +325,80 @@
       .control-btn { font-size: 10.5px; padding: 7px 6px; }
       #send-btn { width: 40px; height: 40px; }
     }
+
+    /* ─── HISTORY DRAWER ─── */
+    #history-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(3px); z-index: 200; animation: fadeInOverlay 0.18s ease;
+    }
+    @keyframes fadeInOverlay { from { opacity: 0; } to { opacity: 1; } }
+    #history-drawer {
+      position: fixed; top: 0; left: 0; bottom: 0; width: min(340px, 92vw);
+      background: linear-gradient(180deg, rgba(9,14,26,0.99), rgba(6,10,18,0.99));
+      border-right: 1px solid var(--border-strong);
+      z-index: 201; display: flex; flex-direction: column;
+      transform: translateX(-100%); transition: transform 0.26s cubic-bezier(.4,0,.2,1);
+      box-shadow: 4px 0 40px rgba(0,0,0,0.5);
+    }
+    #history-drawer.open { transform: translateX(0); }
+    .drawer-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 16px 12px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+    }
+    .drawer-title { font-family: "Orbitron", sans-serif; font-size: 14px; font-weight: 700; color: var(--blue); letter-spacing: 1px; }
+    .drawer-close { border: 1px solid var(--border); background: rgba(255,255,255,0.04); color: var(--muted); padding: 7px 11px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; }
+    #drawer-list { flex: 1; overflow-y: auto; padding: 10px 10px; display: flex; flex-direction: column; gap: 6px; }
+    #drawer-list::-webkit-scrollbar { width: 4px; }
+    #drawer-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.07); border-radius: 4px; }
+    .drawer-item {
+      padding: 11px 13px; border-radius: 14px; border: 1px solid var(--border);
+      background: rgba(255,255,255,0.025); cursor: pointer; transition: 0.15s ease;
+    }
+    .drawer-item:hover { background: rgba(255,255,255,0.05); border-color: var(--border-strong); }
+    .drawer-item-title { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .drawer-item-meta { font-size: 11px; color: var(--muted); display: flex; gap: 8px; }
+    .drawer-empty { text-align: center; color: var(--muted); font-size: 13px; padding: 40px 20px; line-height: 1.6; }
+    .drawer-loading { text-align: center; color: var(--muted); font-size: 13px; padding: 30px; }
+
+    /* ─── SHARE MODAL ─── */
+    #share-modal-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px); z-index: 300; align-items: center; justify-content: center; padding: 20px;
+    }
+    #share-modal {
+      width: 100%; max-width: 420px; background: linear-gradient(180deg, rgba(12,18,32,0.99), rgba(8,12,22,0.99));
+      border: 1px solid var(--border-strong); border-radius: 22px; padding: 22px;
+      box-shadow: var(--shadow-soft); animation: modalIn 0.22s ease;
+    }
+    @keyframes modalIn { from { opacity: 0; transform: scale(0.96) translateY(8px); } to { opacity: 1; transform: none; } }
+    .share-modal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .share-modal-title { font-size: 16px; font-weight: 800; color: var(--white); }
+    .share-modal-close { border: 1px solid var(--border); background: rgba(255,255,255,0.04); color: var(--muted); padding: 6px 10px; border-radius: 9px; font-size: 12px; cursor: pointer; }
+    .share-url-box {
+      display: flex; align-items: center; gap: 8px; padding: 12px 13px;
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border-strong);
+      border-radius: 14px; margin-bottom: 14px;
+    }
+    #share-url-text { flex: 1; font-size: 13px; color: var(--blue); word-break: break-all; min-width: 0; }
+    #share-copy-btn { flex-shrink: 0; border: 1px solid rgba(90,168,255,0.28); background: rgba(90,168,255,0.1); color: var(--blue); padding: 8px 12px; border-radius: 10px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+    .share-socials { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .share-social-btn {
+      display: flex; align-items: center; gap: 8px; padding: 11px 13px;
+      border-radius: 13px; border: 1px solid var(--border); background: rgba(255,255,255,0.03);
+      color: var(--white); font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.15s ease;
+    }
+    .share-social-btn:hover { background: rgba(255,255,255,0.07); }
+    .share-social-btn .s-icon { font-size: 17px; }
+    .share-loading { text-align: center; color: var(--muted); font-size: 13px; padding: 20px 0; }
+
+    /* ─── BOUTON HISTORY DANS HEADER ─── */
+    #history-btn {
+      border: 1px solid var(--border); background: rgba(255,255,255,0.03);
+      color: var(--muted); font-weight: 700; font-size: 13px; padding: 10px 14px;
+      border-radius: 12px; cursor: pointer; transition: 0.2s ease; display: none;
+    }
+    #history-btn:hover { color: var(--white); border-color: var(--border-strong); }
+    @media (max-width: 720px) { #history-btn { padding: 8px 10px; font-size: 11px; border-radius: 10px; } }
   </style>
 </head>
 <body>
@@ -341,6 +415,7 @@
         </div>
       </div>
       <div class="header-right">
+        <button id="history-btn" onclick="openHistoryDrawer()" title="Mes conversations">🕐 Historique</button>
         <div class="status-wrap">
           <div id="msg-counter">0 / 5</div>
           <div class="status-dot"></div>
@@ -478,6 +553,7 @@
       <div class="conversation-controls" id="conversation-controls">
         <button class="control-btn primary" id="continue-debate-btn" onclick="continueDebate()">Continuer le débat</button>
         <button class="control-btn gold" id="judge-btn" onclick="requestJudge()" style="display:none;">⚖️ Demander le verdict</button>
+        <button class="control-btn" id="share-btn" onclick="openShareModal()" style="display:none;">🔗 Partager</button>
         <button class="control-btn" onclick="resetConversationState()">Nouveau départ</button>
       </div>
 
@@ -544,6 +620,31 @@
     </div>
   </div>
 
+  <!-- HISTORY DRAWER -->
+  <div id="history-overlay" onclick="closeHistoryDrawer()"></div>
+  <div id="history-drawer">
+    <div class="drawer-head">
+      <span class="drawer-title">// HISTORIQUE</span>
+      <button class="drawer-close" onclick="closeHistoryDrawer()">✕ Fermer</button>
+    </div>
+    <div id="drawer-list">
+      <div class="drawer-loading">Chargement...</div>
+    </div>
+  </div>
+
+  <!-- SHARE MODAL -->
+  <div id="share-modal-overlay" onclick="closeShareModal()">
+    <div id="share-modal" onclick="event.stopPropagation()">
+      <div class="share-modal-head">
+        <span class="share-modal-title">🔗 Partager cette conversation</span>
+        <button class="share-modal-close" onclick="closeShareModal()">✕</button>
+      </div>
+      <div id="share-modal-body">
+        <div class="share-loading">Génération du lien...</div>
+      </div>
+    </div>
+  </div>
+
   <script>
     const WORKER = "https://ai-talk-proxy.baptiste-werner.workers.dev";
     const ADMIN = "baptiste.werner@gmail.com";
@@ -559,6 +660,7 @@
     let lastDebateContext = null;
     let optionsOpen = false;
     let judgeWaiting = false;
+    let currentConversationId = 0;
 
     const modeDescriptions = {
       classic: "Mode Classique · Réponses équilibrées",
@@ -861,6 +963,7 @@
 
     function resetConversationState() {
       lastDebateContext = null;
+      currentConversationId = 0;
       conversationControls.style.display = "none";
       addSys("Contexte de débat réinitialisé.");
     }
@@ -874,6 +977,8 @@
       conversationControls.style.display = show ? "flex" : "none";
       const judgeBtn = document.getElementById("judge-btn");
       if (judgeBtn) judgeBtn.style.display = show ? "inline-block" : "none";
+      const shareBtn = document.getElementById("share-btn");
+      if (shareBtn) shareBtn.style.display = (show && currentConversationId) ? "inline-block" : "none";
     }
 
     function backToAuthForm() {
@@ -944,13 +1049,14 @@
     }
 
     function loginSuccess(email, msgsUsed = 0) {
-      currentUser = email; msgCount = msgsUsed; history = []; lastDebateContext = null;
+      currentUser = email; msgCount = msgsUsed; history = []; lastDebateContext = null; currentConversationId = 0;
       localStorage.setItem("dm_user", email);
       document.getElementById("auth-btn").textContent = "Déconnexion";
       document.getElementById("auth-btn").className = "connected";
       document.getElementById("auth-screen").style.display = "none";
       document.getElementById("chat-screen").style.display = "flex";
       document.getElementById("mode-bar").style.display = "flex";
+      document.getElementById("history-btn").style.display = "block";
       limitWall.style.display = "none";
       bottomBar.style.display = "block";
       updateCounter(); updateConversationControls(); updateOptionsSummary();
@@ -959,10 +1065,11 @@
 
     function handleAuthBtn() {
       if (!currentUser) return;
-      currentUser = null; msgCount = 0; history = []; lastDebateContext = null;
+      currentUser = null; msgCount = 0; history = []; lastDebateContext = null; currentConversationId = 0;
       localStorage.removeItem("dm_user");
       document.getElementById("auth-btn").textContent = "Connexion";
       document.getElementById("auth-btn").className = "";
+      document.getElementById("history-btn").style.display = "none";
       counter.style.display = "none";
       document.getElementById("auth-screen").style.display = "flex";
       document.getElementById("chat-screen").style.display = "none";
@@ -1086,7 +1193,7 @@
       try {
         const res = await fetch(WORKER + "/chat", {
           method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ messages: history.slice(-12), email: currentUser, mode: currentMode, responseMode: currentResponseMode, starter: currentStarter })
+          body: JSON.stringify({ messages: history.slice(-12), email: currentUser, mode: currentMode, responseMode: currentResponseMode, starter: currentStarter, conversationId: currentConversationId })
         });
         const data = await res.json();
         removeTyping();
@@ -1094,6 +1201,7 @@
           if (data.error.includes("5 messages")) { limitWall.style.display = "flex"; bottomBar.style.display = "none"; }
           else { addSys("⚠ " + data.error); }
         } else {
+          if (data.conversationId) currentConversationId = data.conversationId;
           if (currentResponseMode === "gpt") {
             if (data.gpt) { addMsg("gpt","GPT-4o","gpt-av","GPT",data.gpt); history.push({ role: "assistant", content: data.gpt, ai: "gpt" }); }
           } else if (currentResponseMode === "claude") {
@@ -1126,12 +1234,13 @@
       try {
         const res = await fetch(WORKER + "/chat", {
           method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ messages: history.slice(-12), email: currentUser, mode: currentMode, responseMode: "duo", starter: currentStarter, continueDebate: true, debateContext: lastDebateContext })
+          body: JSON.stringify({ messages: history.slice(-12), email: currentUser, mode: currentMode, responseMode: "duo", starter: currentStarter, continueDebate: true, debateContext: lastDebateContext, conversationId: currentConversationId })
         });
         const data = await res.json();
         removeTyping();
         if (data.error) { addSys("⚠ " + data.error); }
         else {
+          if (data.conversationId) currentConversationId = data.conversationId;
           if (currentStarter === "gpt") {
             if (data.gpt) { addMsg("gpt","GPT-4o","gpt-av","GPT",data.gpt); history.push({ role: "assistant", content: data.gpt, ai: "gpt" }); }
             if (data.claude) { await new Promise(r => setTimeout(r, 380)); addMsg("claude","Claude","claude-av","CLD",data.claude); history.push({ role: "assistant", content: data.claude, ai: "claude" }); }
@@ -1164,6 +1273,176 @@
         else localStorage.removeItem("dm_user");
       } catch (e) { localStorage.removeItem("dm_user"); }
     })();
+
+    /* ─── HISTORY DRAWER ─── */
+
+    function openHistoryDrawer() {
+      if (!currentUser) return;
+      document.getElementById("history-overlay").style.display = "block";
+      document.getElementById("history-drawer").classList.add("open");
+      loadConversationList();
+    }
+
+    function closeHistoryDrawer() {
+      document.getElementById("history-overlay").style.display = "none";
+      document.getElementById("history-drawer").classList.remove("open");
+    }
+
+    async function loadConversationList() {
+      const list = document.getElementById("drawer-list");
+      list.innerHTML = '<div class="drawer-loading">⏳ Chargement...</div>';
+
+      try {
+        const res = await fetch(WORKER + "/list-conversations", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: currentUser })
+        });
+        const data = await res.json();
+
+        if (!data.success || !data.conversations || data.conversations.length === 0) {
+          list.innerHTML = '<div class="drawer-empty">Aucune conversation enregistrée.<br>Lance une discussion pour la voir apparaître ici.</div>';
+          return;
+        }
+
+        list.innerHTML = "";
+        data.conversations.forEach(conv => {
+          const date = new Date(conv.updated_at).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "2-digit" });
+          const modeLabel = { classic: "Classique", debate: "Débat", expert: "Expert", creative: "Créatif", clash: "Clash" }[conv.mode] || conv.mode;
+          const item = document.createElement("div");
+          item.className = "drawer-item";
+          item.innerHTML = `
+            <div class="drawer-item-title">${esc(conv.title || "Conversation")}</div>
+            <div class="drawer-item-meta"><span>📅 ${date}</span><span>⚙ ${modeLabel}</span></div>
+          `;
+          item.addEventListener("click", () => loadConversation(conv.id, conv.title));
+          list.appendChild(item);
+        });
+      } catch (e) {
+        list.innerHTML = '<div class="drawer-empty">⚠ Erreur de chargement</div>';
+      }
+    }
+
+    async function loadConversation(convId, title) {
+      closeHistoryDrawer();
+      addSys("⏳ Chargement de la conversation...");
+
+      try {
+        const res = await fetch(WORKER + "/get-conversation", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: currentUser, conversationId: convId })
+        });
+        const data = await res.json();
+
+        if (!data.success) { addSys("⚠ Impossible de charger cette conversation."); return; }
+
+        // Réinitialise le chat
+        if (heroCard) heroCard.style.display = "none";
+        chatArea.innerHTML = "";
+        history = [];
+        lastDebateContext = null;
+        currentConversationId = convId;
+
+        // Affiche un séparateur de titre
+        const sep = document.createElement("div");
+        sep.className = "msg system";
+        sep.innerHTML = `<div class="bubble">📂 ${esc(data.conversation.title || "Conversation chargée")}</div>`;
+        chatArea.appendChild(sep);
+
+        // Rejoue les messages
+        let lastGpt = "", lastClaude = "", lastUser = "";
+        data.messages.forEach(msg => {
+          if (msg.role === "user") {
+            addMsg("user-msg", "Vous", "user-av", "YOU", msg.content);
+            history.push({ role: "user", content: msg.content });
+            lastUser = msg.content;
+          } else if (msg.role === "assistant" && msg.ai === "gpt") {
+            addMsg("gpt", "GPT-4o", "gpt-av", "GPT", msg.content);
+            history.push({ role: "assistant", content: msg.content, ai: "gpt" });
+            lastGpt = msg.content;
+          } else if (msg.role === "assistant" && msg.ai === "claude") {
+            addMsg("claude", "Claude", "claude-av", "CLD", msg.content);
+            history.push({ role: "assistant", content: msg.content, ai: "claude" });
+            lastClaude = msg.content;
+          }
+        });
+
+        // Restaure le contexte de débat si possible
+        if (lastGpt && lastClaude && lastUser) {
+          lastDebateContext = { starter: currentStarter, lastUserMessage: lastUser, gpt: lastGpt, claude: lastClaude };
+        }
+
+        updateConversationControls();
+        chatArea.scrollTop = chatArea.scrollHeight;
+      } catch (e) {
+        addSys("⚠ Erreur réseau : " + e.message);
+      }
+    }
+
+    /* ─── SHARE MODAL ─── */
+
+    async function openShareModal() {
+      if (!currentConversationId || !currentUser) return;
+
+      const overlay = document.getElementById("share-modal-overlay");
+      const body = document.getElementById("share-modal-body");
+
+      overlay.style.display = "flex";
+      body.innerHTML = '<div class="share-loading">⏳ Génération du lien...</div>';
+
+      try {
+        const res = await fetch(WORKER + "/share-conversation", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: currentUser, conversationId: currentConversationId })
+        });
+        const data = await res.json();
+
+        if (!data.success || !data.shareUrl) {
+          body.innerHTML = '<div class="share-loading">⚠ Impossible de générer le lien.</div>';
+          return;
+        }
+
+        const url = data.shareUrl;
+        const text = encodeURIComponent("Je viens de comparer GPT et Claude sur Double Mind 🤖⚔️");
+        const urlEnc = encodeURIComponent(url);
+
+        body.innerHTML = `
+          <div class="share-url-box">
+            <span id="share-url-text">${esc(url)}</span>
+            <button id="share-copy-btn" onclick="copyShareUrl('${esc(url)}')">📋 Copier</button>
+          </div>
+          <div class="share-socials">
+            <button class="share-social-btn" onclick="window.open('https://twitter.com/intent/tweet?text=${text}&url=${urlEnc}','_blank')">
+              <span class="s-icon">𝕏</span><span>X / Twitter</span>
+            </button>
+            <button class="share-social-btn" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url=${urlEnc}','_blank')">
+              <span class="s-icon">💼</span><span>LinkedIn</span>
+            </button>
+            <button class="share-social-btn" onclick="window.open('https://api.whatsapp.com/send?text=${text}%20${urlEnc}','_blank')">
+              <span class="s-icon">💬</span><span>WhatsApp</span>
+            </button>
+            <button class="share-social-btn" onclick="window.open('https://t.me/share/url?url=${urlEnc}&text=${text}','_blank')">
+              <span class="s-icon">✈️</span><span>Telegram</span>
+            </button>
+          </div>
+        `;
+      } catch (e) {
+        body.innerHTML = '<div class="share-loading">⚠ Erreur réseau.</div>';
+      }
+    }
+
+    function closeShareModal() {
+      document.getElementById("share-modal-overlay").style.display = "none";
+    }
+
+    function copyShareUrl(url) {
+      navigator.clipboard.writeText(url).then(() => {
+        const btn = document.getElementById("share-copy-btn");
+        if (btn) { btn.textContent = "✓ Copié !"; setTimeout(() => { btn.textContent = "📋 Copier"; }, 2000); }
+      }).catch(() => {
+        const btn = document.getElementById("share-copy-btn");
+        if (btn) btn.textContent = "⚠ Erreur";
+      });
+    }
   </script>
 </body>
 </html>
