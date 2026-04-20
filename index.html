@@ -318,6 +318,23 @@
       .code-input { font-size: 22px; letter-spacing: 5px; padding: 14px 54px 14px 10px; }
     }
 
+    @media (max-width: 480px) {
+      header {
+        flex-wrap: wrap;
+        padding: 8px 10px 6px;
+        gap: 6px;
+      }
+      .brand { flex: 1 1 100%; }
+      .header-right {
+        flex: 1 1 100%;
+        justify-content: flex-start;
+        gap: 6px;
+        padding-bottom: 2px;
+      }
+      #msg-counter { margin-left: auto; }
+      #auth-btn { margin-left: 4px; }
+    }
+
     @media (max-width: 420px) {
       .options-panel-inner { grid-template-columns: 1fr; }
       .mode-btn { padding: 6px 9px; font-size: 10px; }
