@@ -188,13 +188,31 @@
       return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
     }
 
-    function getShareId() {
-      // Supporte /share/ID et ?share=ID
-      const pathMatch = window.location.pathname.match(/\/share\/([a-zA-Z0-9]+)/);
-      if (pathMatch) return pathMatch[1];
-      const params = new URLSearchParams(window.location.search);
-      return params.get("share") || null;
-    }
+  function getShareId() {
+  const url = new URL(window.location.href);
+
+  // 1) Cas /share/abc123
+  const path = url.pathname.replace(/\/+$/, "");
+  const parts = path.split("/").filter(Boolean);
+
+  if (parts.length >= 2 && parts[0] === "share") {
+    return decodeURIComponent(parts[1]).trim();
+  }
+
+  // 2) Cas /share.html?shareId=abc123
+  const fromQuery = url.searchParams.get("shareId");
+  if (fromQuery && fromQuery.trim()) {
+    return fromQuery.trim();
+  }
+
+  // 3) Compat ancien format ?share=abc123
+  const legacy = url.searchParams.get("share");
+  if (legacy && legacy.trim()) {
+    return legacy.trim();
+  }
+
+  return "";
+}
 
     function addMsg(wrap, type, labelText, avClass, avText, text) {
       const d = document.createElement("div");
@@ -214,7 +232,11 @@
 
     async function loadShare() {
       const shareId = getShareId();
-      if (!shareId) {
+      console.log("PATHNAME =", window.location.pathname);
+console.log("SEARCH =", window.location.search);
+console.log("SHARE ID =", shareId);
+      
+        if (!shareId) {
         document.getElementById("loading").style.display = "none";
         document.getElementById("error-box").style.display = "block";
         return;
