@@ -673,7 +673,7 @@
       try {
         const res = await fetch(WORKER + "/judge", {
           method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: currentUser, question: lastDebateContext.lastUserMessage, gpt: lastDebateContext.gpt, claude: lastDebateContext.claude })
+          body: JSON.stringify({ email: currentUser, conversationId: currentConversationId, question: lastDebateContext.lastUserMessage, gpt: lastDebateContext.gpt, claude: lastDebateContext.claude })
         });
         const data = await res.json();
         if (data.error) addSys("⚠️ Erreur du juge : " + data.error);
