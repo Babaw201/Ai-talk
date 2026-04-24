@@ -273,14 +273,31 @@ console.log("SHARE ID =", shareId);
         // Messages
         const wrap = document.getElementById("messages-wrap");
         msgs.forEach(msg => {
-          if (msg.role === "user") {
-            addMsg(wrap, "user-msg", "Vous", "user-av", "YOU", msg.content);
-          } else if (msg.role === "assistant" && msg.ai === "gpt") {
-            addMsg(wrap, "gpt", "GPT-4o", "gpt-av", "GPT", msg.content);
-          } else if (msg.role === "assistant" && msg.ai === "claude") {
-            addMsg(wrap, "claude", "Claude", "claude-av", "CLD", msg.content);
-          }
-        });
+  if (msg.role === "user") {
+    addMsg(wrap, "user-msg", "Vous", "user-av", "YOU", msg.content);
+
+  } else if (msg.role === "assistant" && msg.ai === "gpt") {
+    addMsg(wrap, "gpt", "GPT-4o", "gpt-av", "GPT", msg.content);
+
+  } else if (msg.role === "assistant" && msg.ai === "claude") {
+    addMsg(wrap, "claude", "Claude", "claude-av", "CLD", msg.content);
+
+  } else if (msg.role === "assistant" && msg.ai === "judge") {
+    try {
+      const verdict = JSON.parse(msg.content);
+      addMsg(
+        wrap,
+        "system",
+        "",
+        "",
+        "",
+        `⚖️ Verdict du juge IA\n\nGPT : ${verdict.score_gpt}/10\nClaude : ${verdict.score_claude}/10\n\nGagnant : ${verdict.gagnant}\n\n${verdict.raison_gagnant}\n\n🧭 ${verdict.recommandation}`
+      );
+    } catch {
+      addMsg(wrap, "system", "", "", "", "⚖️ Verdict du juge IA indisponible");
+    }
+  }
+});
 
         document.getElementById("content").style.display = "block";
 
