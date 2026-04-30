@@ -2,1472 +2,1311 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Double Mind — GPT vs Claude</title>
-  <link rel="icon" type="image/png" href="logo.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Double Mind — Deux IA. Une meilleure décision.</title>
+  <meta name="description" content="Double Mind compare GPT et Claude, les fait débattre et génère un verdict clair." />
 
   <style>
     :root {
-      --bg: #05070d;
-      --bg-2: #09101b;
-      --panel: rgba(10, 14, 24, 0.94);
-      --panel-2: rgba(13, 20, 34, 0.92);
-      --border: rgba(109, 140, 197, 0.16);
-      --border-strong: rgba(109, 140, 197, 0.28);
-      --white: #edf3ff;
-      --muted: #8c9bb8;
-      --muted-2: #6b7892;
-      --blue: #5aa8ff;
-      --blue-bg: rgba(24, 66, 130, 0.18);
-      --orange: #ff9b45;
-      --orange-bg: rgba(118, 54, 4, 0.22);
-      --green: #39d98a;
-      --red: #ff5c7a;
-      --yellow: #ffbc58;
-      --gold: #ffd166;
-      --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.22);
-      --shadow-blue: 0 0 0 1px rgba(90, 168, 255, 0.08), 0 14px 34px rgba(18, 52, 112, 0.18);
-      --shadow-orange: 0 0 0 1px rgba(255, 155, 69, 0.08), 0 14px 34px rgba(118, 54, 4, 0.18);
-      --shadow-gold: 0 0 0 1px rgba(255, 209, 102, 0.12), 0 14px 34px rgba(80, 60, 0, 0.22);
+      --bg: #070812;
+      --card: rgba(255, 255, 255, 0.045);
+      --card-2: rgba(255, 255, 255, 0.075);
+      --border: rgba(255, 255, 255, 0.12);
+      --text: #ffffff;
+      --muted: rgba(255, 255, 255, 0.66);
+      --muted-2: rgba(255, 255, 255, 0.46);
+      --cyan: #22d3ee;
+      --cyan-2: #67e8f9;
+      --blue: #60a5fa;
+      --violet: #8b5cf6;
+      --violet-2: #c084fc;
+      --orange: #fb923c;
+      --orange-2: #fdba74;
+      --yellow: #facc15;
+      --yellow-2: #fde047;
+      --green: #34d399;
+      --red: #fb7185;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+      --max: 1180px;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
 
-    html, body {
-      width: 100%; height: 100%; overflow: hidden;
+    body {
+      min-height: 100vh;
       background:
-        radial-gradient(circle at top left, rgba(43, 94, 193, 0.13), transparent 28%),
-        radial-gradient(circle at top right, rgba(255, 122, 26, 0.09), transparent 22%),
-        linear-gradient(180deg, #07101c 0%, #04070c 48%, #03050a 100%);
-      color: var(--white);
-      font-family: "Inter", sans-serif;
+        radial-gradient(circle at 50% -12%, rgba(34, 211, 238, 0.2), transparent 30%),
+        radial-gradient(circle at 95% 20%, rgba(139, 92, 246, 0.18), transparent 28%),
+        radial-gradient(circle at 8% 88%, rgba(34, 211, 238, 0.13), transparent 24%),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow-x: hidden;
     }
 
     body::before {
       content: "";
-      position: fixed; inset: 0;
-      background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.015) 3px, rgba(255,255,255,0.015) 4px);
-      pointer-events: none; z-index: 9999; opacity: 0.22;
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(circle at top, black, transparent 78%);
+      pointer-events: none;
     }
 
-    #app { height: 100dvh; display: flex; flex-direction: column; overflow: hidden; position: relative; }
-
-    /* ─── HEADER ─── */
-    header {
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
-      padding: 12px 16px;
-      background: linear-gradient(180deg, rgba(7, 12, 22, 0.96), rgba(7, 12, 22, 0.78));
-      border-bottom: 1px solid var(--border);
-      backdrop-filter: blur(10px); flex-shrink: 0; z-index: 10;
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background:
+        linear-gradient(115deg, transparent 0%, rgba(255,255,255,0.035) 45%, transparent 60%),
+        radial-gradient(circle at 80% 78%, rgba(34, 211, 238, 0.07), transparent 30%);
+      pointer-events: none;
     }
-    .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
-    .brand-logo { width: 40px; height: 40px; border-radius: 12px; object-fit: cover; box-shadow: var(--shadow-soft); flex-shrink: 0; }
-    .brand-title { font-family: "Orbitron", sans-serif; font-size: 22px; line-height: 1; font-weight: 900; letter-spacing: 1px; white-space: nowrap; }
-    .brand-title .blue { color: var(--blue); }
-    .brand-title .orange { color: var(--orange); }
-    .brand-subtitle { color: var(--muted); font-size: 12px; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 360px; }
-    .header-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-    .status-wrap { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 999px; background: rgba(255,255,255,0.03); }
-    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px rgba(57,217,138,0.45); animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.35; transform: scale(0.86); } }
-    #msg-counter { display: none; font-size: 12px; font-weight: 700; color: var(--muted); min-width: 48px; text-align: center; }
-    #msg-counter.warning { color: var(--yellow); }
-    #msg-counter.blocked { color: var(--red); }
-    #auth-btn { border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: var(--white); font-weight: 700; font-size: 13px; padding: 10px 14px; border-radius: 12px; cursor: pointer; transition: 0.2s ease; }
-    #auth-btn.connected { color: #ffd4dc; border-color: rgba(255,92,122,0.32); background: rgba(255,92,122,0.08); }
-    #history-btn {
-      border: 1px solid rgba(90,168,255,0.35);
-      background: linear-gradient(180deg, rgba(90,168,255,0.14), rgba(90,168,255,0.07));
-      color: var(--blue); font-weight: 700; font-size: 13px; padding: 10px 14px;
-      border-radius: 12px; cursor: pointer; transition: 0.2s ease; display: none;
+
+    a { color: inherit; text-decoration: none; }
+    button, textarea, input { font: inherit; }
+    button { cursor: pointer; }
+    .container { width: min(var(--max), calc(100% - 40px)); margin-inline: auto; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 52px;
+      padding: 0 24px;
+      border-radius: 16px;
+      border: 1px solid transparent;
+      color: white;
+      transition: 0.22s ease;
+      font-weight: 800;
+      white-space: nowrap;
     }
-    #history-btn:hover { background: linear-gradient(180deg, rgba(90,168,255,0.22), rgba(90,168,255,0.12)); border-color: rgba(90,168,255,0.5); }
-    #new-conv-btn {
-      border: 1px solid rgba(57,217,138,0.32);
-      background: linear-gradient(180deg, rgba(57,217,138,0.12), rgba(57,217,138,0.06));
-      color: var(--green); font-weight: 700; font-size: 13px; padding: 10px 14px;
-      border-radius: 12px; cursor: pointer; transition: 0.2s ease; display: none;
+
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cyan), var(--violet));
+      box-shadow: 0 16px 34px rgba(34, 211, 238, 0.18), 0 12px 30px rgba(139, 92, 246, 0.16);
     }
-    #new-conv-btn:hover { background: linear-gradient(180deg, rgba(57,217,138,0.2), rgba(57,217,138,0.1)); border-color: rgba(57,217,138,0.5); }
+    .btn-secondary { background: rgba(255,255,255,0.055); border-color: rgba(255,255,255,0.16); }
+    .btn-secondary:hover { background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.28); }
 
-    /* ─── AUTH SCREEN ─── */
-    #auth-screen { flex: 1; display: none; align-items: center; justify-content: center; padding: 20px 14px; overflow-y: auto; }
-    .auth-shell { width: 100%; max-width: 470px; }
-    .auth-panel { position: relative; overflow: hidden; background: linear-gradient(180deg, rgba(12, 18, 31, 0.92), rgba(8, 12, 22, 0.96)); border: 1px solid var(--border-strong); border-radius: 24px; box-shadow: var(--shadow-soft); padding: 24px; }
-    .auth-panel::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at top left, rgba(90,168,255,0.12), transparent 25%), radial-gradient(circle at top right, rgba(255,155,69,0.08), transparent 18%); pointer-events: none; }
-    .auth-head, #auth-form-box, #verify-box, #forgot-box { position: relative; z-index: 1; }
-    .auth-head { text-align: center; margin-bottom: 20px; }
-    .auth-logo { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-    .auth-logo img { width: 44px; height: 44px; border-radius: 13px; object-fit: cover; }
-    .auth-logo-text { font-family: "Orbitron", sans-serif; font-weight: 900; font-size: 21px; letter-spacing: 1px; }
-    .auth-title { font-size: 24px; font-weight: 800; margin-bottom: 8px; line-height: 1.2; }
-    .auth-subtitle { color: var(--muted); font-size: 14px; line-height: 1.6; max-width: 360px; margin: 0 auto; }
-    .auth-highlight { margin-top: 18px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-    .mini-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 14px; padding: 10px; text-align: center; }
-    .mini-card strong { display: block; font-size: 13px; margin-bottom: 5px; }
-    .mini-card span { color: var(--muted); font-size: 11px; line-height: 1.4; }
-    .tabs { display: flex; gap: 8px; padding: 6px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 18px; }
-    .tab-btn { flex: 1; border: 0; background: transparent; color: var(--muted); padding: 11px 12px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; }
-    .tab-btn.active { background: linear-gradient(180deg, rgba(78,138,255,0.22), rgba(78,138,255,0.12)); color: var(--white); box-shadow: inset 0 0 0 1px rgba(90,168,255,0.18); }
-    .field { margin-bottom: 14px; }
-    .field label { display: block; margin-bottom: 7px; color: var(--muted); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; }
-    .field input { width: 100%; border: 1px solid var(--border-strong); background: rgba(255,255,255,0.025); color: var(--white); padding: 14px 15px; border-radius: 14px; outline: none; font-size: 15px; }
-    .input-wrap { position: relative; }
-    .input-wrap input { padding-right: 52px; }
-    .eye-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); border: 1px solid var(--border); background: rgba(255,255,255,0.03); color: var(--muted); border-radius: 10px; padding: 7px 10px; font-size: 12px; font-weight: 700; cursor: pointer; }
-    .inline-link { display: inline-block; margin-top: -2px; color: var(--muted); font-size: 12px; cursor: pointer; transition: 0.15s ease; }
-    .inline-link:hover { color: var(--white); }
-    .auth-links-row { display: flex; justify-content: flex-end; margin: -4px 0 10px; }
-    .auth-error { min-height: 18px; color: var(--red); font-size: 13px; margin: 10px 0 14px; }
-    .auth-submit, .verify-btn { width: 100%; border: 0; background: linear-gradient(180deg, #69b4ff, #4f88ff); color: #08111f; font-size: 14px; font-weight: 800; padding: 14px; border-radius: 14px; cursor: pointer; box-shadow: var(--shadow-blue); }
-    .auth-submit:disabled, .verify-btn:disabled, .resend-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    #verify-box, #forgot-box { display: none; margin-top: 8px; padding: 18px; background: rgba(255,255,255,0.025); border: 1px solid var(--border); border-radius: 18px; }
-    .verify-title { font-family: "Orbitron", sans-serif; color: var(--orange); font-size: 13px; letter-spacing: 2px; margin-bottom: 8px; }
-    .verify-sub { color: var(--muted); font-size: 13px; margin-bottom: 16px; line-height: 1.6; }
-    .code-wrap { position: relative; margin-bottom: 12px; }
-    .code-input { width: 100%; border: 1px solid rgba(255,155,69,0.28); background: rgba(255,155,69,0.07); color: #ffd8b0; padding: 16px 60px 16px 14px; border-radius: 16px; font-size: 28px; font-weight: 800; text-align: center; letter-spacing: 9px; outline: none; }
-    .code-eye { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); border: 1px solid rgba(255,155,69,0.22); background: rgba(255,255,255,0.04); color: #ffd8b0; border-radius: 10px; padding: 7px 10px; font-size: 12px; font-weight: 700; cursor: pointer; }
-    .resend-btn { width: 100%; margin-top: 10px; border: 1px solid var(--border); background: rgba(255,255,255,0.025); color: var(--muted); padding: 12px 14px; border-radius: 14px; font-size: 13px; font-weight: 700; cursor: pointer; }
-    #verify-message, #forgot-message { min-height: 18px; font-size: 13px; margin-top: 12px; text-align: center; }
-    .verify-tip { margin-top: 12px; font-size: 12px; color: var(--muted-2); text-align: center; line-height: 1.5; }
-    .back-link { margin-top: 14px; text-align: center; font-size: 12px; color: var(--muted); cursor: pointer; }
-    .back-link:hover { color: var(--white); }
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 0;
+      gap: 22px;
+    }
 
-    /* ─── CHAT SCREEN ─── */
-    #chat-screen { flex: 1; display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
-    #mode-bar { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--border); background: rgba(8,13,22,0.72); backdrop-filter: blur(8px); overflow-x: auto; scrollbar-width: none; flex-shrink: 0; }
-    #mode-bar::-webkit-scrollbar { display: none; }
-    .mode-label { color: var(--muted); font-size: 11px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; white-space: nowrap; flex-shrink: 0; }
-    .mode-btn { border: 1px solid var(--border); background: rgba(255,255,255,0.025); color: var(--muted); padding: 10px 14px; border-radius: 999px; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
-    .mode-btn.active { color: #08111f; background: linear-gradient(180deg, #69b4ff, #4f88ff); border-color: transparent; box-shadow: var(--shadow-blue); }
-    .mode-btn.active.debate { background: linear-gradient(180deg, #ffd06d, #f4a82f); }
-    .mode-btn.active.expert { background: linear-gradient(180deg, #5fe2b6, #27c98c); }
-    .mode-btn.active.creative { background: linear-gradient(180deg, #d58bff, #ae63ff); }
-    .mode-btn.active.clash { background: linear-gradient(180deg, #ffba73, #ff8b2f); box-shadow: var(--shadow-orange); }
+    .brand { display: flex; align-items: center; gap: 13px; min-width: max-content; }
+    .logo {
+      width: 48px; height: 48px; display: grid; place-items: center;
+      border-radius: 17px;
+      background:
+        radial-gradient(circle at 30% 40%, rgba(96, 165, 250, 0.95), transparent 27%),
+        radial-gradient(circle at 70% 55%, rgba(251, 146, 60, 0.95), transparent 27%),
+        rgba(255,255,255,0.075);
+      border: 1px solid rgba(255,255,255,0.13);
+      box-shadow: 0 0 28px rgba(34, 211, 238, 0.16);
+      font-size: 11px; font-weight: 1000; letter-spacing: -0.04em;
+    }
+    .brand-title { font-size: 21px; font-weight: 950; line-height: 1; letter-spacing: -0.03em; }
+    .blue { color: var(--blue); }
+    .orange { color: var(--orange-2); }
+    .yellow { color: var(--yellow-2); }
+    .cyan { color: var(--cyan-2); }
+    .violet { color: var(--violet-2); }
+    .red { color: var(--red); }
+    .brand-subtitle { margin-top: 5px; color: var(--muted-2); font-size: 12px; }
+    .nav-links { display: flex; align-items: center; gap: 34px; color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 650; }
+    .nav-links a:hover { color: white; }
 
-    #chat-area { flex: 1; overflow-y: auto; padding: 16px 14px 18px; display: flex; flex-direction: column; gap: 14px; scroll-behavior: smooth; min-height: 0; }
-    #chat-area::-webkit-scrollbar { width: 6px; }
-    #chat-area::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 999px; }
+    .hero {
+      display: grid;
+      grid-template-columns: 1.04fr 0.96fr;
+      gap: 58px;
+      align-items: center;
+      padding: 62px 0 46px;
+    }
+    .pill {
+      display: inline-flex; align-items: center; gap: 9px;
+      padding: 10px 15px; border-radius: 999px;
+      border: 1px solid rgba(34, 211, 238, 0.24);
+      background: linear-gradient(90deg, rgba(34, 211, 238, 0.1), rgba(139, 92, 246, 0.1));
+      color: rgba(255,255,255,0.86); font-size: 13px;
+      box-shadow: 0 0 28px rgba(34,211,238,0.08);
+    }
+    .pill span { color: var(--cyan-2); }
+    h1 {
+      max-width: 720px; margin-top: 24px;
+      font-size: clamp(44px, 6.2vw, 78px);
+      line-height: 0.95; letter-spacing: -0.065em; font-weight: 1000;
+    }
+    .gradient-text {
+      display: block;
+      background: linear-gradient(100deg, var(--cyan), #ffffff 48%, var(--violet-2));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .hero-text { max-width: 660px; margin-top: 26px; color: rgba(255,255,255,0.68); font-size: 19px; line-height: 1.75; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 34px; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; max-width: 560px; margin-top: 34px; }
+    .stat-card { min-height: 112px; padding: 17px; border-radius: 18px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); text-align: center; }
+    .stat-icon { font-size: 24px; margin-bottom: 6px; }
+    .stat-number { font-size: 34px; font-weight: 1000; letter-spacing: -0.04em; }
+    .stat-label { margin-top: 4px; color: var(--muted-2); font-size: 12px; }
 
-    /* HERO */
-    .hero-card { max-width: 860px; margin: 8px auto 2px; text-align: center; padding: 24px 20px; border-radius: 24px; background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015)); border: 1px solid var(--border); box-shadow: var(--shadow-soft); }
-    .hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); font-size: 12px; font-weight: 700; margin-bottom: 16px; background: rgba(255,255,255,0.02); }
-    .hero-title { font-size: 31px; line-height: 1.15; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.6px; }
-    .hero-title .blue { color: var(--blue); }
-    .hero-title .orange { color: var(--orange); }
-    .hero-subtitle { max-width: 720px; margin: 0 auto; color: var(--muted); line-height: 1.7; font-size: 15px; }
-    .hero-grid { margin-top: 18px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
-    .hero-mode { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 16px; padding: 12px 10px; text-align: left; }
-    .hero-mode strong { display: block; font-size: 13px; margin-bottom: 5px; }
-    .hero-mode span { display: block; font-size: 11px; color: var(--muted); line-height: 1.5; }
+    .demo-wrap { position: relative; }
+    .demo-wrap::before {
+      content: ""; position: absolute; inset: -5px; border-radius: 34px;
+      background: linear-gradient(135deg, rgba(34,211,238,0.48), rgba(139,92,246,0.5));
+      filter: blur(18px); opacity: 0.72;
+    }
+    .demo-card { position: relative; border-radius: 30px; padding: 22px; background: rgba(9, 13, 28, 0.88); border: 1px solid rgba(255,255,255,0.12); box-shadow: var(--shadow); backdrop-filter: blur(18px); }
+    .demo-head { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 18px; }
+    .demo-title { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 16px; }
+    .status { display: inline-flex; align-items: center; gap: 7px; padding: 7px 11px; border-radius: 999px; background: rgba(52, 211, 153, 0.1); border: 1px solid rgba(52, 211, 153, 0.26); color: #86efac; font-size: 12px; font-weight: 850; }
+    .status-dot { width: 7px; height: 7px; border-radius: 999px; background: #22c55e; box-shadow: 0 0 14px rgba(34, 197, 94, 0.8); }
+    .question-box { border-radius: 22px; border: 1px solid rgba(255,255,255,0.11); background: rgba(255,255,255,0.04); padding: 16px; }
+    .label { display: block; margin-bottom: 10px; color: rgba(255,255,255,0.46); font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.18em; }
+    textarea { width: 100%; min-height: 86px; resize: vertical; border: 1px solid rgba(255,255,255,0.12); outline: none; border-radius: 16px; padding: 14px; color: white; background: rgba(0,0,0,0.28); line-height: 1.5; }
+    textarea:focus { border-color: rgba(34,211,238,0.55); box-shadow: 0 0 0 4px rgba(34,211,238,0.1); }
+    .mode-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; margin-top: 13px; }
+    .tab-btn { min-height: 42px; border-radius: 13px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.055); color: rgba(255,255,255,0.72); font-weight: 850; transition: 0.2s ease; }
+    .tab-btn:hover, .tab-btn.active { color: #07101d; background: var(--cyan); border-color: transparent; }
+    .ai-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
+    .ai-card { min-height: 184px; border-radius: 22px; padding: 17px; position: relative; overflow: hidden; }
+    .ai-card::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at top left, rgba(255,255,255,0.08), transparent 45%); pointer-events: none; }
+    .ai-card > * { position: relative; }
+    .gpt-card { border: 1px solid rgba(34,211,238,0.28); background: rgba(34, 211, 238, 0.07); box-shadow: 0 0 24px rgba(34,211,238,0.08); }
+    .claude-card { border: 1px solid rgba(251, 146, 60, 0.46); background: rgba(251, 146, 60, 0.11); box-shadow: 0 0 28px rgba(251, 146, 60, 0.16); }
+    .ai-title { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: 17px; font-weight: 1000; }
+    .ai-title.gpt { color: var(--cyan-2); }
+    .ai-title.claude { color: var(--orange-2); }
+    .ai-card p, .judge-card p { color: rgba(255,255,255,0.74); font-size: 14px; line-height: 1.6; }
+    .judge-card { margin-top: 15px; padding: 18px; border-radius: 22px; border: 1px solid rgba(250, 204, 21, 0.52); background: rgba(250, 204, 21, 0.12); box-shadow: 0 0 30px rgba(250, 204, 21, 0.18); }
+    .judge-title { display: flex; align-items: center; gap: 9px; margin-bottom: 9px; color: var(--yellow-2); font-size: 16px; font-weight: 1000; }
 
-    /* MESSAGES */
-    .msg { display: flex; gap: 10px; max-width: 88%; animation: fadeIn 0.22s ease; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-    .msg.user-msg, .msg.gpt { align-self: flex-end; flex-direction: row-reverse; }
-    .msg.claude { align-self: flex-start; }
-    .msg.system { align-self: center; max-width: 100%; }
-    .avatar { width: 36px; height: 36px; border-radius: 13px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; letter-spacing: 1px; flex-shrink: 0; margin-top: 20px; }
-    .user-av { background: rgba(130,130,255,0.08); color: #cfd3ff; border: 1px solid rgba(130,130,255,0.18); }
-    .gpt-av { background: var(--blue-bg); color: #b9d8ff; border: 1px solid rgba(90,168,255,0.2); }
-    .claude-av { background: var(--orange-bg); color: #ffd4ab; border: 1px solid rgba(255,155,69,0.22); }
-    .msg-body { min-width: 0; }
-    .sender-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 6px; color: var(--muted); }
-    .gpt .sender-label { text-align: right; color: var(--blue); }
-    .claude .sender-label { color: var(--orange); }
-    .user-msg .sender-label { text-align: right; color: #c4c9ff; }
-    .bubble { border-radius: 18px; padding: 14px 16px; font-size: 15px; line-height: 1.7; word-break: break-word; white-space: pre-wrap; backdrop-filter: blur(8px); }
-    .user-msg .bubble { background: linear-gradient(180deg, rgba(39,48,85,0.7), rgba(22,29,55,0.92)); border: 1px solid rgba(132,146,240,0.18); color: #e6eaff; }
-    .gpt .bubble { background: linear-gradient(180deg, rgba(20,52,105,0.34), rgba(12,28,56,0.92)); border: 1px solid rgba(90,168,255,0.18); color: #dcecff; box-shadow: var(--shadow-blue); }
-    .claude .bubble { background: linear-gradient(180deg, rgba(94,43,0,0.24), rgba(48,22,2,0.95)); border: 1px solid rgba(255,155,69,0.18); color: #ffe2c0; box-shadow: var(--shadow-orange); }
-    .system .bubble { text-align: center; padding: 10px 14px; border-radius: 999px; background: rgba(255,255,255,0.02); border: 1px dashed var(--border); color: var(--muted); font-size: 12px; }
-    .typing-dots span { display: inline-block; width: 6px; height: 6px; margin: 0 3px; border-radius: 50%; opacity: 0.25; animation: blink 1.1s infinite; }
-    .gpt .typing-dots span { background: var(--blue); }
-    .claude .typing-dots span { background: var(--orange); }
-    .typing-dots span:nth-child(2) { animation-delay: 0.15s; }
-    .typing-dots span:nth-child(3) { animation-delay: 0.3s; }
-    @keyframes blink { 0%, 80%, 100% { transform: translateY(0); opacity: 0.25; } 40% { transform: translateY(-2px); opacity: 1; } }
+    .marquee { position: relative; overflow: hidden; border-top: 1px solid rgba(192,132,252,0.26); border-bottom: 1px solid rgba(192,132,252,0.26); background: rgba(139, 92, 246, 0.1); box-shadow: 0 0 35px rgba(139,92,246,0.14); padding: 14px 0; }
+    .marquee::before, .marquee::after { content: ""; position: absolute; top: 0; bottom: 0; width: 120px; z-index: 2; pointer-events: none; }
+    .marquee::before { left: 0; background: linear-gradient(90deg, var(--bg), transparent); }
+    .marquee::after { right: 0; background: linear-gradient(270deg, var(--bg), transparent); }
+    .marquee-track { display: flex; width: max-content; animation: marquee 22s linear infinite; white-space: nowrap; }
+    .marquee-content { display: flex; align-items: center; gap: 24px; padding: 0 24px; color: rgba(255,255,255,0.82); font-size: 14px; font-weight: 800; }
+    .marquee-spark { color: var(--cyan-2); filter: drop-shadow(0 0 12px rgba(34,211,238,0.6)); }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-    /* ─── JUDGE CARD ─── */
-    .judge-msg { align-self: center; max-width: 98%; width: 100%; animation: fadeIn 0.32s ease; }
-    .judge-card-full { background: linear-gradient(180deg, rgba(18,22,36,0.98), rgba(10,13,22,0.98)); border: 1px solid rgba(255,209,102,0.22); border-radius: 22px; padding: 20px; box-shadow: var(--shadow-gold); }
-    .judge-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
-    .judge-icon { width: 38px; height: 38px; border-radius: 12px; background: linear-gradient(180deg, rgba(255,209,102,0.2), rgba(255,209,102,0.08)); border: 1px solid rgba(255,209,102,0.28); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
-    .judge-header-text strong { display: block; color: var(--gold); font-size: 16px; font-weight: 800; }
-    .judge-header-text span { color: var(--muted); font-size: 12px; }
-    .judge-summaries { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
-    .judge-sum { padding: 12px 14px; border-radius: 14px; }
-    .judge-sum.gpt-sum { background: rgba(20,52,105,0.22); border: 1px solid rgba(90,168,255,0.14); }
-    .judge-sum.claude-sum { background: rgba(94,43,0,0.18); border: 1px solid rgba(255,155,69,0.14); }
-    .judge-sum-label { font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
-    .judge-sum.gpt-sum .judge-sum-label { color: var(--blue); }
-    .judge-sum.claude-sum .judge-sum-label { color: var(--orange); }
-    .judge-sum p { font-size: 13px; line-height: 1.65; color: var(--white); opacity: 0.88; }
-    .judge-scores { display: flex; gap: 10px; margin-bottom: 14px; }
-    .judge-score-card { flex: 1; padding: 12px 14px; border-radius: 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); }
-    .judge-score-card span { display: block; font-size: 11px; color: var(--muted); margin-bottom: 4px; }
-    .judge-score-card strong { font-size: 26px; font-weight: 800; }
-    .judge-score-card.gpt-sc strong { color: var(--blue); }
-    .judge-score-card.claude-sc strong { color: var(--orange); }
-    .judge-winner { padding: 14px 16px; border-radius: 16px; background: rgba(57,217,138,0.07); border: 1px solid rgba(57,217,138,0.2); margin-bottom: 12px; }
-    .judge-winner h3 { color: var(--green); font-size: 15px; margin-bottom: 6px; }
-    .judge-winner p { font-size: 13px; line-height: 1.65; color: #c4f5de; }
-    .judge-reco { padding: 14px 16px; border-radius: 16px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); }
-    .judge-reco-label { font-size: 11px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
-    .judge-reco p { font-size: 13px; line-height: 1.65; color: var(--white); opacity: 0.88; }
-    /* Coût supprimé de l'interface */
-    .judge-cost { display: none; }
+    .benefits-section { border-bottom: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.026); }
+    .benefits { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; padding: 30px 0; }
+    .benefit { display: flex; align-items: flex-start; gap: 12px; color: rgba(255,255,255,0.68); font-size: 14px; line-height: 1.45; }
+    .check { width: 26px; height: 26px; flex: 0 0 26px; display: grid; place-items: center; border-radius: 999px; border: 1px solid rgba(34,211,238,0.4); color: var(--cyan-2); background: rgba(34,211,238,0.11); font-weight: 1000; }
 
-    /* ─── CONVERSATION CONTROLS ─── */
-    .conversation-controls { display: none; align-items: center; gap: 10px; flex-wrap: wrap; padding: 0 14px 12px; flex-shrink: 0; }
-    .control-btn { border: 1px solid var(--border); background: rgba(255,255,255,0.03); color: var(--white); padding: 10px 13px; border-radius: 14px; font-size: 13px; font-weight: 700; cursor: pointer; }
-    .control-btn.primary { background: linear-gradient(180deg, #69b4ff, #4f88ff); color: #08111f; border-color: transparent; box-shadow: var(--shadow-blue); }
-    .control-btn.gold { background: linear-gradient(180deg, #ffd166, #f4a82f); color: #08111f; border-color: transparent; box-shadow: var(--shadow-gold); }
-    .control-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .section { padding: 96px 0; }
+    .section-heading { max-width: 780px; margin-inline: auto; text-align: center; }
+    .section-kicker { color: var(--violet-2); font-size: 13px; font-weight: 1000; letter-spacing: 0.22em; text-transform: uppercase; }
+    h2 { margin-top: 13px; font-size: clamp(34px, 4.5vw, 54px); line-height: 1.02; letter-spacing: -0.05em; font-weight: 1000; }
+    .section-desc { margin-top: 18px; color: rgba(255,255,255,0.6); font-size: 18px; line-height: 1.7; }
+    .modes-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-top: 52px; }
+    .mode-card { padding: 22px; min-height: 230px; border-radius: 22px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.045); transition: 0.22s ease; }
+    .mode-card:hover { transform: translateY(-7px); background: rgba(255,255,255,0.068); }
+    .mode-icon { width: 52px; height: 52px; display: grid; place-items: center; margin-bottom: 20px; border-radius: 18px; background: rgba(255,255,255,0.08); font-size: 26px; }
+    .mode-card h3 { margin-bottom: 12px; font-size: 23px; font-weight: 1000; }
+    .mode-card p { color: rgba(255,255,255,0.62); line-height: 1.65; }
 
-    /* ─── LIMIT WALLS ─── */
-    #limit-wall { display: none; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; margin: 0 14px 12px; padding: 16px; border-radius: 18px; border: 1px solid rgba(255,92,122,0.22); background: rgba(255,92,122,0.07); color: #ffd4dc; flex-shrink: 0; }
-    #limit-wall p { font-size: 14px; font-weight: 800; }
-    #limit-wall small { color: #ffb8c5; font-size: 12px; }
+    .discussions { padding: 0 0 96px; }
+    .discussion-layout { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 28px; align-items: start; margin-top: 48px; }
+    .discussion-panel, .discussion-output { border-radius: 30px; background: rgba(255,255,255,0.045); border: 1px solid rgba(255,255,255,0.12); box-shadow: var(--shadow); overflow: hidden; }
+    .discussion-panel { padding: 26px; position: sticky; top: 20px; }
+    .panel-label { color: rgba(255,255,255,0.48); font-size: 12px; font-weight: 1000; letter-spacing: 0.18em; text-transform: uppercase; }
+    .discussion-panel h3 { margin-top: 12px; font-size: 32px; line-height: 1.04; letter-spacing: -0.045em; }
+    .discussion-panel p { margin-top: 14px; color: rgba(255,255,255,0.62); line-height: 1.7; }
+    .mini-controls { display: grid; gap: 14px; margin-top: 24px; }
+    .control-box { border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.16); border-radius: 18px; padding: 15px; }
+    .control-title { color: rgba(255,255,255,0.48); font-size: 11px; font-weight: 1000; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 10px; }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .choice-btn { min-height: 36px; padding: 0 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.13); background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.72); font-weight: 850; font-size: 13px; transition: 0.18s ease; }
+    .choice-btn:hover, .choice-btn.active { color: #020617; border-color: transparent; background: linear-gradient(135deg, #93c5fd, #3b82f6); }
+    .prompt-list { display: grid; gap: 12px; margin-top: 24px; }
+    .prompt-chip { width: 100%; text-align: left; border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; background: rgba(0,0,0,0.18); color: rgba(255,255,255,0.78); padding: 14px; transition: 0.2s ease; line-height: 1.45; }
+    .prompt-chip:hover, .prompt-chip.active { border-color: rgba(34,211,238,0.45); background: rgba(34,211,238,0.08); color: white; transform: translateX(3px); }
+    .discussion-output { background: linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.032)), rgba(5, 9, 22, 0.8); }
+    .output-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 19px 22px; border-bottom: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); }
+    .output-title { display: flex; align-items: center; gap: 12px; font-weight: 1000; }
+    .live-badge { display: inline-flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 999px; color: #86efac; background: rgba(34,197,94,0.09); border: 1px solid rgba(34,197,94,0.2); font-size: 12px; font-weight: 900; }
+    .output-body { display: grid; gap: 22px; padding: 22px; }
+    .user-block { display: flex; justify-content: flex-end; }
+    .user-stack { display: flex; align-items: flex-start; gap: 10px; max-width: 620px; }
+    .user-meta { text-align: right; display: grid; gap: 7px; }
+    .user-label { color: #f8fafc; font-size: 12px; font-weight: 1000; letter-spacing: 0.14em; text-transform: uppercase; }
+    .user-bubble { padding: 15px 17px; border-radius: 20px; background: linear-gradient(180deg, rgba(40, 55, 110, 0.88), rgba(22, 31, 63, 0.96)); border: 1px solid rgba(96, 165, 250, 0.22); color: #e5eefc; font-size: 15px; line-height: 1.45; }
+    .side-badge { width: 40px; min-width: 40px; height: 40px; border-radius: 14px; display: grid; place-items: center; font-size: 11px; font-weight: 1000; border: 1px solid rgba(148, 163, 184, 0.25); background: rgba(15, 23, 42, 0.74); color: #dbeafe; }
+    .response-block { position: relative; padding-left: 44px; }
+    .response-label { margin-bottom: 9px; font-size: 12px; font-weight: 1000; text-transform: uppercase; letter-spacing: 0.13em; }
+    .response-label.gpt { color: #60a5fa; text-align: right; }
+    .response-label.claude { color: #fdba74; }
+    .response-side { position: absolute; left: 0; top: 30px; width: 38px; height: 38px; border-radius: 14px; display: grid; place-items: center; font-size: 12px; font-weight: 1000; background: rgba(15, 23, 42, 0.74); }
+    .response-side.gpt { color: #93c5fd; border: 1px solid rgba(96, 165, 250, 0.30); }
+    .response-side.claude { color: #fdba74; border: 1px solid rgba(251, 146, 60, 0.32); }
+    .response-card { border-radius: 20px; padding: 20px 18px; line-height: 1.72; font-size: 15px; border: 1px solid rgba(148, 163, 184, 0.16); box-shadow: 0 16px 40px rgba(0,0,0,0.18); }
+    .response-card p, .response-card li { color: #e5eefc; }
+    .response-card p + p { margin-top: 14px; }
+    .response-card ol, .response-card ul { margin: 14px 0 0 22px; }
+    .response-card li + li { margin-top: 12px; }
+    .response-card strong { color: white; }
+    .response-card.gpt { background: linear-gradient(180deg, rgba(12, 35, 78, 0.94), rgba(8, 24, 52, 0.96)); border-color: rgba(59, 130, 246, 0.30); }
+    .response-card.claude { background: linear-gradient(180deg, rgba(75, 34, 8, 0.96), rgba(52, 23, 6, 0.98)); border-color: rgba(251, 146, 60, 0.34); }
+    .action-row { display: flex; flex-wrap: wrap; gap: 10px; }
+    .action-btn { min-height: 40px; padding: 0 16px; border-radius: 14px; border: 1px solid rgba(148, 163, 184, 0.18); background: rgba(15, 23, 42, 0.72); color: white; font-size: 14px; font-weight: 900; transition: 0.18s ease; }
+    .action-btn:hover { transform: translateY(-1px); border-color: rgba(96, 165, 250, 0.35); }
+    .action-btn.primary { background: linear-gradient(135deg, #60a5fa, #3b82f6); color: #020617; border-color: transparent; }
+    .action-btn.judge { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #1f1300; border-color: transparent; }
+    .judge-loading { width: fit-content; margin: 0 auto; padding: 12px 18px; border-radius: 999px; border: 1px dashed rgba(148, 163, 184, 0.18); background: rgba(15, 23, 42, 0.42); color: #94a3b8; font-size: 14px; }
+    .judge-panel { border-radius: 26px; padding: 20px; border: 1px solid rgba(250, 204, 21, 0.28); background: linear-gradient(180deg, rgba(19, 25, 50, 0.96), rgba(13, 18, 37, 0.98)); box-shadow: 0 18px 44px rgba(0,0,0,0.24); }
+    .judge-header { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+    .judge-icon { width: 42px; height: 42px; border-radius: 14px; display: grid; place-items: center; background: rgba(250, 204, 21, 0.10); border: 1px solid rgba(250, 204, 21, 0.28); color: #fde047; }
+    .judge-panel-title { font-size: 18px; font-weight: 1000; color: #fde047; }
+    .judge-subtitle { margin-top: 2px; font-size: 13px; color: #94a3b8; }
+    .judge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .summary-card, .score-card, .winner-card, .reco-card { border-radius: 18px; padding: 16px; border: 1px solid rgba(148, 163, 184, 0.16); background: rgba(255,255,255,0.03); }
+    .summary-card.gpt { border-color: rgba(59, 130, 246, 0.22); background: rgba(59, 130, 246, 0.07); }
+    .summary-card.claude { border-color: rgba(251, 146, 60, 0.24); background: rgba(251, 146, 60, 0.07); }
+    .mini-title { font-size: 12px; font-weight: 1000; text-transform: uppercase; letter-spacing: 0.10em; margin-bottom: 10px; }
+    .mini-title.gpt { color: #93c5fd; }
+    .mini-title.claude { color: #fdba74; }
+    .summary-card p, .reco-card p, .winner-card p { color: #e5eefc; line-height: 1.6; }
+    .score-card small { display: block; color: #94a3b8; margin-bottom: 6px; }
+    .score-value { font-size: 29px; font-weight: 1000; letter-spacing: -0.04em; }
+    .score-value.gpt { color: #60a5fa; }
+    .score-value.claude { color: #fb923c; }
+    .winner-card { grid-column: 1 / -1; border-color: rgba(16, 185, 129, 0.26); background: rgba(16, 185, 129, 0.08); }
+    .winner-title { color: #4ade80; font-size: 14px; font-weight: 1000; margin-bottom: 8px; }
+    .reco-card { grid-column: 1 / -1; }
+    .reco-title { color: #fde68a; font-size: 13px; font-weight: 1000; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+    .chat-input { display: grid; grid-template-columns: 1fr auto; gap: 12px; padding: 18px 22px 22px; border-top: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.16); }
+    .chat-input input { width: 100%; min-height: 50px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.055); color: white; outline: none; padding: 0 16px; }
+    .chat-input input:focus { border-color: rgba(34,211,238,0.5); box-shadow: 0 0 0 4px rgba(34,211,238,0.08); }
+    .send-btn { min-height: 50px; padding: 0 20px; border-radius: 16px; border: 0; background: linear-gradient(135deg, var(--cyan), var(--violet)); color: white; font-weight: 900; }
 
-    /* Guest wall — 2 messages sans compte */
-    #guest-wall { display: none; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: center; margin: 0 14px 12px; padding: 20px 18px; border-radius: 18px; border: 1px solid rgba(90,168,255,0.22); background: rgba(10,30,70,0.5); color: var(--white); flex-shrink: 0; }
-    #guest-wall p { font-size: 15px; font-weight: 800; }
-    #guest-wall small { color: var(--muted); font-size: 13px; line-height: 1.6; }
-    #guest-wall .guest-wall-btns { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-    #guest-wall .gwb-primary { border: 0; background: linear-gradient(180deg, #69b4ff, #4f88ff); color: #08111f; font-weight: 800; font-size: 14px; padding: 12px 22px; border-radius: 14px; cursor: pointer; box-shadow: var(--shadow-blue); }
-    #guest-wall .gwb-secondary { border: 1px solid var(--border); background: rgba(255,255,255,0.04); color: var(--muted); font-weight: 700; font-size: 13px; padding: 12px 18px; border-radius: 14px; cursor: pointer; }
+    .value-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; padding-bottom: 96px; }
+    .value-card { padding: 28px; border-radius: 28px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.045); min-height: 230px; }
+    .value-card-icon { font-size: 34px; margin-bottom: 16px; }
+    .value-card h3 { font-size: 26px; font-weight: 1000; margin-bottom: 12px; }
+    .value-card p { color: rgba(255,255,255,0.62); line-height: 1.7; }
+    .cta { padding-bottom: 90px; }
+    .cta-box { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 28px; padding: 38px; border-radius: 32px; border: 1px solid rgba(255,255,255,0.12); background: linear-gradient(135deg, rgba(34,211,238,0.13), rgba(255,255,255,0.04), rgba(139,92,246,0.14)); box-shadow: 0 0 40px rgba(139,92,246,0.12); }
+    .cta-icon { width: 84px; height: 84px; display: grid; place-items: center; border-radius: 28px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); font-size: 44px; box-shadow: 0 0 30px rgba(34,211,238,0.14); }
+    .cta h2 { margin-top: 0; font-size: clamp(30px, 4vw, 46px); }
+    .cta p { margin-top: 12px; color: rgba(255,255,255,0.62); font-size: 17px; line-height: 1.6; }
+    footer { border-top: 1px solid rgba(255,255,255,0.1); padding: 30px 0; color: rgba(255,255,255,0.45); font-size: 14px; }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .footer-links { display: flex; align-items: center; gap: 18px; }
+    .footer-links a:hover { color: white; }
 
-    /* ─── BOTTOM BAR ─── */
-    #bottom-bar { flex-shrink: 0; padding: 10px 12px 12px; border-top: 1px solid var(--border); background: linear-gradient(180deg, rgba(8,12,21,0.78), rgba(8,12,21,0.98)); backdrop-filter: blur(10px); }
-    .composer-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
-    .option-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 16px; padding: 11px; min-width: 0; }
-    .option-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); font-weight: 800; margin-bottom: 9px; }
-    .pill-row { display: flex; gap: 8px; flex-wrap: wrap; }
-    .pill-btn { border: 1px solid var(--border); background: rgba(255,255,255,0.025); color: var(--muted); padding: 9px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
-    .pill-btn.active { background: rgba(255,255,255,0.1); color: var(--white); border-color: rgba(255,255,255,0.18); }
-    .pill-btn.blue.active { background: linear-gradient(180deg, #69b4ff, #4f88ff); color: #08111f; border-color: transparent; }
-    .pill-btn.orange.active { background: linear-gradient(180deg, #ffba73, #ff8b2f); color: #08111f; border-color: transparent; }
-    .input-shell { display: flex; align-items: flex-end; gap: 10px; border: 1px solid var(--border-strong); background: rgba(255,255,255,0.03); border-radius: 18px; padding: 10px; box-shadow: var(--shadow-soft); }
-    .input-main { flex: 1; min-width: 0; }
-    .input-topline { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--muted); font-weight: 700; margin-bottom: 8px; padding-left: 4px; letter-spacing: 0.4px; }
-    .input-dot { width: 6px; height: 6px; border-radius: 50%; background: linear-gradient(180deg, var(--blue), var(--orange)); }
-    #user-input { width: 100%; border: 0; outline: 0; background: transparent; color: var(--white); font-size: 15px; font-family: "Inter", sans-serif; resize: none; min-height: 26px; max-height: 130px; overflow-y: auto; padding: 2px 4px 4px; }
-    #user-input::placeholder { color: var(--muted-2); }
-    #send-btn { flex-shrink: 0; width: 50px; height: 50px; border: 0; border-radius: 15px; cursor: pointer; font-size: 18px; font-weight: 800; color: #08111f; background: linear-gradient(180deg, #69b4ff, #4f88ff); box-shadow: var(--shadow-blue); }
-    #send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    #options-toggle-btn { display: none; }
-    #options-panel { display: none; }
-
-    /* ─── HISTORY DRAWER ─── */
-    #history-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); backdrop-filter: blur(3px); z-index: 200; animation: fadeInOverlay 0.18s ease; }
-    @keyframes fadeInOverlay { from { opacity: 0; } to { opacity: 1; } }
-    #history-drawer { position: fixed; top: 0; left: 0; bottom: 0; width: min(340px, 92vw); background: linear-gradient(180deg, rgba(9,14,26,0.99), rgba(6,10,18,0.99)); border-right: 1px solid var(--border-strong); z-index: 201; display: flex; flex-direction: column; transform: translateX(-100%); transition: transform 0.26s cubic-bezier(.4,0,.2,1); box-shadow: 4px 0 40px rgba(0,0,0,0.5); }
-    #history-drawer.open { transform: translateX(0); }
-    .drawer-head { display: flex; align-items: center; justify-content: space-between; padding: 16px 16px 12px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
-    .drawer-title { font-family: "Orbitron", sans-serif; font-size: 14px; font-weight: 700; color: var(--blue); letter-spacing: 1px; }
-    .drawer-close { border: 1px solid var(--border); background: rgba(255,255,255,0.04); color: var(--muted); padding: 7px 11px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; }
-    #drawer-list { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 6px; }
-    #drawer-list::-webkit-scrollbar { width: 4px; }
-    #drawer-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.07); border-radius: 4px; }
-    .drawer-item { display: flex; align-items: center; gap: 8px; padding: 11px 13px; border-radius: 14px; border: 1px solid var(--border); background: rgba(255,255,255,0.025); transition: 0.15s ease; }
-    .drawer-item:hover { background: rgba(255,255,255,0.05); border-color: var(--border-strong); }
-    .drawer-item-main { flex: 1; min-width: 0; cursor: pointer; }
-    .drawer-item-title { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .drawer-item-meta { font-size: 11px; color: var(--muted); display: flex; gap: 8px; }
-    .drawer-delete-btn { flex-shrink: 0; border: 1px solid rgba(255,92,122,0.22); background: rgba(255,92,122,0.08); color: rgba(255,92,122,0.7); width: 28px; height: 28px; border-radius: 8px; font-size: 11px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.15s ease; }
-    .drawer-delete-btn:hover { background: rgba(255,92,122,0.22); color: var(--red); border-color: rgba(255,92,122,0.45); }
-    .drawer-empty { text-align: center; color: var(--muted); font-size: 13px; padding: 40px 20px; line-height: 1.6; }
-    .drawer-loading { text-align: center; color: var(--muted); font-size: 13px; padding: 30px; }
-
-    /* ─── SHARE MODAL ─── */
-    #share-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 300; align-items: center; justify-content: center; padding: 20px; }
-    #share-modal { width: 100%; max-width: 420px; background: linear-gradient(180deg, rgba(12,18,32,0.99), rgba(8,12,22,0.99)); border: 1px solid var(--border-strong); border-radius: 22px; padding: 22px; box-shadow: var(--shadow-soft); animation: modalIn 0.22s ease; }
-    @keyframes modalIn { from { opacity: 0; transform: scale(0.96) translateY(8px); } to { opacity: 1; transform: none; } }
-    .share-modal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-    .share-modal-title { font-size: 16px; font-weight: 800; color: var(--white); }
-    .share-modal-close { border: 1px solid var(--border); background: rgba(255,255,255,0.04); color: var(--muted); padding: 6px 10px; border-radius: 9px; font-size: 12px; cursor: pointer; }
-    .share-url-box { display: flex; align-items: center; gap: 8px; padding: 12px 13px; background: rgba(255,255,255,0.04); border: 1px solid var(--border-strong); border-radius: 14px; margin-bottom: 14px; }
-    #share-url-text { flex: 1; font-size: 13px; color: var(--blue); word-break: break-all; min-width: 0; }
-    #share-copy-btn { flex-shrink: 0; border: 1px solid rgba(90,168,255,0.28); background: rgba(90,168,255,0.1); color: var(--blue); padding: 8px 12px; border-radius: 10px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
-    .share-socials { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .share-social-btn { display: flex; align-items: center; gap: 8px; padding: 11px 13px; border-radius: 13px; border: 1px solid var(--border); background: rgba(255,255,255,0.03); color: var(--white); font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.15s ease; }
-    .share-social-btn:hover { background: rgba(255,255,255,0.07); }
-    .share-social-btn .s-icon { font-size: 17px; }
-    .share-loading { text-align: center; color: var(--muted); font-size: 13px; padding: 20px 0; }
-
-    /* ─── RESPONSIVE ─── */
-    @media (max-width: 980px) { .hero-grid { grid-template-columns: repeat(2, 1fr); } .brand-subtitle { display: none; } }
+    @media (max-width: 1080px) {
+      .hero, .discussion-layout, .cta-box { grid-template-columns: 1fr; }
+      .discussion-panel { position: static; }
+      .nav-links { display: none; }
+      .benefits, .modes-grid, .value-grid { grid-template-columns: repeat(2, 1fr); }
+      .cta-box { text-align: center; justify-items: center; }
+    }
 
     @media (max-width: 720px) {
-      header { padding: 8px 10px; gap: 8px; }
-      .brand { gap: 7px; }
-      .brand-logo { width: 30px; height: 30px; border-radius: 9px; }
-      .brand-title { font-size: 16px; letter-spacing: 0.5px; }
-      .brand-subtitle { display: none; }
-      .header-right { gap: 6px; }
-      .status-wrap { padding: 6px 8px; }
-      #msg-counter { font-size: 11px; min-width: 38px; }
-      #auth-btn { padding: 8px 10px; font-size: 11px; border-radius: 10px; }
-      #history-btn, #new-conv-btn { padding: 8px 10px; font-size: 11px; border-radius: 10px; }
-      #mode-bar { padding: 7px 8px; gap: 6px; }
-      .mode-label { font-size: 10px; }
-      .mode-btn { padding: 7px 10px; font-size: 11px; }
-      #chat-area { padding: 10px 8px 10px; gap: 10px; }
-      .hero-card { padding: 14px 12px; border-radius: 18px; }
-      .hero-title { font-size: 20px; }
-      .hero-subtitle { font-size: 13px; line-height: 1.5; }
-      .hero-grid { grid-template-columns: 1fr; gap: 8px; margin-top: 12px; }
-      .msg { max-width: 100%; gap: 6px; }
-      .avatar { width: 28px; height: 28px; border-radius: 10px; font-size: 9px; margin-top: 18px; }
-      .sender-label { font-size: 10px; margin-bottom: 4px; }
-      .bubble { font-size: 13px; line-height: 1.55; padding: 11px 12px; border-radius: 14px; }
-      .judge-summaries { grid-template-columns: 1fr; }
-      .conversation-controls { padding: 0 8px 7px; gap: 6px; }
-      .control-btn { flex: 1; min-width: 0; font-size: 11px; padding: 8px 8px; border-radius: 11px; }
-      #limit-wall { margin: 0 8px 8px; padding: 12px; }
-      #guest-wall { margin: 0 8px 8px; padding: 14px; }
-      #bottom-bar { padding: 6px 8px 8px; }
-      .composer-options { display: none; }
-      #options-toggle-btn { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; width: 100%; border: 1px solid var(--border); background: rgba(255,255,255,0.03); color: var(--muted); padding: 8px 12px; border-radius: 12px; font-size: 12px; font-weight: 700; cursor: pointer; justify-content: space-between; }
-      #options-toggle-btn .toggle-left { display: flex; align-items: center; gap: 8px; }
-      #options-toggle-btn .toggle-arrow { font-size: 10px; transition: transform 0.2s ease; }
-      #options-toggle-btn.open .toggle-arrow { transform: rotate(180deg); }
-      #options-panel { display: none; flex-direction: column; gap: 6px; margin-bottom: 6px; animation: slideDown 0.18s ease; }
-      #options-panel.open { display: flex; }
-      @keyframes slideDown { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
-      .options-panel-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-      .option-card { padding: 9px 10px; border-radius: 12px; }
-      .option-title { font-size: 10px; margin-bottom: 7px; }
-      .pill-row { gap: 5px; flex-wrap: wrap; }
-      .pill-btn { font-size: 11px; padding: 7px 9px; }
-      .input-shell { padding: 6px 6px 6px 10px; gap: 6px; border-radius: 14px; }
-      .input-topline { font-size: 10px; margin-bottom: 4px; gap: 6px; }
-      #user-input { font-size: 14px; min-height: 22px; max-height: 100px; padding: 0 2px 1px; }
-      #send-btn { width: 42px; height: 42px; border-radius: 12px; font-size: 16px; }
-      .auth-panel { padding: 16px; border-radius: 18px; }
-      .auth-title { font-size: 20px; }
-      .auth-highlight { grid-template-columns: 1fr; gap: 8px; }
-      .code-input { font-size: 22px; letter-spacing: 5px; padding: 14px 54px 14px 10px; }
-    }
-
-    @media (max-width: 480px) {
-      header { flex-wrap: wrap; padding: 8px 10px 6px; gap: 6px; }
-      .brand { flex: 1 1 100%; }
-      .header-right { flex: 1 1 100%; justify-content: flex-start; gap: 6px; padding-bottom: 2px; }
-      #msg-counter { margin-left: auto; }
-      #auth-btn { margin-left: 4px; }
-    }
-
-    @media (max-width: 420px) {
-      .options-panel-inner { grid-template-columns: 1fr; }
-      .mode-btn { padding: 6px 9px; font-size: 10px; }
-      .bubble { font-size: 12.5px; padding: 10px 11px; }
-      .control-btn { font-size: 10.5px; padding: 7px 6px; }
-      #send-btn { width: 40px; height: 40px; }
+      .container { width: min(100% - 28px, var(--max)); }
+      .navbar { align-items: flex-start; }
+      .navbar .btn { display: none; }
+      .hero { padding-top: 34px; }
+      .hero-actions, .chat-input { grid-template-columns: 1fr; }
+      .hero-actions .btn, .chat-input .btn, .send-btn { width: 100%; }
+      .stats, .ai-grid, .benefits, .modes-grid, .value-grid, .judge-grid { grid-template-columns: 1fr; }
+      .response-block { padding-left: 0; }
+      .response-side { display: none; }
+      .response-label.gpt { text-align: left; }
+      .user-block { justify-content: stretch; }
+      .user-stack { max-width: 100%; }
+      .footer-inner { align-items: flex-start; flex-direction: column; }
+      .footer-links { flex-wrap: wrap; }
     }
   </style>
 </head>
 <body>
-  <div id="app">
+  <header class="container navbar">
+    <a class="brand" href="#top" aria-label="Accueil Double Mind">
+      <div class="logo">DM</div>
+      <div>
+        <div class="brand-title"><span class="blue">Double</span> <span class="orange">Mind</span></div>
+        <div class="brand-subtitle">Deux IA. Une meilleure décision.</div>
+      </div>
+    </a>
 
-    <header>
-      <div class="brand">
-        <img src="logo.png" class="brand-logo" alt="Double Mind" onerror="this.style.display='none'">
+    <nav class="nav-links" aria-label="Navigation principale">
+      <a href="#modes">Modes</a>
+      <a href="#demo">Démo</a>
+      <a href="#discussions">Discussion IA</a>
+    </nav>
+
+    <a class="btn btn-primary" href="#discussions">Essayer gratuitement</a>
+  </header>
+
+  <main id="top">
+    <section class="container hero">
+      <div>
+        <div class="pill"><span>✦</span> Compare GPT et Claude en une seule question</div>
+
+        <h1>
+          Arrête de demander à une seule IA.
+          <span class="gradient-text">Fais-les réfléchir ensemble.</span>
+        </h1>
+
+        <p class="hero-text">
+          Double Mind compare GPT et Claude, les fait débattre, puis te donne un résumé clair avec une décision finale.
+          Plus utile pour apprendre, créer, décider et éviter les réponses trop limitées.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#discussions">Commencer maintenant →</a>
+          <a class="btn btn-secondary" href="#demo">▶ Voir une démo</a>
+        </div>
+
+        <div class="stats" aria-label="Statistiques Double Mind">
+          <div class="stat-card"><div class="stat-icon cyan">👥</div><div class="stat-number">2</div><div class="stat-label">IA comparées</div></div>
+          <div class="stat-card"><div class="stat-icon violet">⚡</div><div class="stat-number">5</div><div class="stat-label">Modes utiles</div></div>
+          <div class="stat-card"><div class="stat-icon yellow">⚖️</div><div class="stat-number">1</div><div class="stat-label">Verdict clair</div></div>
+        </div>
+      </div>
+
+      <div class="demo-wrap" id="demo">
+        <article class="demo-card" aria-label="Démo Double Mind">
+          <div class="demo-head">
+            <div class="demo-title">🧠 Démo Double Mind</div>
+            <div class="status"><span class="status-dot"></span> En ligne</div>
+          </div>
+
+          <div class="question-box">
+            <label class="label" for="heroQuestion">Ta question</label>
+            <textarea id="heroQuestion">Pourquoi utiliser Double Mind ?</textarea>
+            <div class="mode-tabs" role="tablist" aria-label="Modes de réponse">
+              <button class="tab-btn active" type="button">Classique</button>
+              <button class="tab-btn" type="button">Débat</button>
+              <button class="tab-btn" type="button">Expert</button>
+            </div>
+          </div>
+
+          <div class="ai-grid">
+            <div class="ai-card gpt-card">
+              <div class="ai-title gpt">⚡ GPT</div>
+              <p>Parce que tu obtiens une réponse structurée, puis une comparaison qui t’aide à décider plus vite.</p>
+            </div>
+
+            <div class="ai-card claude-card">
+              <div class="ai-title claude">✹ Claude</div>
+              <p>Parce qu’une seule IA peut manquer des angles morts. Double Mind rend les contradictions visibles.</p>
+            </div>
+          </div>
+
+          <div class="judge-card">
+            <div class="judge-title">⚖️ Verdict du Juge IA</div>
+            <p>Utilise Double Mind quand tu veux une décision plus solide qu’une réponse unique : comparaison, débat et recommandation finale.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="marquee" aria-label="Ligne défilante Double Mind">
+      <div class="marquee-track">
+        <div class="marquee-content"><span class="marquee-spark">✦</span><span>GPT • Claude • Classique • Débat • Expert • Créatif • Clash • Juge IA • Verdict clair</span></div>
+        <div class="marquee-content"><span class="marquee-spark">✦</span><span>GPT • Claude • Classique • Débat • Expert • Créatif • Clash • Juge IA • Verdict clair</span></div>
+        <div class="marquee-content"><span class="marquee-spark">✦</span><span>GPT • Claude • Classique • Débat • Expert • Créatif • Clash • Juge IA • Verdict clair</span></div>
+        <div class="marquee-content"><span class="marquee-spark">✦</span><span>GPT • Claude • Classique • Débat • Expert • Créatif • Clash • Juge IA • Verdict clair</span></div>
+      </div>
+    </section>
+
+    <section class="benefits-section">
+      <div class="container benefits">
+        <div class="benefit"><span class="check">✓</span><p>Compare GPT et Claude au lieu d’une seule réponse</p></div>
+        <div class="benefit"><span class="check">✓</span><p>Choisis qui répond : GPT seul, Claude seul ou les deux</p></div>
+        <div class="benefit"><span class="check">✓</span><p>Demande un verdict clair avec scores et recommandation</p></div>
+        <div class="benefit"><span class="check">✓</span><p>Modes adaptés : Classique, Débat, Expert, Créatif, Clash</p></div>
+      </div>
+    </section>
+
+    <section class="container section" id="modes">
+      <div class="section-heading">
+        <p class="section-kicker">Modes intelligents</p>
+        <h2>Une interface pensée pour mieux réfléchir</h2>
+        <p class="section-desc">Chaque mode change la manière dont GPT et Claude répondent. Le but n’est pas d’avoir plus de texte, mais une comparaison plus utile.</p>
+      </div>
+
+      <div class="modes-grid">
+        <article class="mode-card"><div class="mode-icon cyan">🔵</div><h3 class="cyan">Classique</h3><p>Des réponses équilibrées pour comprendre rapidement un sujet.</p></article>
+        <article class="mode-card"><div class="mode-icon blue">⚔️</div><h3 class="blue">Débat</h3><p>Les deux IA confrontent leurs arguments pour faire ressortir les meilleures idées.</p></article>
+        <article class="mode-card"><div class="mode-icon violet">🧠</div><h3 class="violet">Expert</h3><p>Une analyse plus profonde, plus structurée et plus utile pour décider.</p></article>
+        <article class="mode-card"><div class="mode-icon orange">🎨</div><h3 class="orange">Créatif</h3><p>Idéal pour trouver des idées, améliorer un concept ou explorer plusieurs angles.</p></article>
+        <article class="mode-card"><div class="mode-icon red">🔥</div><h3 class="red">Clash</h3><p>Une confrontation plus directe pour repérer les faiblesses d’une idée.</p></article>
+      </div>
+    </section>
+
+    <section class="container discussions" id="discussions">
+      <div class="section-heading">
+        <p class="section-kicker">Discussion IA</p>
+        <h2>Une vraie comparaison GPT / Claude, puis un verdict</h2>
+        <p class="section-desc">La discussion ne ressemble pas à un simple chat. Elle affiche des blocs d’analyse lisibles, puis un juge IA qui résume, note et recommande.</p>
+      </div>
+
+      <div class="discussion-layout">
+        <aside class="discussion-panel">
+          <p class="panel-label">Configuration</p>
+          <h3>Choisis le mode, l’ordre et les IA.</h3>
+          <p>Les réponses de cette démo changent maintenant selon la question choisie. La question ajoutée est : <strong>Pourquoi utiliser Double Mind ?</strong></p>
+
+          <div class="mini-controls">
+            <div class="control-box">
+              <div class="control-title">Mode</div>
+              <div class="pill-row" id="modeChoices">
+                <button class="choice-btn active" type="button" data-mode="Classique">🔵 Classique</button>
+                <button class="choice-btn" type="button" data-mode="Débat">⚔️ Débat</button>
+                <button class="choice-btn" type="button" data-mode="Expert">🧠 Expert</button>
+                <button class="choice-btn" type="button" data-mode="Créatif">🎨 Créatif</button>
+                <button class="choice-btn" type="button" data-mode="Clash">🔥 Clash</button>
+              </div>
+            </div>
+
+            <div class="control-box">
+              <div class="control-title">Qui répond ?</div>
+              <div class="pill-row" id="responseChoices">
+                <button class="choice-btn" type="button" data-response="GPT seul">GPT seul</button>
+                <button class="choice-btn" type="button" data-response="Claude seul">Claude seul</button>
+                <button class="choice-btn active" type="button" data-response="Les deux">Les deux</button>
+              </div>
+            </div>
+
+            <div class="control-box">
+              <div class="control-title">Qui commence ?</div>
+              <div class="pill-row" id="starterChoices">
+                <button class="choice-btn active" type="button" data-starter="GPT commence">GPT commence</button>
+                <button class="choice-btn" type="button" data-starter="Claude commence">Claude commence</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="prompt-list">
+            <button class="prompt-chip active" type="button" data-question="Pourquoi utiliser Double Mind ?">Pourquoi utiliser Double Mind ?</button>
+            <button class="prompt-chip" type="button" data-question="Est-ce que mon idée de SaaS IA peut être rentable ?">Est-ce que mon idée de SaaS IA peut être rentable ?</button>
+            <button class="prompt-chip" type="button" data-question="Comment améliorer mon idée de site avec GPT et Claude ?">Comment améliorer mon idée de site avec GPT et Claude ?</button>
+            <button class="prompt-chip" type="button" data-question="Est-ce que je dois lancer mon projet maintenant ou attendre ?">Est-ce que je dois lancer mon projet maintenant ou attendre ?</button>
+          </div>
+        </aside>
+
+        <article class="discussion-output" aria-label="Discussion entre GPT, Claude et le juge IA">
+          <div class="output-top">
+            <div class="output-title">💬 Discussion IA</div>
+            <div class="live-badge"><span class="status-dot"></span> Démo active</div>
+          </div>
+
+          <div class="output-body" id="outputBody"></div>
+
+          <form class="chat-input" id="chatForm">
+            <input id="userInput" type="text" placeholder="Pose une question..." autocomplete="off" />
+            <button class="send-btn" type="submit">Simuler →</button>
+          </form>
+        </article>
+      </div>
+    </section>
+
+    <section class="container value-grid" aria-label="Valeurs de Double Mind">
+      <article class="value-card"><div class="value-card-icon cyan">◎</div><h3 class="cyan">Simple à comprendre</h3><p>L’utilisateur pose une question, choisit un mode, puis lit deux analyses comparées.</p></article>
+      <article class="value-card"><div class="value-card-icon orange">✹</div><h3 class="orange">Plus critique</h3><p>Claude peut relever les angles morts, pendant que GPT structure rapidement la réponse.</p></article>
+      <article class="value-card"><div class="value-card-icon yellow">⚖️</div><h3 class="yellow">Décision finale</h3><p>Le Juge IA résume les deux réponses, donne des scores, choisit un gagnant et recommande une action.</p></article>
+    </section>
+
+    <section class="container cta">
+      <div class="cta-box">
+        <div class="cta-icon">🧠</div>
         <div>
-          <div class="brand-title"><span class="blue">Double</span> <span class="orange">Mind</span></div>
-          <div class="brand-subtitle">Compare two minds. Make better decisions.</div>
+          <h2>Ta question mérite mieux qu’une seule réponse.</h2>
+          <p>Utilise Double Mind pour comparer GPT et Claude, débattre et prendre une décision plus solide.</p>
         </div>
+        <a class="btn btn-primary" href="#discussions">Essayer Double Mind →</a>
       </div>
-      <div class="header-right">
-        <button id="new-conv-btn" onclick="startNewConversation()" title="Nouvelle conversation">✦ Nouvelle</button>
-        <button id="history-btn" onclick="openHistoryDrawer()" title="Mes conversations">🕐 Historique</button>
-        <div class="status-wrap">
-          <div id="msg-counter">0 / 5</div>
-          <div class="status-dot"></div>
-        </div>
-        <button id="auth-btn" onclick="handleAuthBtn()">Connexion</button>
-      </div>
-    </header>
+    </section>
+  </main>
 
-    <!-- AUTH SCREEN -->
-    <div id="auth-screen">
-      <div class="auth-shell">
-        <div class="auth-panel">
-          <div class="auth-head">
-            <div class="auth-logo">
-              <img src="logo.png" alt="Double Mind" onerror="this.style.display='none'">
-              <div class="auth-logo-text"><span style="color:var(--blue)">Double</span> <span style="color:var(--orange)">Mind</span></div>
-            </div>
-            <div class="auth-title">Deux IA. Plusieurs points de vue.</div>
-            <div class="auth-subtitle">Pose une question, choisis qui répond, choisis qui commence, puis laisse le débat évoluer.</div>
-            <div class="auth-highlight">
-              <div class="mini-card"><strong>Choix libre</strong><span>GPT seul, Claude seul, ou les deux.</span></div>
-              <div class="mini-card"><strong>Ordre</strong><span>Décide qui parle en premier.</span></div>
-              <div class="mini-card"><strong>Suite</strong><span>Continue le débat sans réécrire.</span></div>
-            </div>
-          </div>
-          <div id="auth-form-box">
-            <div class="tabs">
-              <button class="tab-btn active" id="tab-login" onclick="switchTab('login')">Connexion</button>
-              <button class="tab-btn" id="tab-register" onclick="switchTab('register')">Inscription</button>
-            </div>
-            <div class="field">
-              <label>Email</label>
-              <input type="email" id="auth-email" placeholder="votre@email.com" autocomplete="email" autocapitalize="none">
-            </div>
-            <div class="field">
-              <label>Mot de passe</label>
-              <div class="input-wrap">
-                <input type="password" id="auth-password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')submitAuth()">
-                <button type="button" class="eye-btn" onclick="togglePassword('auth-password', this)">Voir</button>
-              </div>
-            </div>
-            <div class="field" id="confirm-password-field" style="display:none;">
-              <label>Confirmer le mot de passe</label>
-              <div class="input-wrap">
-                <input type="password" id="auth-password-confirm" placeholder="••••••••" autocomplete="new-password" onkeydown="if(event.key==='Enter')submitAuth()">
-                <button type="button" class="eye-btn" onclick="togglePassword('auth-password-confirm', this)">Voir</button>
-              </div>
-            </div>
-            <div class="auth-links-row" id="forgot-link-row">
-              <span class="inline-link" onclick="showForgotBox()">J'ai oublié mon mot de passe</span>
-            </div>
-            <div class="auth-error" id="auth-error"></div>
-            <button class="auth-submit" id="auth-submit-btn" onclick="submitAuth()">Se connecter</button>
-          </div>
-
-          <div id="verify-box">
-            <div class="verify-title">// VÉRIFICATION EMAIL</div>
-            <div class="verify-sub">Entrez le code à 6 chiffres reçu par email pour terminer l'inscription.</div>
-            <div class="field"><label>Email</label><input type="email" id="verify-email" readonly style="opacity:.7;"></div>
-            <div class="code-wrap">
-              <input class="code-input" type="password" id="verify-code" maxlength="6" placeholder="000000" inputmode="numeric" autocomplete="one-time-code">
-              <button type="button" class="code-eye" onclick="togglePassword('verify-code', this)">Voir</button>
-            </div>
-            <button class="verify-btn" onclick="verifyCode()">Valider mon inscription</button>
-            <button class="resend-btn" onclick="resendCode()">Renvoyer le code</button>
-            <div id="verify-message"></div>
-            <div class="verify-tip">Pense à vérifier tes spams si tu ne vois pas l'email.</div>
-            <div class="back-link" onclick="backToAuthForm()">← Retour à la connexion</div>
-          </div>
-
-          <div id="forgot-box">
-            <div class="verify-title">// RESET PASSWORD</div>
-            <div class="verify-sub">Entrez votre email, recevez un code, puis choisissez un nouveau mot de passe.</div>
-            <div class="field"><label>Email</label><input type="email" id="forgot-email" placeholder="votre@email.com" autocomplete="email" autocapitalize="none"></div>
-            <button class="verify-btn" id="forgot-send-btn" onclick="sendResetCode()">Envoyer le code</button>
-            <div id="forgot-step-2" style="display:none; margin-top:14px;">
-              <div class="field"><label>Email</label><input type="email" id="forgot-email-readonly" readonly style="opacity:.7;"></div>
-              <div class="code-wrap">
-                <input class="code-input" type="password" id="reset-code" maxlength="6" placeholder="000000" inputmode="numeric" autocomplete="one-time-code">
-                <button type="button" class="code-eye" onclick="togglePassword('reset-code', this)">Voir</button>
-              </div>
-              <div class="field">
-                <label>Nouveau mot de passe</label>
-                <div class="input-wrap">
-                  <input type="password" id="new-password" placeholder="••••••••" autocomplete="new-password">
-                  <button type="button" class="eye-btn" onclick="togglePassword('new-password', this)">Voir</button>
-                </div>
-              </div>
-              <div class="field">
-                <label>Confirmer le nouveau mot de passe</label>
-                <div class="input-wrap">
-                  <input type="password" id="new-password-confirm" placeholder="••••••••" autocomplete="new-password">
-                  <button type="button" class="eye-btn" onclick="togglePassword('new-password-confirm', this)">Voir</button>
-                </div>
-              </div>
-              <button class="verify-btn" onclick="resetPassword()">Changer le mot de passe</button>
-            </div>
-            <div id="forgot-message"></div>
-            <div class="verify-tip">Le code expire dans 10 minutes.</div>
-            <div class="back-link" onclick="backToAuthForm()">← Retour à la connexion</div>
-          </div>
-        </div>
-      </div>
+  <footer>
+    <div class="container footer-inner">
+      <p>© 2026 Double Mind. Tous droits réservés.</p>
+      <div class="footer-links"><a href="#">Confidentialité</a><span>•</span><a href="#">Conditions</a><span>•</span><a href="#">Contact</a></div>
     </div>
-
-    <!-- CHAT SCREEN -->
-    <div id="chat-screen">
-      <div id="mode-bar">
-        <span class="mode-label">Modes</span>
-        <button class="mode-btn active" data-mode="classic" onclick="setMode(this)">🔵 Classique</button>
-        <button class="mode-btn debate" data-mode="debate" onclick="setMode(this)">⚔️ Débat</button>
-        <button class="mode-btn expert" data-mode="expert" onclick="setMode(this)">🧠 Expert</button>
-        <button class="mode-btn creative" data-mode="creative" onclick="setMode(this)">🎨 Créatif</button>
-        <button class="mode-btn clash" data-mode="clash" onclick="setMode(this)">🔥 Clash</button>
-      </div>
-
-      <div id="chat-area">
-        <div class="hero-card" id="hero-card">
-          <div class="hero-badge"><span>⚡</span><span>Pilote le débat entre deux intelligences</span></div>
-          <div class="hero-title">Décide qui répond, qui commence, puis laisse <span class="blue">GPT</span> et <span class="orange">Claude</span> confronter leurs idées.</div>
-          <div class="hero-subtitle">Double Mind te permet de comparer deux réponses, de choisir l'ordre, et de laisser le débat continuer sans intervention.</div>
-          <div class="hero-grid">
-            <div class="hero-mode"><strong>Réponse</strong><span>GPT seul, Claude seul, ou les deux.</span></div>
-            <div class="hero-mode"><strong>Ordre</strong><span>Choisis qui commence.</span></div>
-            <div class="hero-mode"><strong>Débat</strong><span>Observe le vrai contraste entre les deux.</span></div>
-            <div class="hero-mode"><strong>Modes</strong><span>Classique, Débat, Expert, Créatif, Clash.</span></div>
-            <div class="hero-mode"><strong>⚖️ Juge IA</strong><span>Verdict, scores et recommandation finale.</span></div>
-          </div>
-        </div>
-        <div class="msg system">
-          <div class="bubble">— Choisis le mode, choisis qui répond, choisis qui commence, puis regarde les deux IA confronter leurs idées —</div>
-        </div>
-      </div>
-
-      <div class="conversation-controls" id="conversation-controls">
-        <button class="control-btn primary" id="continue-debate-btn" onclick="continueDebate()">Continuer le débat</button>
-        <button class="control-btn gold" id="judge-btn" onclick="requestJudge()" style="display:none;">⚖️ Demander le verdict</button>
-        <button class="control-btn" id="share-btn" onclick="openShareModal()" style="display:none;">🔗 Partager</button>
-        <button class="control-btn" onclick="resetConversationState()">Nouveau départ</button>
-      </div>
-
-      <div id="limit-wall">
-        <p>⛔ Limite de 5 messages atteinte</p>
-        <small>Reviens demain pour continuer.</small>
-      </div>
-
-      <!-- GUEST WALL : affiché après 2 messages sans compte -->
-      <div id="guest-wall">
-        <p>✨ Tu as utilisé tes 2 messages gratuits</p>
-        <small>Crée un compte gratuit pour continuer à utiliser Double Mind sans limite journalière.</small>
-        <div class="guest-wall-btns">
-          <button class="gwb-primary" onclick="openAuthFromGuest('register')">Créer un compte</button>
-          <button class="gwb-secondary" onclick="openAuthFromGuest('login')">Se connecter</button>
-        </div>
-      </div>
-
-      <div id="bottom-bar">
-        <div class="composer-options">
-          <div class="option-card">
-            <div class="option-title">Qui répond ?</div>
-            <div class="pill-row">
-              <button class="pill-btn blue" data-response-mode="gpt" onclick="setResponseMode(this)">GPT seul</button>
-              <button class="pill-btn orange" data-response-mode="claude" onclick="setResponseMode(this)">Claude seul</button>
-              <button class="pill-btn active" data-response-mode="duo" onclick="setResponseMode(this)">Les deux</button>
-            </div>
-          </div>
-          <div class="option-card">
-            <div class="option-title">Qui commence ?</div>
-            <div class="pill-row">
-              <button class="pill-btn blue active" data-starter="gpt" onclick="setStarter(this)">GPT commence</button>
-              <button class="pill-btn orange" data-starter="claude" onclick="setStarter(this)">Claude commence</button>
-            </div>
-          </div>
-        </div>
-
-        <button id="options-toggle-btn" onclick="toggleOptions()">
-          <span class="toggle-left"><span id="options-summary">⚙ Les deux · GPT commence</span></span>
-          <span class="toggle-arrow">▼</span>
-        </button>
-
-        <div id="options-panel">
-          <div class="options-panel-inner">
-            <div class="option-card">
-              <div class="option-title">Qui répond ?</div>
-              <div class="pill-row">
-                <button class="pill-btn blue" data-response-mode-m="gpt" onclick="setResponseModeM(this)">GPT</button>
-                <button class="pill-btn orange" data-response-mode-m="claude" onclick="setResponseModeM(this)">Claude</button>
-                <button class="pill-btn active" data-response-mode-m="duo" onclick="setResponseModeM(this)">Les deux</button>
-              </div>
-            </div>
-            <div class="option-card">
-              <div class="option-title">Qui commence ?</div>
-              <div class="pill-row">
-                <button class="pill-btn blue active" data-starter-m="gpt" onclick="setStarterM(this)">GPT</button>
-                <button class="pill-btn orange" data-starter-m="claude" onclick="setStarterM(this)">Claude</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="input-shell">
-          <div class="input-main">
-            <div class="input-topline">
-              <div class="input-dot"></div>
-              <span id="mode-description">Mode Classique · Réponses équilibrées</span>
-            </div>
-            <textarea id="user-input" rows="1" placeholder="Pose une question..."></textarea>
-          </div>
-          <button id="send-btn" onclick="sendMessage()">➜</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- HISTORY DRAWER -->
-  <div id="history-overlay" onclick="closeHistoryDrawer()"></div>
-  <div id="history-drawer">
-    <div class="drawer-head">
-      <span class="drawer-title">// HISTORIQUE</span>
-      <button class="drawer-close" onclick="closeHistoryDrawer()">✕ Fermer</button>
-    </div>
-    <div id="drawer-list">
-      <div class="drawer-loading">Chargement...</div>
-    </div>
-  </div>
-
-  <!-- SHARE MODAL -->
-  <div id="share-modal-overlay" onclick="closeShareModal()">
-    <div id="share-modal" onclick="event.stopPropagation()">
-      <div class="share-modal-head">
-        <span class="share-modal-title">🔗 Partager cette conversation</span>
-        <button class="share-modal-close" onclick="closeShareModal()">✕</button>
-      </div>
-      <div id="share-modal-body">
-        <div class="share-loading">Génération du lien...</div>
-      </div>
-    </div>
-  </div>
+  </footer>
 
   <script>
-    const WORKER = "https://ai-talk-proxy.baptiste-werner.workers.dev";
-    const ADMIN  = "baptiste.werner@gmail.com";
+    const outputBody = document.getElementById("outputBody");
+    const chatForm = document.getElementById("chatForm");
+    const userInput = document.getElementById("userInput");
+    const promptButtons = document.querySelectorAll(".prompt-chip");
+    const modeButtons = document.querySelectorAll("#modeChoices .choice-btn");
+    const responseButtons = document.querySelectorAll("#responseChoices .choice-btn");
+    const starterButtons = document.querySelectorAll("#starterChoices .choice-btn");
 
-    /* ─── STATE ─── */
-    let currentUser        = null;
-    let msgCount           = 0;
-    let isWaiting          = false;
-    let history            = [];
-    let tab                = "login";
-    let currentMode        = "classic";
-    let currentResponseMode = "duo";
-    let currentStarter     = "gpt";
-    let lastDebateContext  = null;
-    let optionsOpen        = false;
-    let judgeWaiting       = false;
-    let currentConversationId = 0;
-    // Compteur invité stocké en localStorage (V1 — soft limit)
-    let guestCount = Number(localStorage.getItem("dm_guest_count") || "0");
+    let currentMode = "Classique";
+    let currentResponse = "Les deux";
+    let currentStarter = "GPT commence";
+    let currentQuestion = "Pourquoi utiliser Double Mind ?";
+    let debateContinued = false;
+    let verdictVisible = true;
 
-    const modeDescriptions = {
-      classic:  "Mode Classique · Réponses équilibrées",
-      debate:   "Mode Débat · Deux positions opposées",
-      expert:   "Mode Expert · Plus stratégique et plus précis",
-      creative: "Mode Créatif · Idées plus originales",
-      clash:    "Mode Clash · Réponses plus directes et tranchées"
+    const qaBank = {
+      "pourquoi utiliser double mind": {
+        gpt: {
+          classique: `
+            <p>Utiliser Double Mind sert à obtenir une réponse plus fiable qu'une réponse unique.</p>
+            <ol>
+              <li><strong>Deux angles :</strong> GPT apporte une réponse structurée et directe.</li>
+              <li><strong>Comparaison :</strong> Claude peut compléter, nuancer ou contredire certains points.</li>
+              <li><strong>Décision :</strong> le Juge IA transforme les deux réponses en recommandation finale.</li>
+            </ol>
+            <p>En clair : tu gagnes du temps, tu vois les différences, puis tu décides mieux.</p>
+          `,
+          debat: `
+            <p>Double Mind est utile parce qu'une seule IA peut donner une bonne réponse, mais pas forcément la meilleure décision.</p>
+            <ol>
+              <li><strong>GPT</strong> donne souvent une structure rapide.</li>
+              <li><strong>Claude</strong> peut repérer des nuances et des risques oubliés.</li>
+              <li><strong>Le débat</strong> rend les contradictions visibles.</li>
+            </ol>
+            <p>Le vrai avantage n'est pas “plus de texte”, c'est “plus de recul”.</p>
+          `,
+          expert: `
+            <p>Double Mind répond à un problème classique des IA : l'utilisateur reçoit une seule réponse sans savoir si elle est complète.</p>
+            <ol>
+              <li><strong>Réduction des angles morts :</strong> deux modèles peuvent mettre en avant des raisonnements différents.</li>
+              <li><strong>Meilleure prise de décision :</strong> la comparaison permet de distinguer les points communs des désaccords.</li>
+              <li><strong>Verdict synthétique :</strong> le juge résume les forces et faiblesses pour éviter de se perdre.</li>
+            </ol>
+          `,
+          creatif: `
+            <p>Double Mind peut être présenté comme une arène d'idées : tu poses une question, deux cerveaux répondent, puis un arbitre tranche.</p>
+            <ol>
+              <li><strong>Visuel :</strong> GPT et Claude deviennent deux voix différentes.</li>
+              <li><strong>Expérience :</strong> l'utilisateur ne lit pas juste une réponse, il observe une confrontation.</li>
+              <li><strong>Partage :</strong> le verdict final peut devenir un contenu facile à partager.</li>
+            </ol>
+          `,
+          clash: `
+            <p>Pourquoi utiliser Double Mind ? Parce qu'une seule IA peut te convaincre trop vite.</p>
+            <ol>
+              <li><strong>Une réponse unique peut paraître vraie</strong> même quand elle oublie des risques.</li>
+              <li><strong>Deux IA forcent la contradiction</strong> et montrent ce qui est solide ou fragile.</li>
+              <li><strong>Le Juge IA évite le flou</strong> en donnant une conclusion actionnable.</li>
+            </ol>
+          `
+        },
+        claude: {
+          classique: `
+            <p>Double Mind est utile quand tu ne veux pas seulement une réponse, mais une comparaison.</p>
+            <ol>
+              <li><strong>Une seule IA peut être trop confiante.</strong> Elle peut oublier certains risques.</li>
+              <li><strong>Deux IA donnent plus de recul.</strong> Tu vois les points communs et les contradictions.</li>
+              <li><strong>Le verdict final clarifie l'action.</strong> Tu sais quoi retenir et quoi faire ensuite.</li>
+            </ol>
+          `,
+          debat: `
+            <p>GPT a raison sur la structure, mais la vraie valeur de Double Mind vient de la friction entre les réponses.</p>
+            <ol>
+              <li><strong>Quand les deux IA sont d'accord,</strong> l'idée gagne en crédibilité.</li>
+              <li><strong>Quand elles ne sont pas d'accord,</strong> tu découvres justement les points à vérifier.</li>
+              <li><strong>Le juge sert à trancher,</strong> pas seulement à résumer.</li>
+            </ol>
+          `,
+          expert: `
+            <p>Double Mind peut être vu comme un système de contrôle qualité sur les réponses IA.</p>
+            <ol>
+              <li><strong>Premier niveau :</strong> GPT produit une réponse claire.</li>
+              <li><strong>Deuxième niveau :</strong> Claude critique ou complète la réponse.</li>
+              <li><strong>Troisième niveau :</strong> le juge extrait une recommandation exploitable.</li>
+            </ol>
+            <p>C'est particulièrement utile pour les décisions, les projets, les idées business et l'apprentissage.</p>
+          `,
+          creatif: `
+            <p>L'intérêt de Double Mind est aussi émotionnel : l'utilisateur a l'impression d'assister à un duel d'idées.</p>
+            <ol>
+              <li><strong>GPT</strong> joue le rôle du stratège clair.</li>
+              <li><strong>Claude</strong> joue le rôle du critique nuancé.</li>
+              <li><strong>Le Juge IA</strong> donne une fin nette à la discussion.</li>
+            </ol>
+          `,
+          clash: `
+            <p>Double Mind est utile si tu acceptes qu'une IA seule peut se tromper avec beaucoup d'assurance.</p>
+            <ol>
+              <li><strong>Le danger :</strong> croire une réponse parce qu'elle est bien écrite.</li>
+              <li><strong>La solution :</strong> faire répondre une deuxième IA qui attaque ou nuance le raisonnement.</li>
+              <li><strong>Le résultat :</strong> une décision plus robuste.</li>
+            </ol>
+          `
+        },
+        judge: {
+          gptSummary: "GPT explique clairement que Double Mind sert à comparer deux raisonnements et à obtenir une décision plus structurée.",
+          claudeSummary: "Claude insiste davantage sur les angles morts : une seule IA peut être convaincante mais incomplète.",
+          gptScore: "8.2 / 10",
+          claudeScore: "8.8 / 10",
+          winner: "Claude",
+          recommendation: "Présente Double Mind comme un outil de décision, pas seulement comme un double chatbot. Le message principal doit être : comparer, confronter, trancher."
+        }
+      },
+      "rentable": {
+        gpt: {
+          classique: `
+            <p>Pour évaluer la rentabilité de ton idée de SaaS IA, voici trois points clés :</p>
+            <ol>
+              <li><strong>Demande :</strong> vérifie si des utilisateurs ont vraiment besoin de comparer deux IA.</li>
+              <li><strong>Coûts :</strong> calcule le coût d'une session GPT + Claude + Juge IA.</li>
+              <li><strong>Prix :</strong> ton abonnement doit couvrir l'usage moyen et garder une marge.</li>
+            </ol>
+            <p>Ton idée peut être rentable si tu limites les usages gratuits et si le verdict apporte une vraie valeur.</p>
+          `,
+          debat: `
+            <p>Ton SaaS peut être rentable, mais seulement si la valeur est plus forte que le coût d'utilisation.</p>
+            <ol>
+              <li><strong>Bon point :</strong> Double Mind a une promesse claire : comparer deux IA.</li>
+              <li><strong>Risque :</strong> chaque débat coûte plus cher qu'un simple chatbot.</li>
+              <li><strong>Condition :</strong> les limites gratuites et les forfaits doivent être très bien calculés.</li>
+            </ol>
+          `,
+          expert: `
+            <p>La rentabilité dépend de trois métriques :</p>
+            <ol>
+              <li><strong>Coût moyen par débat :</strong> additionne GPT, Claude, juge et stockage.</li>
+              <li><strong>Revenu moyen par utilisateur :</strong> abonnement ou crédits achetés.</li>
+              <li><strong>Rétention :</strong> si les utilisateurs ne reviennent pas, le SaaS ne tiendra pas.</li>
+            </ol>
+          `,
+          creatif: `
+            <p>Pour rendre ton SaaS rentable, transforme le verdict en moment fort.</p>
+            <ol>
+              <li><strong>Démo virale :</strong> montre deux IA qui s'opposent.</li>
+              <li><strong>Offre simple :</strong> limite les verdicts gratuits.</li>
+              <li><strong>Valeur perçue :</strong> fais comprendre que l'utilisateur paie pour une meilleure décision.</li>
+            </ol>
+          `,
+          clash: `
+            <p>Ton SaaS ne sera pas rentable juste parce qu'il utilise l'IA.</p>
+            <ol>
+              <li><strong>Si tes coûts API montent,</strong> tes abonnements peuvent devenir perdants.</li>
+              <li><strong>Si le verdict n'est pas vraiment utile,</strong> les utilisateurs ne paieront pas.</li>
+              <li><strong>Si tu n'as pas de différenciation,</strong> ChatGPT gratuit reste ton plus gros concurrent.</li>
+            </ol>
+          `
+        },
+        claude: {
+          classique: `
+            <p>La réponse de GPT est correcte, mais il faut être plus concret sur les risques.</p>
+            <ol>
+              <li><strong>Coût réel :</strong> un débat complet coûte plus cher qu'une réponse unique.</li>
+              <li><strong>Abus possible :</strong> les gros utilisateurs peuvent consommer beaucoup plus que ce qu'ils paient.</li>
+              <li><strong>Différenciation :</strong> Double Mind doit être meilleur qu'un simple copier-coller dans deux IA.</li>
+            </ol>
+          `,
+          debat: `
+            <p>Je nuance GPT : la rentabilité n'est pas seulement une question de prix.</p>
+            <ol>
+              <li><strong>Il faut un usage récurrent.</strong> Si les gens testent puis partent, le produit échoue.</li>
+              <li><strong>Il faut un verdict réellement utile.</strong> C'est lui qui justifie le paiement.</li>
+              <li><strong>Il faut surveiller les coûts.</strong> GPT + Claude + juge peut vite coûter cher.</li>
+            </ol>
+          `,
+          expert: `
+            <p>Le point central est le ratio valeur/coût.</p>
+            <ol>
+              <li><strong>Valeur :</strong> la comparaison doit améliorer concrètement la décision.</li>
+              <li><strong>Coût :</strong> chaque interaction doit être mesurée.</li>
+              <li><strong>Packaging :</strong> les abonnements doivent limiter les usages les plus chers.</li>
+            </ol>
+          `,
+          creatif: `
+            <p>Tu peux rendre le produit plus rentable en rendant le verdict désirable.</p>
+            <ol>
+              <li><strong>Un débat intéressant</strong> attire l'attention.</li>
+              <li><strong>Un verdict clair</strong> crée la valeur.</li>
+              <li><strong>Un partage facile</strong> peut amener de nouveaux utilisateurs.</li>
+            </ol>
+          `,
+          clash: `
+            <p>Le piège serait de croire que “deux IA” suffit à vendre.</p>
+            <ol>
+              <li><strong>Non, l'utilisateur ne paie pas pour deux réponses.</strong> Il paie pour une meilleure décision.</li>
+              <li><strong>Non, l'IA n'est pas gratuite.</strong> Chaque message a un coût.</li>
+              <li><strong>Non, un joli site ne suffit pas.</strong> Il faut prouver la valeur.</li>
+            </ol>
+          `
+        },
+        judge: {
+          gptSummary: "GPT structure bien la rentabilité : demande, coûts, prix et limites d'usage.",
+          claudeSummary: "Claude ajoute les risques les plus importants : coût réel, abus des utilisateurs actifs et différenciation face aux IA gratuites.",
+          gptScore: "7.6 / 10",
+          claudeScore: "9.1 / 10",
+          winner: "Claude",
+          recommendation: "Avant de monétiser, calcule le coût moyen d'un débat complet et limite les verdicts gratuits. La rentabilité dépendra surtout du verdict et de la rétention."
+        }
+      },
+      "ameliorer": {
+        gpt: {
+          classique: `
+            <p>Pour améliorer ton site avec GPT et Claude, concentre-toi sur trois zones :</p>
+            <ol>
+              <li><strong>Clarté :</strong> explique immédiatement ce que fait Double Mind.</li>
+              <li><strong>Démo :</strong> montre une vraie comparaison GPT / Claude.</li>
+              <li><strong>Verdict :</strong> rends le juge IA très visible, car c'est ton élément différenciant.</li>
+            </ol>
+          `,
+          debat: `
+            <p>Ton site sera meilleur si la différence entre GPT et Claude saute aux yeux.</p>
+            <ol>
+              <li><strong>GPT :</strong> réponse bleue, structurée, directe.</li>
+              <li><strong>Claude :</strong> réponse orange, critique, nuancée.</li>
+              <li><strong>Juge :</strong> verdict jaune avec scores et recommandation.</li>
+            </ol>
+          `,
+          expert: `
+            <p>Améliore d'abord le parcours utilisateur :</p>
+            <ol>
+              <li><strong>Question :</strong> input simple et visible.</li>
+              <li><strong>Comparaison :</strong> blocs longs lisibles, pas de petits messages.</li>
+              <li><strong>Action :</strong> boutons continuer, verdict, partager et nouveau départ.</li>
+            </ol>
+          `,
+          creatif: `
+            <p>Tu peux rendre le site plus marquant avec une mise en scène :</p>
+            <ol>
+              <li><strong>Deux couleurs fortes :</strong> bleu pour GPT, orange pour Claude.</li>
+              <li><strong>Une tension visuelle :</strong> les réponses doivent ressembler à un duel.</li>
+              <li><strong>Une fin claire :</strong> le juge arrive comme un arbitre.</li>
+            </ol>
+          `,
+          clash: `
+            <p>Le problème actuel à éviter : faire une page jolie mais pas assez claire.</p>
+            <ol>
+              <li><strong>Supprime le superflu.</strong> Ne parle que de GPT, Claude, modes et juge.</li>
+              <li><strong>Montre le produit.</strong> La démo doit ressembler au vrai site.</li>
+              <li><strong>Fais comprendre la valeur en 5 secondes.</strong></li>
+            </ol>
+          `
+        },
+        claude: {
+          classique: `
+            <p>GPT a raison, mais j'ajouterais une priorité : rendre la page moins abstraite.</p>
+            <ol>
+              <li><strong>Montre une vraie discussion.</strong> Pas seulement des promesses marketing.</li>
+              <li><strong>Affiche les scores du juge.</strong> Cela donne une impression de décision.</li>
+              <li><strong>Explique pourquoi c'est mieux qu'une seule IA.</strong></li>
+            </ol>
+          `,
+          debat: `
+            <p>Ton site doit faire ressentir la confrontation.</p>
+            <ol>
+              <li><strong>La carte GPT</strong> doit être claire et structurée.</li>
+              <li><strong>La carte Claude</strong> doit apporter une vraie contradiction.</li>
+              <li><strong>Le verdict</strong> doit trancher avec une recommandation concrète.</li>
+            </ol>
+          `,
+          expert: `
+            <p>La priorité est la cohérence produit.</p>
+            <ol>
+              <li><strong>Évite les IA non présentes.</strong> Pas de Grok, DeepSeek ou Gemini si ton interface montre GPT et Claude.</li>
+              <li><strong>Garde les options réelles :</strong> Classique, Débat, Expert, Créatif, Clash.</li>
+              <li><strong>Aligne la landing page avec ton app.</strong></li>
+            </ol>
+          `,
+          creatif: `
+            <p>Je rendrais la page plus mémorable avec un slogan simple :</p>
+            <ol>
+              <li><strong>“Une question.”</strong></li>
+              <li><strong>“Deux intelligences.”</strong></li>
+              <li><strong>“Une décision.”</strong></li>
+            </ol>
+          `,
+          clash: `
+            <p>Le vrai défaut serait de promettre trop de choses au lieu de montrer ton avantage principal.</p>
+            <ol>
+              <li><strong>Ne vends pas “plein d'IA”.</strong></li>
+              <li><strong>Vends une meilleure décision.</strong></li>
+              <li><strong>Fais du juge IA le centre de la page.</strong></li>
+            </ol>
+          `
+        },
+        judge: {
+          gptSummary: "GPT propose d'améliorer la clarté, la démo et la visibilité du verdict.",
+          claudeSummary: "Claude insiste sur la cohérence avec le vrai produit et sur la nécessité de montrer une discussion réaliste.",
+          gptScore: "8.0 / 10",
+          claudeScore: "9.0 / 10",
+          winner: "Claude",
+          recommendation: "Garde une landing page simple, mais aligne chaque section avec ton interface réelle : GPT, Claude, modes, débat et juge IA."
+        }
+      },
+      "lancer": {
+        gpt: {
+          classique: `
+            <p>Tu devrais lancer une version simple dès que le parcours principal fonctionne.</p>
+            <ol>
+              <li><strong>Teste l'intérêt :</strong> regarde si les gens posent plusieurs questions.</li>
+              <li><strong>Mesure l'usage :</strong> combien de débats et verdicts sont demandés ?</li>
+              <li><strong>Améliore ensuite :</strong> ne bloque pas tout pour chercher la perfection.</li>
+            </ol>
+          `,
+          debat: `
+            <p>Lancer maintenant peut être intelligent, mais seulement avec une version contrôlée.</p>
+            <ol>
+              <li><strong>Oui :</strong> tu obtiens des retours réels.</li>
+              <li><strong>Attention :</strong> évite d'ouvrir trop largement si les coûts API ne sont pas maîtrisés.</li>
+              <li><strong>Solution :</strong> limite gratuite + mesure des usages.</li>
+            </ol>
+          `,
+          expert: `
+            <p>La bonne stratégie est un lancement progressif.</p>
+            <ol>
+              <li><strong>Phase 1 :</strong> bêta gratuite limitée.</li>
+              <li><strong>Phase 2 :</strong> mesure de la rétention et des coûts.</li>
+              <li><strong>Phase 3 :</strong> monétisation seulement si la valeur est confirmée.</li>
+            </ol>
+          `,
+          creatif: `
+            <p>Tu peux lancer comme une expérience publique :</p>
+            <ol>
+              <li><strong>Montre le concept.</strong></li>
+              <li><strong>Demande des retours.</strong></li>
+              <li><strong>Partage les meilleurs débats.</strong></li>
+            </ol>
+          `,
+          clash: `
+            <p>Attendre trop longtemps peut devenir une excuse.</p>
+            <ol>
+              <li><strong>Si le site marche, teste.</strong></li>
+              <li><strong>Si personne ne revient, corrige.</strong></li>
+              <li><strong>Si les coûts explosent, limite.</strong></li>
+            </ol>
+          `
+        },
+        claude: {
+          classique: `
+            <p>Je suis d'accord avec GPT, mais il faut préciser ce que “lancer” veut dire.</p>
+            <ol>
+              <li><strong>Ne lance pas forcément en payant tout de suite.</strong></li>
+              <li><strong>Lance une bêta contrôlée.</strong></li>
+              <li><strong>Observe si les utilisateurs comprennent le verdict.</strong></li>
+            </ol>
+          `,
+          debat: `
+            <p>Le bon compromis : ne pas attendre la perfection, mais ne pas lancer sans garde-fous.</p>
+            <ol>
+              <li><strong>Limite les messages gratuits.</strong></li>
+              <li><strong>Observe le coût réel.</strong></li>
+              <li><strong>Demande explicitement des retours.</strong></li>
+            </ol>
+          `,
+          expert: `
+            <p>La question n'est pas “maintenant ou attendre”, mais “quel niveau de lancement ?”.</p>
+            <ol>
+              <li><strong>Bêta privée :</strong> très peu risquée.</li>
+              <li><strong>Bêta publique :</strong> utile pour les retours, mais coûteuse si mal limitée.</li>
+              <li><strong>Monétisation :</strong> à faire après validation de la valeur.</li>
+            </ol>
+          `,
+          creatif: `
+            <p>Lance avec une histoire : “J'ai créé un site où deux IA débattent et une troisième tranche.”</p>
+            <ol>
+              <li><strong>Simple à comprendre.</strong></li>
+              <li><strong>Facile à tester.</strong></li>
+              <li><strong>Facile à partager.</strong></li>
+            </ol>
+          `,
+          clash: `
+            <p>Ne te cache pas derrière “je dois encore améliorer”.</p>
+            <ol>
+              <li><strong>Un vrai test vaut mieux que 100 suppositions.</strong></li>
+              <li><strong>Mais un lancement sans limites peut te coûter cher.</strong></li>
+              <li><strong>Lance petit, mesure vite.</strong></li>
+            </ol>
+          `
+        },
+        judge: {
+          gptSummary: "GPT recommande de lancer une version simple pour obtenir des retours réels.",
+          claudeSummary: "Claude nuance : il faut lancer, mais avec des limites, une bêta contrôlée et une mesure des coûts.",
+          gptScore: "8.1 / 10",
+          claudeScore: "8.9 / 10",
+          winner: "Claude",
+          recommendation: "Lance une bêta limitée, pas une grosse version payante tout de suite. Mesure l'usage, le coût et la compréhension du verdict."
+        }
+      },
+      "default": {
+        gpt: {
+          classique: `
+            <p>Je vais répondre de manière structurée à ta question.</p>
+            <ol>
+              <li><strong>Comprendre le contexte :</strong> clarifie exactement ce que tu veux obtenir.</li>
+              <li><strong>Comparer les options :</strong> regarde les avantages et les risques.</li>
+              <li><strong>Décider :</strong> choisis l'action la plus simple à tester maintenant.</li>
+            </ol>
+          `,
+          debat: `
+            <p>Ma réponse directe : commence par transformer ta question en décision concrète.</p>
+            <ol>
+              <li><strong>Option A :</strong> agir maintenant avec un petit test.</li>
+              <li><strong>Option B :</strong> attendre plus d'informations.</li>
+              <li><strong>Meilleur choix :</strong> tester petit plutôt que rester bloqué.</li>
+            </ol>
+          `,
+          expert: `
+            <p>Pour répondre sérieusement, il faut analyser l'objectif, les contraintes et le résultat attendu.</p>
+            <ol>
+              <li><strong>Objectif :</strong> que veux-tu obtenir ?</li>
+              <li><strong>Contraintes :</strong> temps, coût, risque, niveau de certitude.</li>
+              <li><strong>Action :</strong> quelle prochaine étape est mesurable ?</li>
+            </ol>
+          `,
+          creatif: `
+            <p>Je proposerais de traiter cette question comme une expérience.</p>
+            <ol>
+              <li><strong>Formule une hypothèse.</strong></li>
+              <li><strong>Teste-la rapidement.</strong></li>
+              <li><strong>Transforme le résultat en amélioration.</strong></li>
+            </ol>
+          `,
+          clash: `
+            <p>Je vais être direct : ta question est trop générale si elle ne mène pas à une action.</p>
+            <ol>
+              <li><strong>Précise ce que tu veux décider.</strong></li>
+              <li><strong>Évite les réponses vagues.</strong></li>
+              <li><strong>Demande une prochaine action mesurable.</strong></li>
+            </ol>
+          `
+        },
+        claude: {
+          classique: `
+            <p>Je complète GPT : une bonne réponse ne doit pas seulement être logique, elle doit être utile pour agir.</p>
+            <ol>
+              <li><strong>Quel est le vrai problème ?</strong></li>
+              <li><strong>Quels sont les risques oubliés ?</strong></li>
+              <li><strong>Quelle petite action peut valider la réponse ?</strong></li>
+            </ol>
+          `,
+          debat: `
+            <p>GPT propose d'agir, mais je vérifierais d'abord les angles morts.</p>
+            <ol>
+              <li><strong>Agir vite est utile</strong> si le risque est faible.</li>
+              <li><strong>Attendre est utile</strong> si l'erreur coûte cher.</li>
+              <li><strong>Le bon choix :</strong> tester sans trop s'exposer.</li>
+            </ol>
+          `,
+          expert: `
+            <p>J'ajoute une grille de décision :</p>
+            <ol>
+              <li><strong>Impact :</strong> qu'est-ce que ça change si tu réussis ?</li>
+              <li><strong>Risque :</strong> qu'est-ce que tu perds si tu échoues ?</li>
+              <li><strong>Apprentissage :</strong> qu'est-ce que tu vas apprendre même si ça ne marche pas ?</li>
+            </ol>
+          `,
+          creatif: `
+            <p>Je transformerais la question en mini-défi : trouver une réponse, la tester, puis demander au juge IA de trancher.</p>
+          `,
+          clash: `
+            <p>Le vrai danger est de chercher une réponse parfaite au lieu d'une décision utilisable.</p>
+          `
+        },
+        judge: {
+          gptSummary: "GPT structure la question et propose une action concrète.",
+          claudeSummary: "Claude ajoute les risques et les angles morts à vérifier avant d'agir.",
+          gptScore: "7.8 / 10",
+          claudeScore: "8.4 / 10",
+          winner: "Claude",
+          recommendation: "Utilise GPT pour cadrer vite, Claude pour vérifier les risques, puis décide avec une petite action mesurable."
+        }
+      }
     };
 
-    const chatArea            = document.getElementById("chat-area");
-    const counter             = document.getElementById("msg-counter");
-    const bottomBar           = document.getElementById("bottom-bar");
-    const limitWall           = document.getElementById("limit-wall");
-    const guestWall           = document.getElementById("guest-wall");
-    const heroCard            = document.getElementById("hero-card");
-    const modeDescription     = document.getElementById("mode-description");
-    const userInput           = document.getElementById("user-input");
-    const conversationControls = document.getElementById("conversation-controls");
-
-    /* ════════════════════════════════════
-       JUDGE IA
-    ════════════════════════════════════ */
-    async function requestJudge() {
-      if (!lastDebateContext || judgeWaiting || !currentUser) return;
-      const judgeBtn = document.getElementById("judge-btn");
-      judgeBtn.disabled = true;
-      judgeBtn.textContent = "⏳ Analyse en cours...";
-      judgeWaiting = true;
-      addSys("⚖️ L'IA juge analyse les deux réponses...");
-      try {
-        const res = await fetch(WORKER + "/judge", {
-          method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: currentUser, conversationId: currentConversationId, question: lastDebateContext.lastUserMessage, gpt: lastDebateContext.gpt, claude: lastDebateContext.claude })
-        });
-        const data = await res.json();
-        if (data.error) addSys("⚠️ Erreur du juge : " + data.error);
-        else {
-          displayJudgeCard(data);
-          // Sauvegarde le verdict dans le contexte pour le partage
-          lastDebateContext.judgeVerdict = data;
-        }
-      } catch (err) { addSys("⚠️ Erreur réseau : " + err.message); }
-      judgeBtn.disabled = false;
-      judgeBtn.textContent = "⚖️ Demander le verdict";
-      judgeWaiting = false;
+    function setActive(buttons, clickedButton) {
+      buttons.forEach((button) => button.classList.remove("active"));
+      clickedButton.classList.add("active");
     }
 
-    function displayJudgeCard(v) {
-      const winner = v.gagnant || "N/A";
-      const isGPTWinner = winner.toLowerCase().includes("gpt");
-      const winnerColor = isGPTWinner ? "var(--blue)" : "var(--orange)";
-      const winnerEmoji = isGPTWinner ? "🔵" : "🟠";
-      const scoreGPT    = parseFloat(v.score_gpt)    || 0;
-      const scoreClaude = parseFloat(v.score_claude) || 0;
-      const div = document.createElement("div");
-      div.className = "judge-msg";
-      div.innerHTML = `
-        <div class="judge-card-full">
+    modeButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        setActive(modeButtons, button);
+        currentMode = button.dataset.mode;
+        renderDiscussion();
+      });
+    });
+
+    responseButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        setActive(responseButtons, button);
+        currentResponse = button.dataset.response;
+        verdictVisible = currentResponse === "Les deux";
+        renderDiscussion();
+      });
+    });
+
+    starterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        setActive(starterButtons, button);
+        currentStarter = button.dataset.starter;
+        renderDiscussion();
+      });
+    });
+
+    promptButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        setActive(promptButtons, button);
+        currentQuestion = button.dataset.question;
+        debateContinued = false;
+        verdictVisible = currentResponse === "Les deux";
+        renderDiscussion();
+      });
+    });
+
+    function normalize(text) {
+      return text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function getTopic() {
+      const q = normalize(currentQuestion);
+      if (q.includes("pourquoi") && q.includes("double mind")) return "pourquoi utiliser double mind";
+      if (q.includes("rentable") || q.includes("saas")) return "rentable";
+      if (q.includes("ameliorer") || q.includes("site")) return "ameliorer";
+      if (q.includes("lancer") || q.includes("attendre")) return "lancer";
+      return "default";
+    }
+
+    function modeKey() {
+      return normalize(currentMode).replace("é", "e");
+    }
+
+    function escapeHtml(text) {
+      return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function data() {
+      return qaBank[getTopic()] || qaBank.default;
+    }
+
+    function answerFor(model) {
+      const d = data();
+      const key = modeKey();
+      return d[model][key] || d[model].classique;
+    }
+
+    function buildUserBlock(question) {
+      return `
+        <div class="user-block">
+          <div class="user-stack">
+            <div class="user-meta">
+              <div class="user-label">VOUS</div>
+              <div class="user-bubble">${escapeHtml(question)}</div>
+            </div>
+            <div class="side-badge">YOU</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function buildGPTCard() {
+      return `
+        <div class="response-block">
+          <div class="response-label gpt">GPT-4o</div>
+          <div class="response-side gpt">GPT</div>
+          <div class="response-card gpt">${answerFor("gpt")}</div>
+        </div>
+      `;
+    }
+
+    function buildClaudeCard() {
+      return `
+        <div class="response-block">
+          <div class="response-label claude">CLAUDE</div>
+          <div class="response-side claude">CLD</div>
+          <div class="response-card claude">${answerFor("claude")}</div>
+        </div>
+      `;
+    }
+
+    function buildActions() {
+      return `
+        <div class="action-row">
+          <button class="action-btn primary" type="button" id="continueBtn">Continuer le débat</button>
+          <button class="action-btn judge" type="button" id="judgeBtn">⚖️ ${verdictVisible ? "Masquer le verdict" : "Demander le verdict"}</button>
+          <button class="action-btn" type="button" id="shareBtn">🔗 Partager</button>
+          <button class="action-btn" type="button" id="resetBtn">Nouveau départ</button>
+        </div>
+      `;
+    }
+
+    function buildJudgePanel() {
+      if (!verdictVisible || currentResponse !== "Les deux") return "";
+      const j = data().judge;
+
+      return `
+        <div class="judge-loading">⚖️ L'IA juge analyse les deux réponses...</div>
+        <section class="judge-panel">
           <div class="judge-header">
             <div class="judge-icon">⚖️</div>
-            <div class="judge-header-text">
-              <strong>Verdict du Juge IA</strong>
-              <span>Analyse neutre · Scores · Recommandation</span>
+            <div>
+              <div class="judge-panel-title">Verdict du Juge IA</div>
+              <div class="judge-subtitle">Analyse neutre · Scores · Recommandation</div>
             </div>
           </div>
-          <div class="judge-summaries">
-            <div class="judge-sum gpt-sum">
-              <div class="judge-sum-label">🔵 Résumé GPT</div>
-              <p>${esc(v.resume_gpt || "—")}</p>
+
+          <div class="judge-grid">
+            <div class="summary-card gpt">
+              <div class="mini-title gpt">● Résumé GPT</div>
+              <p>${j.gptSummary}</p>
             </div>
-            <div class="judge-sum claude-sum">
-              <div class="judge-sum-label">🟠 Résumé Claude</div>
-              <p>${esc(v.resume_claude || "—")}</p>
+
+            <div class="summary-card claude">
+              <div class="mini-title claude">● Résumé Claude</div>
+              <p>${j.claudeSummary}</p>
+            </div>
+
+            <div class="score-card">
+              <small>● Score GPT</small>
+              <div class="score-value gpt">${j.gptScore}</div>
+            </div>
+
+            <div class="score-card">
+              <small>● Score Claude</small>
+              <div class="score-value claude">${j.claudeScore}</div>
+            </div>
+
+            <div class="winner-card">
+              <div class="winner-title">🟢 Gagnant : ${j.winner}</div>
+              <p>${j.winner === "Claude" ? "Claude apporte davantage de nuance et repère mieux les limites concrètes." : "GPT apporte la réponse la plus claire et exploitable pour cette question."}</p>
+            </div>
+
+            <div class="reco-card">
+              <div class="reco-title">💡 Recommandation finale</div>
+              <p>${j.recommendation}</p>
             </div>
           </div>
-          <div class="judge-scores">
-            <div class="judge-score-card gpt-sc">
-              <span>🔵 Score GPT</span>
-              <strong>${scoreGPT.toFixed(1)} / 10</strong>
-            </div>
-            <div class="judge-score-card claude-sc">
-              <span>🟠 Score Claude</span>
-              <strong>${scoreClaude.toFixed(1)} / 10</strong>
-            </div>
-          </div>
-          <div class="judge-winner">
-            <h3>${winnerEmoji} Gagnant : <span style="color:${winnerColor}">${esc(winner)}</span></h3>
-            <p>${esc(v.raison_gagnant || "—")}</p>
-          </div>
-          <div class="judge-reco">
-            <div class="judge-reco-label">🧭 Recommandation finale</div>
-            <p>${esc(v.recommandation || "—")}</p>
-          </div>
-        </div>`;
-      chatArea.appendChild(div);
-      chatArea.scrollTop = chatArea.scrollHeight;
+        </section>
+      `;
     }
 
-    /* ════════════════════════════════════
-       UTILS
-    ════════════════════════════════════ */
-    function esc(s) {
-      return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-    }
-    function togglePassword(id, btn) {
-      const input = document.getElementById(id);
-      if (!input) return;
-      const hide = input.type === "password";
-      input.type = hide ? "text" : "password";
-      if (btn) btn.textContent = hide ? "Masquer" : "Voir";
-    }
-    function toggleOptions() {
-      optionsOpen = !optionsOpen;
-      document.getElementById("options-toggle-btn").classList.toggle("open", optionsOpen);
-      document.getElementById("options-panel").classList.toggle("open", optionsOpen);
-    }
-    function updateOptionsSummary() {
-      const rL = currentResponseMode === "gpt" ? "GPT seul" : currentResponseMode === "claude" ? "Claude seul" : "Les deux";
-      const sL = currentStarter === "gpt" ? "GPT commence" : "Claude commence";
-      const el = document.getElementById("options-summary");
-      if (el) el.textContent = "⚙ " + rL + " · " + sL;
-    }
-    function resizeTextarea() {
-      userInput.style.height = "auto";
-      userInput.style.height = Math.min(userInput.scrollHeight, 130) + "px";
-    }
-    function addSys(text) {
-      const d = document.createElement("div");
-      d.className = "msg system";
-      d.innerHTML = `<div class="bubble">${esc(text)}</div>`;
-      chatArea.appendChild(d);
-      chatArea.scrollTop = chatArea.scrollHeight;
-    }
-    function addMsg(type, label, avClass, avText, text) {
-      if (heroCard) heroCard.style.display = "none";
-      const d = document.createElement("div");
-      d.className = "msg " + type;
-      d.innerHTML = `<div class="avatar ${avClass}">${avText}</div><div class="msg-body"><div class="sender-label">${label}</div><div class="bubble">${esc(text)}</div></div>`;
-      chatArea.appendChild(d);
-      chatArea.scrollTop = chatArea.scrollHeight;
-    }
-    function addTyping(type) {
-      if (heroCard) heroCard.style.display = "none";
-      const d = document.createElement("div");
-      d.className = "msg " + type;
-      d.id = "typing-" + type;
-      const left = type === "claude";
-      d.innerHTML = `<div class="avatar ${left?"claude-av":"gpt-av"}">${left?"CLD":"GPT"}</div><div class="msg-body"><div class="sender-label">${left?"Claude":"GPT-4o"}</div><div class="bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div></div>`;
-      chatArea.appendChild(d);
-      chatArea.scrollTop = chatArea.scrollHeight;
-    }
-    function removeTyping() {
-      ["gpt","claude"].forEach(t => { const el = document.getElementById("typing-"+t); if (el) el.remove(); });
-    }
+    function buildContinuation() {
+      if (!debateContinued || currentResponse !== "Les deux") return "";
+      const topic = getTopic();
+      let text = "<p><strong>Suite du débat :</strong> les deux IA ajoutent qu'il faut transformer la réponse en action mesurable, pas seulement en idée.</p>";
 
-    /* ════════════════════════════════════
-       MODE / RESPONSE MODE / STARTER
-    ════════════════════════════════════ */
-    function setMode(btn) {
-      document.querySelectorAll(".mode-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      currentMode = btn.dataset.mode;
-      if (modeDescription) modeDescription.textContent = modeDescriptions[currentMode] || "";
-    }
-    function setResponseModeM(btn) {
-      document.querySelectorAll("[data-response-mode-m]").forEach(b => b.classList.remove("active","blue","orange"));
-      currentResponseMode = btn.dataset.responseModeM;
-      btn.classList.add("active");
-      if (currentResponseMode === "gpt") btn.classList.add("blue");
-      if (currentResponseMode === "claude") btn.classList.add("orange");
-      document.querySelectorAll("[data-response-mode]").forEach(b => {
-        b.classList.remove("active","blue","orange");
-        if (b.dataset.responseMode === currentResponseMode) {
-          b.classList.add("active");
-          if (currentResponseMode === "gpt") b.classList.add("blue");
-          if (currentResponseMode === "claude") b.classList.add("orange");
-        }
-      });
-      if (currentResponseMode !== "duo") { lastDebateContext = null; updateConversationControls(); }
-      updateOptionsSummary();
-      addSys(currentResponseMode === "gpt" ? "Réponse : GPT seul" : currentResponseMode === "claude" ? "Réponse : Claude seul" : "Réponse : les deux IA");
-    }
-    function setStarterM(btn) {
-      document.querySelectorAll("[data-starter-m]").forEach(b => b.classList.remove("active","blue","orange"));
-      currentStarter = btn.dataset.starterM;
-      btn.classList.add("active");
-      btn.classList.add(currentStarter === "gpt" ? "blue" : "orange");
-      document.querySelectorAll("[data-starter]").forEach(b => {
-        b.classList.remove("active","blue","orange");
-        if (b.dataset.starter === currentStarter) {
-          b.classList.add("active");
-          b.classList.add(currentStarter === "gpt" ? "blue" : "orange");
-        }
-      });
-      addSys((currentStarter === "gpt" ? "GPT" : "Claude") + " commencera.");
-      updateOptionsSummary();
-    }
-    function setResponseMode(btn) {
-      document.querySelectorAll("[data-response-mode]").forEach(b => b.classList.remove("active","blue","orange"));
-      currentResponseMode = btn.dataset.responseMode;
-      btn.classList.add("active");
-      if (currentResponseMode === "gpt") btn.classList.add("blue");
-      if (currentResponseMode === "claude") btn.classList.add("orange");
-      document.querySelectorAll("[data-response-mode-m]").forEach(b => {
-        b.classList.remove("active","blue","orange");
-        if (b.dataset.responseModeM === currentResponseMode) {
-          b.classList.add("active");
-          if (currentResponseMode === "gpt") b.classList.add("blue");
-          if (currentResponseMode === "claude") b.classList.add("orange");
-        }
-      });
-      if (currentResponseMode === "gpt") addSys("Réponse sélectionnée : GPT seul");
-      else if (currentResponseMode === "claude") addSys("Réponse sélectionnée : Claude seul");
-      else addSys("Réponse sélectionnée : les deux IA");
-      if (currentResponseMode !== "duo") { lastDebateContext = null; updateConversationControls(); }
-      updateOptionsSummary();
-    }
-    function setStarter(btn) {
-      document.querySelectorAll("[data-starter]").forEach(b => b.classList.remove("active","blue","orange"));
-      currentStarter = btn.dataset.starter;
-      btn.classList.add("active");
-      btn.classList.add(currentStarter === "gpt" ? "blue" : "orange");
-      document.querySelectorAll("[data-starter-m]").forEach(b => {
-        b.classList.remove("active","blue","orange");
-        if (b.dataset.starterM === currentStarter) {
-          b.classList.add("active");
-          b.classList.add(currentStarter === "gpt" ? "blue" : "orange");
-        }
-      });
-      addSys((currentStarter === "gpt" ? "GPT" : "Claude") + " commencera.");
-      updateOptionsSummary();
-    }
-
-    /* ════════════════════════════════════
-       AUTH
-    ════════════════════════════════════ */
-    function switchTab(t) {
-      tab = t;
-      document.getElementById("auth-error").textContent = "";
-      document.getElementById("tab-login").className = "tab-btn" + (t === "login" ? " active" : "");
-      document.getElementById("tab-register").className = "tab-btn" + (t === "register" ? " active" : "");
-      document.getElementById("auth-submit-btn").textContent = t === "login" ? "Se connecter" : "S'inscrire";
-      document.getElementById("confirm-password-field").style.display = t === "register" ? "block" : "none";
-      document.getElementById("forgot-link-row").style.display = t === "login" ? "flex" : "none";
-      document.getElementById("auth-password").setAttribute("autocomplete", t === "login" ? "current-password" : "new-password");
-    }
-    function updateCounter() {
-      if (!currentUser) return;
-      const isAdmin = currentUser.toLowerCase() === ADMIN;
-      counter.style.display = "block";
-      counter.textContent = msgCount + " / " + (isAdmin ? "∞" : "5");
-      counter.className = isAdmin ? "" : (msgCount >= 5 ? "blocked" : msgCount >= 4 ? "warning" : "");
-    }
-    function backToAuthForm() {
-      document.getElementById("verify-box").style.display = "none";
-      document.getElementById("forgot-box").style.display = "none";
-      document.getElementById("auth-form-box").style.display = "block";
-      document.getElementById("verify-message").textContent = "";
-      document.getElementById("forgot-message").textContent = "";
-      document.getElementById("forgot-step-2").style.display = "none";
-      document.getElementById("forgot-send-btn").disabled = false;
-      switchTab("login");
-    }
-    function showForgotBox() {
-      document.getElementById("auth-form-box").style.display = "none";
-      document.getElementById("verify-box").style.display = "none";
-      document.getElementById("forgot-box").style.display = "block";
-      document.getElementById("forgot-message").textContent = "";
-      document.getElementById("forgot-step-2").style.display = "none";
-      document.getElementById("forgot-email-readonly").value = "";
-      document.getElementById("reset-code").value = "";
-      document.getElementById("new-password").value = "";
-      document.getElementById("new-password-confirm").value = "";
-    }
-    async function submitAuth() {
-      const email = document.getElementById("auth-email").value.trim();
-      const password = document.getElementById("auth-password").value;
-      const confirmPassword = document.getElementById("auth-password-confirm").value;
-      const errEl = document.getElementById("auth-error");
-      const btn = document.getElementById("auth-submit-btn");
-      errEl.style.color = "var(--red)"; errEl.textContent = "";
-      if (!email || !password) { errEl.textContent = "⚠ Remplis tous les champs"; return; }
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { errEl.textContent = "⚠ Email invalide"; return; }
-      if (tab === "register") {
-        if (password.length < 6) { errEl.textContent = "⚠ Mot de passe trop court (6 caractères min)"; return; }
-        if (!confirmPassword) { errEl.textContent = "⚠ Confirme ton mot de passe"; return; }
-        if (password !== confirmPassword) { errEl.textContent = "⚠ Les mots de passe ne correspondent pas"; return; }
+      if (topic === "pourquoi utiliser double mind") {
+        text = "<p><strong>Suite du débat :</strong> Claude ajoute que Double Mind doit surtout être utilisé pour les décisions importantes, les idées business, les choix scolaires/projets et les questions où un seul avis peut être trop limité.</p>";
+      } else if (topic === "rentable") {
+        text = "<p><strong>Suite du débat :</strong> Claude ajoute qu'avant de vendre un abonnement, il faut connaître le coût moyen par débat et fixer des limites très claires.</p>";
+      } else if (topic === "ameliorer") {
+        text = "<p><strong>Suite du débat :</strong> Claude ajoute que ta page doit ressembler à ton vrai produit : de gros blocs GPT/Claude, un verdict visible, et aucun modèle inutile.</p>";
+      } else if (topic === "lancer") {
+        text = "<p><strong>Suite du débat :</strong> Claude ajoute qu'il faut lancer une bêta limitée plutôt qu'attendre la perfection ou ouvrir trop largement sans contrôler les coûts.</p>";
       }
-      btn.disabled = true;
-      try {
-        const res = await fetch(WORKER + (tab === "login" ? "/login" : "/register"), {
-          method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password })
+
+      return `
+        <div class="response-block">
+          <div class="response-label claude">SUITE DU DÉBAT</div>
+          <div class="response-side claude">↻</div>
+          <div class="response-card claude">${text}</div>
+        </div>
+      `;
+    }
+
+    function renderDiscussion() {
+      let html = buildUserBlock(currentQuestion);
+
+      if (currentResponse === "GPT seul") {
+        html += buildGPTCard();
+      } else if (currentResponse === "Claude seul") {
+        html += buildClaudeCard();
+      } else if (currentStarter === "GPT commence") {
+        html += buildGPTCard();
+        html += buildClaudeCard();
+      } else {
+        html += buildClaudeCard();
+        html += buildGPTCard();
+      }
+
+      html += buildContinuation();
+      html += buildJudgePanel();
+      html += buildActions();
+      outputBody.innerHTML = html;
+      attachActionEvents();
+    }
+
+    function attachActionEvents() {
+      const continueBtn = document.getElementById("continueBtn");
+      const judgeBtn = document.getElementById("judgeBtn");
+      const shareBtn = document.getElementById("shareBtn");
+      const resetBtn = document.getElementById("resetBtn");
+
+      if (continueBtn) {
+        continueBtn.style.display = currentResponse === "Les deux" ? "inline-flex" : "none";
+        continueBtn.addEventListener("click", () => {
+          debateContinued = true;
+          renderDiscussion();
         });
-        const data = await res.json();
-        if (data.error) { errEl.textContent = "⚠ " + data.error; btn.disabled = false; return; }
-        if (tab === "register") {
-          if (data.needsVerification) {
-            document.getElementById("auth-form-box").style.display = "none";
-            document.getElementById("verify-box").style.display = "block";
-            document.getElementById("verify-email").value = data.email || email;
-            document.getElementById("verify-code").value = "";
-            document.getElementById("verify-message").style.color = "#67e6a5";
-            document.getElementById("verify-message").textContent = "✓ Code envoyé par email";
-            document.getElementById("verify-code").focus();
-          } else {
-            errEl.style.color = "#67e6a5"; errEl.textContent = "✓ Code envoyé par email";
-          }
-          btn.disabled = false; return;
-        }
-        loginSuccess(email, data.msgsUsed || 0);
-      } catch (e) { errEl.textContent = "⚠ Erreur réseau"; }
-      btn.disabled = false;
-    }
-    async function verifyCode() {
-      const email = document.getElementById("verify-email").value.trim();
-      const code  = document.getElementById("verify-code").value.trim();
-      const msg   = document.getElementById("verify-message");
-      if (code.length !== 6) { msg.style.color = "var(--red)"; msg.textContent = "⚠ Entrez un code à 6 chiffres"; return; }
-      msg.style.color = "var(--muted)"; msg.textContent = "Vérification...";
-      try {
-        const res = await fetch(WORKER + "/verify-code", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, code }) });
-        const data = await res.json();
-        if (data.success) {
-          msg.style.color = "#67e6a5"; msg.textContent = "✓ Compte confirmé !";
-          setTimeout(() => {
-            document.getElementById("verify-box").style.display = "none";
-            document.getElementById("auth-form-box").style.display = "block";
-            document.getElementById("auth-password").value = "";
-            document.getElementById("auth-password-confirm").value = "";
-            document.getElementById("auth-error").style.color = "#67e6a5";
-            document.getElementById("auth-error").textContent = "✓ Compte confirmé, connectez-vous.";
-            switchTab("login");
-          }, 1200);
-        } else { msg.style.color = "var(--red)"; msg.textContent = "⚠ " + (data.error || "Erreur"); }
-      } catch (e) { msg.style.color = "var(--red)"; msg.textContent = "⚠ Erreur réseau"; }
-    }
-    async function resendCode() {
-      const email = document.getElementById("verify-email").value.trim();
-      const msg   = document.getElementById("verify-message");
-      msg.style.color = "var(--muted)"; msg.textContent = "Envoi en cours...";
-      try {
-        const res = await fetch(WORKER + "/resend-code", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email }) });
-        const data = await res.json();
-        if (data.success) { msg.style.color = "#67e6a5"; msg.textContent = "✓ Nouveau code envoyé"; }
-        else { msg.style.color = "var(--red)"; msg.textContent = "⚠ " + (data.error || "Erreur"); }
-      } catch (e) { msg.style.color = "var(--red)"; msg.textContent = "⚠ Erreur réseau"; }
-    }
-    async function sendResetCode() {
-      const email = document.getElementById("forgot-email").value.trim();
-      const msg   = document.getElementById("forgot-message");
-      const btn   = document.getElementById("forgot-send-btn");
-      msg.style.color = "var(--red)"; msg.textContent = "";
-      if (!email) { msg.textContent = "⚠ Entrez votre email"; return; }
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { msg.textContent = "⚠ Email invalide"; return; }
-      btn.disabled = true; msg.style.color = "var(--muted)"; msg.textContent = "Envoi en cours...";
-      try {
-        const res = await fetch(WORKER + "/forgot-password", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email }) });
-        const data = await res.json();
-        if (data.success) {
-          msg.style.color = "#67e6a5"; msg.textContent = "✓ Code envoyé par email";
-          document.getElementById("forgot-step-2").style.display = "block";
-          document.getElementById("forgot-email-readonly").value = email;
-          document.getElementById("reset-code").focus();
-        } else { msg.style.color = "var(--red)"; msg.textContent = "⚠ " + (data.error || "Erreur"); }
-      } catch (e) { msg.style.color = "var(--red)"; msg.textContent = "⚠ Erreur réseau"; }
-      btn.disabled = false;
-    }
-    async function resetPassword() {
-      const email           = document.getElementById("forgot-email-readonly").value.trim();
-      const code            = document.getElementById("reset-code").value.trim();
-      const newPassword     = document.getElementById("new-password").value;
-      const confirmPassword = document.getElementById("new-password-confirm").value;
-      const msg             = document.getElementById("forgot-message");
-      msg.style.color = "var(--red)"; msg.textContent = "";
-      if (!email || !code || !newPassword || !confirmPassword) { msg.textContent = "⚠ Remplis tous les champs"; return; }
-      if (code.length !== 6) { msg.textContent = "⚠ Entrez un code à 6 chiffres"; return; }
-      if (newPassword.length < 6) { msg.textContent = "⚠ Nouveau mot de passe trop court (6 caractères min)"; return; }
-      if (newPassword !== confirmPassword) { msg.textContent = "⚠ Les mots de passe ne correspondent pas"; return; }
-      msg.style.color = "var(--muted)"; msg.textContent = "Changement en cours...";
-      try {
-        const res = await fetch(WORKER + "/reset-password", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, code, newPassword }) });
-        const data = await res.json();
-        if (data.success) {
-          msg.style.color = "#67e6a5"; msg.textContent = "✓ Mot de passe changé.";
-          setTimeout(() => {
-            backToAuthForm();
-            document.getElementById("auth-email").value = email;
-            document.getElementById("auth-error").style.color = "#67e6a5";
-            document.getElementById("auth-error").textContent = "✓ Mot de passe changé, connectez-vous.";
-          }, 1200);
-        } else { msg.style.color = "var(--red)"; msg.textContent = "⚠ " + (data.error || "Erreur"); }
-      } catch (e) { msg.style.color = "var(--red)"; msg.textContent = "⚠ Erreur réseau"; }
-    }
-
-    /* ════════════════════════════════════
-       SESSION
-    ════════════════════════════════════ */
-    function loginSuccess(email, msgsUsed = 0) {
-      currentUser = email; msgCount = msgsUsed; history = []; lastDebateContext = null; currentConversationId = 0;
-      localStorage.setItem("dm_user", email);
-      // Remet le compteur guest à zéro quand on se connecte
-      guestCount = 0; localStorage.removeItem("dm_guest_count");
-      document.getElementById("auth-btn").textContent = "Déconnexion";
-      document.getElementById("auth-btn").className = "connected";
-      document.getElementById("auth-screen").style.display = "none";
-      document.getElementById("chat-screen").style.display = "flex";
-      document.getElementById("mode-bar").style.display = "flex";
-      document.getElementById("history-btn").style.display = "block";
-      document.getElementById("new-conv-btn").style.display = "block";
-      if (guestWall) guestWall.style.display = "none";
-      limitWall.style.display = "none";
-      bottomBar.style.display = "block";
-      updateCounter(); updateConversationControls(); updateOptionsSummary();
-      setTimeout(() => userInput.focus(), 120);
-    }
-    function handleAuthBtn() {
-      if (!currentUser) {
-        // Depuis le chat, ouvre l'écran de connexion
-        openAuthFromGuest("login");
-        return;
-      }
-      currentUser = null; msgCount = 0; history = []; lastDebateContext = null; currentConversationId = 0;
-      localStorage.removeItem("dm_user");
-      document.getElementById("auth-btn").textContent = "Connexion";
-      document.getElementById("auth-btn").className = "";
-      document.getElementById("history-btn").style.display = "none";
-      document.getElementById("new-conv-btn").style.display = "none";
-      counter.style.display = "none";
-      // Retour au chat sans compte (pas à l'écran d'auth)
-      document.getElementById("auth-screen").style.display = "none";
-      document.getElementById("chat-screen").style.display = "flex";
-      document.getElementById("mode-bar").style.display = "flex";
-      document.getElementById("auth-form-box").style.display = "block";
-      document.getElementById("verify-box").style.display = "none";
-      document.getElementById("forgot-box").style.display = "none";
-      conversationControls.style.display = "none";
-      if (guestWall) guestWall.style.display = "none";
-      limitWall.style.display = "none";
-      bottomBar.style.display = "block";
-      if (heroCard) heroCard.style.display = "";
-      switchTab("login");
-    }
-
-    /* ════════════════════════════════════
-       GUEST WALL
-    ════════════════════════════════════ */
-    function showGuestWall() {
-      bottomBar.style.display = "none";
-      conversationControls.style.display = "none";
-      if (guestWall) guestWall.style.display = "flex";
-    }
-    function openAuthFromGuest(defaultTab) {
-      if (guestWall) guestWall.style.display = "none";
-      document.getElementById("chat-screen").style.display = "none";
-      document.getElementById("mode-bar").style.display = "none";
-      document.getElementById("auth-screen").style.display = "flex";
-      switchTab(defaultTab || "login");
-    }
-
-    /* ════════════════════════════════════
-       CONVERSATION CONTROLS
-    ════════════════════════════════════ */
-    function canContinueDebate() {
-      return currentResponseMode === "duo" && !!lastDebateContext;
-    }
-    function updateConversationControls() {
-      const show = canContinueDebate();
-      conversationControls.style.display = show ? "flex" : "none";
-      const judgeBtn = document.getElementById("judge-btn");
-      if (judgeBtn) judgeBtn.style.display = show && currentUser ? "inline-block" : "none";
-      const shareBtn = document.getElementById("share-btn");
-      if (shareBtn) shareBtn.style.display = (show && currentConversationId) ? "inline-block" : "none";
-    }
-    function resetConversationState() {
-      lastDebateContext = null;
-      currentConversationId = 0;
-      conversationControls.style.display = "none";
-      addSys("Contexte de débat réinitialisé.");
-    }
-
-    /* ════════════════════════════════════
-       NOUVELLE CONVERSATION
-    ════════════════════════════════════ */
-    function startNewConversation() {
-      lastDebateContext = null;
-      currentConversationId = 0;
-      history = [];
-      judgeWaiting = false;
-      isWaiting = false;
-
-      chatArea.innerHTML = "";
-
-      if (heroCard) {
-        heroCard.style.display = "";
-        chatArea.appendChild(heroCard);
       }
 
-      const sys = document.createElement("div");
-      sys.className = "msg system";
-      sys.innerHTML = '<div class="bubble">— Choisis le mode, choisis qui répond, choisis qui commence, puis regarde les deux IA confronter leurs idées —</div>';
-      chatArea.appendChild(sys);
-
-      conversationControls.style.display = "none";
-      if (guestWall) guestWall.style.display = "none";
-      limitWall.style.display = "none";
-      bottomBar.style.display = "block";
-
-      userInput.disabled = false;
-      document.getElementById("send-btn").disabled = false;
-      userInput.value = "";
-      resizeTextarea();
-      userInput.focus();
-    }
-
-    /* ════════════════════════════════════
-       SEND MESSAGE
-    ════════════════════════════════════ */
-    async function sendMessage() {
-      const text = userInput.value.trim();
-      if (!text || isWaiting) return;
-
-      // Limite invité
-      if (!currentUser) {
-        if (guestCount >= 2) {
-          showGuestWall();
-          return;
-        }
-      }
-
-      if (optionsOpen) {
-        optionsOpen = false;
-        document.getElementById("options-toggle-btn").classList.remove("open");
-        document.getElementById("options-panel").classList.remove("open");
-      }
-      const isAdmin = currentUser && currentUser.toLowerCase() === ADMIN;
-      if (currentUser && !isAdmin && msgCount >= 5) { limitWall.style.display = "flex"; bottomBar.style.display = "none"; return; }
-
-      userInput.value = ""; resizeTextarea();
-      isWaiting = true; userInput.disabled = true; document.getElementById("send-btn").disabled = true;
-      addMsg("user-msg","Vous","user-av","YOU",text);
-      history.push({ role: "user", content: text });
-
-      if (currentResponseMode === "gpt") addTyping("gpt");
-      else if (currentResponseMode === "claude") addTyping("claude");
-      else {
-        if (currentStarter === "gpt") { addTyping("gpt"); addTyping("claude"); }
-        else { addTyping("claude"); addTyping("gpt"); }
-      }
-
-      // Email à envoyer (invité utilise un compte dédié côté worker)
-      const emailToSend = currentUser || "guest@double-mind.com";
-
-      try {
-        const res = await fetch(WORKER + "/chat", {
-          method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ messages: history.slice(-12), email: emailToSend, mode: currentMode, responseMode: currentResponseMode, starter: currentStarter, conversationId: currentUser ? currentConversationId : 0 })
+      if (judgeBtn) {
+        judgeBtn.style.display = currentResponse === "Les deux" ? "inline-flex" : "none";
+        judgeBtn.addEventListener("click", () => {
+          verdictVisible = !verdictVisible;
+          renderDiscussion();
         });
-        const data = await res.json();
-        removeTyping();
+      }
 
-        if (data.error) {
-          if (data.error.includes("5 messages")) { limitWall.style.display = "flex"; bottomBar.style.display = "none"; }
-          else { addSys("⚠ " + data.error); }
-        } else {
-          if (data.conversationId && currentUser) currentConversationId = data.conversationId;
-          if (currentResponseMode === "gpt") {
-            if (data.gpt) { addMsg("gpt","GPT-4o","gpt-av","GPT",data.gpt); history.push({ role: "assistant", content: data.gpt, ai: "gpt" }); }
-          } else if (currentResponseMode === "claude") {
-            if (data.claude) { addMsg("claude","Claude","claude-av","CLD",data.claude); history.push({ role: "assistant", content: data.claude, ai: "claude" }); }
-          } else {
-            if (currentStarter === "gpt") {
-              if (data.gpt)   { addMsg("gpt","GPT-4o","gpt-av","GPT",data.gpt); history.push({ role: "assistant", content: data.gpt, ai: "gpt" }); }
-              if (data.claude){ await new Promise(r => setTimeout(r, 380)); addMsg("claude","Claude","claude-av","CLD",data.claude); history.push({ role: "assistant", content: data.claude, ai: "claude" }); }
+      if (shareBtn) {
+        shareBtn.addEventListener("click", async () => {
+          const text = `Double Mind — Question : ${currentQuestion}`;
+          try {
+            if (navigator.share) {
+              await navigator.share({ title: "Double Mind", text });
             } else {
-              if (data.claude){ addMsg("claude","Claude","claude-av","CLD",data.claude); history.push({ role: "assistant", content: data.claude, ai: "claude" }); }
-              if (data.gpt)   { await new Promise(r => setTimeout(r, 380)); addMsg("gpt","GPT-4o","gpt-av","GPT",data.gpt); history.push({ role: "assistant", content: data.gpt, ai: "gpt" }); }
+              await navigator.clipboard.writeText(text);
+              shareBtn.textContent = "Copié ✓";
+              setTimeout(() => { shareBtn.textContent = "🔗 Partager"; }, 1200);
             }
-            lastDebateContext = { starter: currentStarter, lastUserMessage: text, gpt: data.gpt || "", claude: data.claude || "" };
+          } catch (error) {
+            console.log(error);
           }
-          if (currentResponseMode !== "duo") lastDebateContext = null;
-
-          if (!currentUser) {
-            // Invité
-            guestCount++;
-            localStorage.setItem("dm_guest_count", String(guestCount));
-            if (guestCount >= 2) {
-              await new Promise(r => setTimeout(r, 500));
-              showGuestWall();
-            }
-          } else {
-            msgCount++; updateCounter(); updateConversationControls();
-            if (!isAdmin && msgCount >= 5) { await new Promise(r => setTimeout(r, 450)); limitWall.style.display = "flex"; bottomBar.style.display = "none"; }
-          }
-        }
-      } catch (e) { removeTyping(); addSys("⚠ Erreur réseau : " + e.message); }
-      isWaiting = false; userInput.disabled = false; document.getElementById("send-btn").disabled = false; userInput.focus();
-    }
-
-    /* ════════════════════════════════════
-       CONTINUE DEBATE
-    ════════════════════════════════════ */
-    async function continueDebate() {
-      if (!currentUser || !lastDebateContext || isWaiting) return;
-      const isAdmin = currentUser.toLowerCase() === ADMIN;
-      if (!isAdmin && msgCount >= 5) { limitWall.style.display = "flex"; bottomBar.style.display = "none"; return; }
-      isWaiting = true; userInput.disabled = true; document.getElementById("send-btn").disabled = true;
-      addSys("Les deux IA poursuivent leur débat...");
-      if (currentStarter === "gpt") { addTyping("gpt"); addTyping("claude"); } else { addTyping("claude"); addTyping("gpt"); }
-      try {
-        const res = await fetch(WORKER + "/chat", {
-          method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ messages: history.slice(-12), email: currentUser, mode: currentMode, responseMode: "duo", starter: currentStarter, continueDebate: true, debateContext: lastDebateContext, conversationId: currentConversationId })
         });
-        const data = await res.json();
-        removeTyping();
-        if (data.error) { addSys("⚠ " + data.error); }
-        else {
-          if (data.conversationId) currentConversationId = data.conversationId;
-          if (currentStarter === "gpt") {
-            if (data.gpt)   { addMsg("gpt","GPT-4o","gpt-av","GPT",data.gpt); history.push({ role: "assistant", content: data.gpt, ai: "gpt" }); }
-            if (data.claude){ await new Promise(r => setTimeout(r, 380)); addMsg("claude","Claude","claude-av","CLD",data.claude); history.push({ role: "assistant", content: data.claude, ai: "claude" }); }
-          } else {
-            if (data.claude){ addMsg("claude","Claude","claude-av","CLD",data.claude); history.push({ role: "assistant", content: data.claude, ai: "claude" }); }
-            if (data.gpt)   { await new Promise(r => setTimeout(r, 380)); addMsg("gpt","GPT-4o","gpt-av","GPT",data.gpt); history.push({ role: "assistant", content: data.gpt, ai: "gpt" }); }
-          }
-          lastDebateContext = { starter: currentStarter, lastUserMessage: lastDebateContext.lastUserMessage, gpt: data.gpt || "", claude: data.claude || "" };
-          msgCount++; updateCounter(); updateConversationControls();
-        }
-      } catch (e) { removeTyping(); addSys("⚠ Erreur réseau : " + e.message); }
-      isWaiting = false; userInput.disabled = false; document.getElementById("send-btn").disabled = false; userInput.focus();
-    }
+      }
 
-    /* ════════════════════════════════════
-       HISTORY DRAWER
-    ════════════════════════════════════ */
-    function openHistoryDrawer() {
-      if (!currentUser) return;
-      document.getElementById("history-overlay").style.display = "block";
-      document.getElementById("history-drawer").classList.add("open");
-      loadConversationList();
-    }
-    function closeHistoryDrawer() {
-      document.getElementById("history-overlay").style.display = "none";
-      document.getElementById("history-drawer").classList.remove("open");
-    }
-    async function loadConversationList() {
-      const list = document.getElementById("drawer-list");
-      list.innerHTML = '<div class="drawer-loading">⏳ Chargement...</div>';
-      try {
-        const res = await fetch(WORKER + "/list-conversations", {
-          method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: currentUser })
+      if (resetBtn) {
+        resetBtn.addEventListener("click", () => {
+          currentQuestion = "Pourquoi utiliser Double Mind ?";
+          debateContinued = false;
+          verdictVisible = currentResponse === "Les deux";
+          promptButtons.forEach((button) => button.classList.remove("active"));
+          promptButtons[0].classList.add("active");
+          renderDiscussion();
         });
-        const data = await res.json();
-        if (!data.success || !data.conversations || data.conversations.length === 0) {
-          list.innerHTML = '<div class="drawer-empty">Aucune conversation enregistrée.<br>Lance une discussion pour la voir apparaître ici.</div>';
-          return;
-        }
-        list.innerHTML = "";
-        data.conversations.forEach(conv => {
-          const date = new Date(conv.updated_at).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "2-digit" });
-          const modeLabel = { classic: "Classique", debate: "Débat", expert: "Expert", creative: "Créatif", clash: "Clash" }[conv.mode] || conv.mode;
-          const item = document.createElement("div");
-          item.className = "drawer-item";
-          item.innerHTML = `
-            <div class="drawer-item-main">
-              <div class="drawer-item-title">${esc(conv.title || "Conversation")}</div>
-              <div class="drawer-item-meta"><span>📅 ${date}</span><span>⚙ ${modeLabel}</span></div>
-            </div>
-            <button class="drawer-delete-btn" title="Supprimer" onclick="deleteConversation(event, ${conv.id})">✕</button>
-          `;
-          item.querySelector(".drawer-item-main").addEventListener("click", () => loadConversation(conv.id, conv.title));
-          list.appendChild(item);
-        });
-      } catch (e) {
-        list.innerHTML = '<div class="drawer-empty">⚠ Erreur de chargement</div>';
       }
     }
 
-    /* ── Supprimer une conversation ── */
-    async function deleteConversation(e, convId) {
-      e.stopPropagation();
-      if (!confirm("Supprimer cette conversation ?")) return;
-      try {
-        const res = await fetch(WORKER + "/delete-conversation", {
-          method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: currentUser, conversationId: convId })
-        });
-        const data = await res.json();
-        if (data.success) {
-          if (currentConversationId === convId) { currentConversationId = 0; lastDebateContext = null; }
-          loadConversationList();
-        } else {
-          alert("⚠ " + (data.error || "Impossible de supprimer"));
-        }
-      } catch { alert("⚠ Erreur réseau"); }
-    }
+    chatForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const value = userInput.value.trim();
+      if (!value) return;
+      currentQuestion = value;
+      debateContinued = false;
+      verdictVisible = currentResponse === "Les deux";
+      promptButtons.forEach((button) => button.classList.remove("active"));
+      renderDiscussion();
+      userInput.value = "";
+    });
 
-    /* ── Charger une conversation ── */
-    async function loadConversation(convId, title) {
-      closeHistoryDrawer();
-      addSys("⏳ Chargement de la conversation...");
-      try {
-        const res = await fetch(WORKER + "/get-conversation", {
-          method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: currentUser, conversationId: convId })
-        });
-        const data = await res.json();
-        if (!data.success) { addSys("⚠ Impossible de charger cette conversation."); return; }
-
-        if (heroCard) heroCard.style.display = "none";
-        chatArea.innerHTML = "";
-        history = []; lastDebateContext = null; currentConversationId = convId;
-
-        const sep = document.createElement("div");
-        sep.className = "msg system";
-        sep.innerHTML = `<div class="bubble">📂 ${esc(data.conversation.title || "Conversation chargée")}</div>`;
-        chatArea.appendChild(sep);
-
-        let lastGpt = "", lastClaude = "", lastUser = "";
-        data.messages.forEach(msg => {
-          if (msg.role === "user") {
-            addMsg("user-msg","Vous","user-av","YOU",msg.content);
-            history.push({ role: "user", content: msg.content });
-            lastUser = msg.content;
-          } else if (msg.role === "assistant" && msg.ai === "gpt") {
-            addMsg("gpt","GPT-4o","gpt-av","GPT",msg.content);
-            history.push({ role: "assistant", content: msg.content, ai: "gpt" });
-            lastGpt = msg.content;
-          } else if (msg.role === "assistant" && msg.ai === "claude") {
-            addMsg("claude","Claude","claude-av","CLD",msg.content);
-            history.push({ role: "assistant", content: msg.content, ai: "claude" });
-            lastClaude = msg.content;
-          } else if (msg.role === "assistant" && msg.ai === "judge") {
-            // Affiche le verdict du juge s'il a été sauvegardé
-            try {
-              const verdict = JSON.parse(msg.content);
-              displayJudgeCard(verdict);
-            } catch { /* ignore */ }
-          }
-        });
-
-        if (lastGpt && lastClaude && lastUser) {
-          lastDebateContext = { starter: currentStarter, lastUserMessage: lastUser, gpt: lastGpt, claude: lastClaude };
-        }
-        updateConversationControls();
-        chatArea.scrollTop = chatArea.scrollHeight;
-      } catch (e) { addSys("⚠ Erreur réseau : " + e.message); }
-    }
-
-    /* ════════════════════════════════════
-       SHARE MODAL
-    ════════════════════════════════════ */
-    async function openShareModal() {
-      if (!currentConversationId || !currentUser) return;
-      const overlay = document.getElementById("share-modal-overlay");
-      const body    = document.getElementById("share-modal-body");
-      overlay.style.display = "flex";
-      body.innerHTML = '<div class="share-loading">⏳ Génération du lien...</div>';
-      try {
-        const res = await fetch(WORKER + "/share-conversation", {
-          method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: currentUser, conversationId: currentConversationId })
-        });
-        const data = await res.json();
-        if (!data.success || !data.shareUrl) {
-          body.innerHTML = '<div class="share-loading">⚠ Impossible de générer le lien.</div>'; return;
-        }
-        const url     = data.shareUrl;
-        const text    = encodeURIComponent("Je viens de comparer GPT et Claude sur Double Mind 🤖⚔️");
-        const urlEnc  = encodeURIComponent(url);
-        body.innerHTML = `
-          <div class="share-url-box">
-            <span id="share-url-text">${esc(url)}</span>
-            <button id="share-copy-btn" onclick="copyShareUrl('${esc(url)}')">📋 Copier</button>
-          </div>
-          <div class="share-socials">
-            <button class="share-social-btn" onclick="window.open('https://twitter.com/intent/tweet?text=${text}&url=${urlEnc}','_blank')"><span class="s-icon">𝕏</span><span>X / Twitter</span></button>
-            <button class="share-social-btn" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url=${urlEnc}','_blank')"><span class="s-icon">💼</span><span>LinkedIn</span></button>
-            <button class="share-social-btn" onclick="window.open('https://api.whatsapp.com/send?text=${text}%20${urlEnc}','_blank')"><span class="s-icon">💬</span><span>WhatsApp</span></button>
-            <button class="share-social-btn" onclick="window.open('https://t.me/share/url?url=${urlEnc}&text=${text}','_blank')"><span class="s-icon">✈️</span><span>Telegram</span></button>
-          </div>`;
-      } catch (e) { body.innerHTML = '<div class="share-loading">⚠ Erreur réseau.</div>'; }
-    }
-    function closeShareModal() {
-      document.getElementById("share-modal-overlay").style.display = "none";
-    }
-    function copyShareUrl(url) {
-      navigator.clipboard.writeText(url).then(() => {
-        const btn = document.getElementById("share-copy-btn");
-        if (btn) { btn.textContent = "✓ Copié !"; setTimeout(() => { btn.textContent = "📋 Copier"; }, 2000); }
-      }).catch(() => { const btn = document.getElementById("share-copy-btn"); if (btn) btn.textContent = "⚠ Erreur"; });
-    }
-
-    /* ════════════════════════════════════
-       EVENTS
-    ════════════════════════════════════ */
-    userInput.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
-    userInput.addEventListener("input", resizeTextarea);
-    document.getElementById("verify-code").addEventListener("keydown", e => { if (e.key === "Enter") verifyCode(); });
-    document.getElementById("reset-code").addEventListener("keydown", e => { if (e.key === "Enter") resetPassword(); });
-    document.getElementById("new-password-confirm").addEventListener("keydown", e => { if (e.key === "Enter") resetPassword(); });
-
-    /* ════════════════════════════════════
-       INIT — chat visible par défaut, auth masquée
-       L'écran d'auth n'apparaît que si l'utilisateur
-       clique sur "Connexion" ou atteint la limite invité.
-    ════════════════════════════════════ */
-    document.getElementById("auth-screen").style.display = "none";
-    document.getElementById("chat-screen").style.display = "flex";
-    document.getElementById("mode-bar").style.display = "flex";
-
-    // Restauration de session si email sauvegardé
-    (async function restoreSession() {
-      const savedEmail = localStorage.getItem("dm_user");
-      if (!savedEmail) return;
-      try {
-        const res = await fetch(WORKER + "/login-check", {
-          method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: savedEmail })
-        });
-        const data = await res.json();
-        if (data.success) loginSuccess(savedEmail, data.msgsUsed || 0);
-        else localStorage.removeItem("dm_user");
-      } catch { localStorage.removeItem("dm_user"); }
-    })();
+    renderDiscussion();
   </script>
 </body>
 </html>
