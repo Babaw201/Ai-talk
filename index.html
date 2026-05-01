@@ -1120,17 +1120,11 @@
     }
   </style>
   <style>
-    /* App hidden until user clicks CTA */
-    #app { display: none !important; }
-    /* When landing is visible, allow scrolling */
-    body:has(#landing-page:not([style*="display: none"])) {
-      overflow: auto !important;
-      height: auto !important;
-    }
-    html:has(#landing-page:not([style*="display: none"])) {
-      overflow: auto !important;
-      height: auto !important;
-    }
+    /* Landing visible par défaut, app cachée */
+    #app { display: none; }
+    /* Scroll actif sur la landing */
+    html, body { overflow: auto !important; height: auto !important; }
+    /* Quand l'app est active (landing cachée), re-bloquer le scroll via JS dans enterApp() */
   </style>
 </head>
 <body>
@@ -1802,33 +1796,38 @@
 
 <script>
   function enterApp() {
-    // Masque la landing
-    document.getElementById('landing-page').style.display = 'none';
-    // Rétablit overflow:hidden pour l'app
-    document.documentElement.style.overflow = 'hidden';
-    document.documentElement.style.height = '100%';
-    document.body.style.overflow = 'hidden';
-    document.body.style.height = '100%';
-    // Affiche l'app
-    var app = document.getElementById('app');
-    app.style.removeProperty('display');
-    app.style.display = 'flex';
-    // Détermine quel écran afficher
-    var authScreen = document.getElementById('auth-screen');
-    var chatScreen = document.getElementById('chat-screen');
-    var modeBar    = document.getElementById('mode-bar');
+    var landing = document.getElementById('landing-page');
+    var app     = document.getElementById('app');
+    var auth    = document.getElementById('auth-screen');
+    var chat    = document.getElementById('chat-screen');
+    var modeBar = document.getElementById('mode-bar');
+
+    // 1. Cache la landing
+    if (landing) landing.style.cssText = 'display:none!important';
+
+    // 2. Restore scroll/overflow pour l'app
+    document.documentElement.style.cssText = 'overflow:hidden;height:100%';
+    document.body.style.cssText = 'overflow:hidden;height:100%';
+
+    // 3. Affiche l'app - utilise setAttribute pour écraser tout CSS
+    if (app) {
+      app.removeAttribute('style');
+      app.setAttribute('style', 'display:flex!important;flex-direction:column;height:100dvh;overflow:hidden;position:relative');
+    }
+
+    // 4. Affiche auth ou chat
     var dmUser = null;
     try { dmUser = localStorage.getItem('dm_user'); } catch(e) {}
-    if (dmUser) {
-      // Déjà connecté → chat direct
-      if (authScreen) authScreen.style.display = 'none';
-      if (chatScreen) { chatScreen.style.removeProperty('display'); chatScreen.style.display = 'flex'; }
-      if (modeBar)    { modeBar.style.removeProperty('display');    modeBar.style.display    = 'flex'; }
+
+    if (dmUser && chat) {
+      if (auth) auth.style.cssText = 'display:none!important';
+      chat.style.cssText = 'display:flex!important;flex:1;flex-direction:column;min-height:0;overflow:hidden';
+      if (modeBar) modeBar.style.cssText = 'display:flex!important';
     } else {
-      // Pas connecté → écran de connexion
-      if (authScreen) { authScreen.style.removeProperty('display'); authScreen.style.display = 'flex'; }
-      if (chatScreen) chatScreen.style.display = 'none';
+      if (auth) auth.style.cssText = 'display:flex!important;flex:1;align-items:center;justify-content:center;padding:20px 14px;overflow-y:auto';
+      if (chat) chat.style.cssText = 'display:none!important';
     }
+
     window.scrollTo(0, 0);
   }
 </script>
