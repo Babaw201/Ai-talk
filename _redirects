@@ -1,3 +1,4 @@
-/app  /app.html  200
-/share  /share.html  200
+/app    /app.html    200
+/app/   /app.html    200
 /share/*  /share.html  200
+
