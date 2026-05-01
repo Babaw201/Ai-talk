@@ -92,7 +92,7 @@
     #new-conv-btn:hover { background: linear-gradient(180deg, rgba(57,217,138,0.2), rgba(57,217,138,0.1)); border-color: rgba(57,217,138,0.5); }
 
     /* ─── AUTH SCREEN ─── */
-    #auth-screen { flex: 1; display: none; align-items: center; justify-content: center; padding: 20px 14px; overflow-y: auto; }
+    #auth-screen { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px 14px; overflow-y: auto; }
     .auth-shell { width: 100%; max-width: 470px; }
     .auth-panel { position: relative; overflow: hidden; background: linear-gradient(180deg, rgba(12, 18, 31, 0.92), rgba(8, 12, 22, 0.96)); border: 1px solid var(--border-strong); border-radius: 24px; box-shadow: var(--shadow-soft); padding: 24px; }
     .auth-panel::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at top left, rgba(90,168,255,0.12), transparent 25%), radial-gradient(circle at top right, rgba(255,155,69,0.08), transparent 18%); pointer-events: none; }
@@ -135,7 +135,7 @@
     .back-link:hover { color: var(--white); }
 
     /* ─── CHAT SCREEN ─── */
-    #chat-screen { flex: 1; display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+    #chat-screen { flex: 1; display: none; flex-direction: column; min-height: 0; overflow: hidden; }
     #mode-bar { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--border); background: rgba(8,13,22,0.72); backdrop-filter: blur(8px); overflow-x: auto; scrollbar-width: none; flex-shrink: 0; }
     #mode-bar::-webkit-scrollbar { display: none; }
     .mode-label { color: var(--muted); font-size: 11px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; white-space: nowrap; flex-shrink: 0; }
@@ -1802,27 +1802,32 @@
 
 <script>
   function enterApp() {
-    // Hide landing
+    // Masque la landing
     document.getElementById('landing-page').style.display = 'none';
-    // Restore overflow:hidden for the app
+    // Rétablit overflow:hidden pour l'app
     document.documentElement.style.overflow = 'hidden';
     document.documentElement.style.height = '100%';
     document.body.style.overflow = 'hidden';
     document.body.style.height = '100%';
-    // Show app
+    // Affiche l'app
     var app = document.getElementById('app');
     app.style.removeProperty('display');
     app.style.display = 'flex';
-    // Show chat screen directly (skip auth if already logged in, else show auth)
+    // Détermine quel écran afficher
     var authScreen = document.getElementById('auth-screen');
     var chatScreen = document.getElementById('chat-screen');
+    var modeBar    = document.getElementById('mode-bar');
     var dmUser = null;
     try { dmUser = localStorage.getItem('dm_user'); } catch(e) {}
-    if (dmUser && chatScreen) {
+    if (dmUser) {
+      // Déjà connecté → chat direct
       if (authScreen) authScreen.style.display = 'none';
-      chatScreen.style.display = 'flex';
-    } else if (authScreen) {
-      authScreen.style.display = 'flex';
+      if (chatScreen) { chatScreen.style.removeProperty('display'); chatScreen.style.display = 'flex'; }
+      if (modeBar)    { modeBar.style.removeProperty('display');    modeBar.style.display    = 'flex'; }
+    } else {
+      // Pas connecté → écran de connexion
+      if (authScreen) { authScreen.style.removeProperty('display'); authScreen.style.display = 'flex'; }
+      if (chatScreen) chatScreen.style.display = 'none';
     }
     window.scrollTo(0, 0);
   }
@@ -2908,9 +2913,8 @@
        L'écran d'auth n'apparaît que si l'utilisateur
        clique sur "Connexion" ou atteint la limite invité.
     ════════════════════════════════════ */
-    document.getElementById("auth-screen").style.display = "none";
-    document.getElementById("chat-screen").style.display = "flex";
-    document.getElementById("mode-bar").style.display = "flex";
+    // N'affiche le chat qu'après connexion ou si déjà logué — la landing gère l'affichage initial
+    // auth-screen et chat-screen restent cachés jusqu'à enterApp()
 
     // Restauration de session si email sauvegardé
     (async function restoreSession() {
