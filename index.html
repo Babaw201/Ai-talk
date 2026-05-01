@@ -92,7 +92,7 @@
     #new-conv-btn:hover { background: linear-gradient(180deg, rgba(57,217,138,0.2), rgba(57,217,138,0.1)); border-color: rgba(57,217,138,0.5); }
 
     /* ─── AUTH SCREEN ─── */
-    #auth-screen { flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px 14px; overflow-y: auto; }
+    #auth-screen { flex: 1; display: flex; align-items: flex-start; justify-content: center; padding: 20px 14px; overflow-y: auto; }
     .auth-shell { width: 100%; max-width: 470px; }
     .auth-panel { position: relative; overflow: hidden; background: linear-gradient(180deg, rgba(12, 18, 31, 0.92), rgba(8, 12, 22, 0.96)); border: 1px solid var(--border-strong); border-radius: 24px; box-shadow: var(--shadow-soft); padding: 24px; }
     .auth-panel::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at top left, rgba(90,168,255,0.12), transparent 25%), radial-gradient(circle at top right, rgba(255,155,69,0.08), transparent 18%); pointer-events: none; }
@@ -1803,30 +1803,19 @@
     var modeBar = document.getElementById('mode-bar');
 
     // 1. Cache la landing
-    if (landing) landing.style.cssText = 'display:none!important';
+    if (landing) landing.setAttribute('style', 'display:none!important');
 
-    // 2. Restore scroll/overflow pour l'app
+    // 2. Restore overflow:hidden pour l'app
     document.documentElement.style.cssText = 'overflow:hidden;height:100%';
     document.body.style.cssText = 'overflow:hidden;height:100%';
 
-    // 3. Affiche l'app - utilise setAttribute pour écraser tout CSS
-    if (app) {
-      app.removeAttribute('style');
-      app.setAttribute('style', 'display:flex!important;flex-direction:column;height:100dvh;overflow:hidden;position:relative');
-    }
+    // 3. Affiche l'app
+    if (app) app.setAttribute('style', 'display:flex!important;flex-direction:column;height:100dvh;overflow:hidden;position:relative');
 
-    // 4. Affiche auth ou chat
-    var dmUser = null;
-    try { dmUser = localStorage.getItem('dm_user'); } catch(e) {}
-
-    if (dmUser && chat) {
-      if (auth) auth.style.cssText = 'display:none!important';
-      chat.style.cssText = 'display:flex!important;flex:1;flex-direction:column;min-height:0;overflow:hidden';
-      if (modeBar) modeBar.style.cssText = 'display:flex!important';
-    } else {
-      if (auth) auth.style.cssText = 'display:flex!important;flex:1;align-items:center;justify-content:center;padding:20px 14px;overflow-y:auto';
-      if (chat) chat.style.cssText = 'display:none!important';
-    }
+    // 4. Ouvre le chat directement (mode guest — l'auth s'affiche après 2 messages ou si l'user clique "Connexion")
+    if (auth) auth.setAttribute('style', 'display:none!important');
+    if (chat) chat.setAttribute('style', 'display:flex!important;flex:1;flex-direction:column;min-height:0;overflow:hidden');
+    if (modeBar) modeBar.setAttribute('style', 'display:flex!important');
 
     window.scrollTo(0, 0);
   }
