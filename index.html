@@ -5060,5 +5060,130 @@
   })();
 </script>
 
+
+
+<!-- ═══ Fix Double Mind: pas de scroll global sur les pages app/chat/auth ═══ -->
+<style>
+  /* La landing peut scroller. Dès que l'app est ouverte, seul le contenu interne utile peut défiler. */
+  html.dm-app-locked,
+  html.dm-app-locked body,
+  body.dm-app-mode {
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    overflow: hidden !important;
+    overscroll-behavior: none !important;
+  }
+
+  body.dm-app-mode #landing-page {
+    display: none !important;
+  }
+
+  body.dm-app-mode #app {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+  }
+
+  body.dm-app-mode #auth-screen,
+  body.dm-app-mode #chat-screen {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: hidden !important;
+  }
+
+  /* Le chat peut défiler uniquement quand il y a vraiment beaucoup de messages. */
+  body.dm-app-mode #chat-area {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+  }
+
+  body.dm-app-mode #bottom-bar,
+  body.dm-app-mode #mode-bar,
+  body.dm-app-mode .conversation-controls,
+  body.dm-app-mode #guest-wall,
+  body.dm-app-mode #limit-wall {
+    flex-shrink: 0 !important;
+  }
+
+  /* L'auth reste centrée, sans créer de scroll de page. Sur très petit écran, seul le panneau peut respirer. */
+  body.dm-app-mode #auth-screen {
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 14px !important;
+  }
+
+  body.dm-app-mode .auth-shell {
+    max-height: calc(100dvh - 96px) !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+  }
+</style>
+
+<script>
+  (function() {
+    function lockDoubleMindAppScroll() {
+      document.documentElement.classList.add('dm-app-locked');
+      document.body.classList.add('dm-app-mode');
+      document.documentElement.style.setProperty('overflow', 'hidden', 'important');
+      document.documentElement.style.setProperty('height', '100%', 'important');
+      document.documentElement.style.setProperty('max-height', '100%', 'important');
+      document.body.style.setProperty('overflow', 'hidden', 'important');
+      document.body.style.setProperty('height', '100%', 'important');
+      document.body.style.setProperty('max-height', '100%', 'important');
+    }
+
+    const previousEnterApp = window.enterApp;
+    if (typeof previousEnterApp === 'function') {
+      window.enterApp = function() {
+        lockDoubleMindAppScroll();
+        const result = previousEnterApp.apply(this, arguments);
+        lockDoubleMindAppScroll();
+        window.scrollTo(0, 0);
+        return result;
+      };
+    }
+
+    const previousOpenAuthFromGuest = window.openAuthFromGuest;
+    if (typeof previousOpenAuthFromGuest === 'function') {
+      window.openAuthFromGuest = function() {
+        lockDoubleMindAppScroll();
+        const result = previousOpenAuthFromGuest.apply(this, arguments);
+        lockDoubleMindAppScroll();
+        return result;
+      };
+    }
+
+    const previousLoginSuccess = window.loginSuccess;
+    if (typeof previousLoginSuccess === 'function') {
+      window.loginSuccess = function() {
+        lockDoubleMindAppScroll();
+        const result = previousLoginSuccess.apply(this, arguments);
+        lockDoubleMindAppScroll();
+        return result;
+      };
+    }
+
+    const previousHandleAuthBtn = window.handleAuthBtn;
+    if (typeof previousHandleAuthBtn === 'function') {
+      window.handleAuthBtn = function() {
+        const result = previousHandleAuthBtn.apply(this, arguments);
+        if (document.getElementById('app')?.style.display !== 'none') {
+          lockDoubleMindAppScroll();
+        }
+        return result;
+      };
+    }
+  })();
+</script>
+
 </body>
 </html>
