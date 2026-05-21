@@ -361,22 +361,11 @@
     }
 
     @media (max-width: 480px) {
-      header { flex-wrap: nowrap; padding: 8px 10px; gap: 8px; }
-      .brand { flex: 1 1 auto; min-width: 0; }
-      .header-right {
-        flex: 0 0 auto;
-        flex-wrap: nowrap;
-        justify-content: flex-end;
-        gap: 6px;
-        max-width: 62%;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-      }
-      .header-right::-webkit-scrollbar { display: none; }
-      #msg-counter { margin-left: 0; }
-      #auth-btn { margin-left: 0; flex-shrink: 0; }
-      #history-btn, #new-conv-btn { flex-shrink: 0; }
+      header { flex-wrap: wrap; padding: 8px 10px 6px; gap: 6px; }
+      .brand { flex: 1 1 100%; }
+      .header-right { flex: 1 1 100%; justify-content: flex-start; gap: 6px; padding-bottom: 2px; flex-wrap: wrap; }
+      #msg-counter { margin-left: auto; }
+      #auth-btn { margin-left: 4px; }
     }
 
     @media (max-width: 420px) {
@@ -2795,6 +2784,9 @@
        SESSION
     ════════════════════════════════════ */
     function loginSuccess(email, msgsUsed = 0) {
+      // Afficher #app et masquer la landing (sinon dm-app-mode cache la landing mais #app reste display:none)
+      if (typeof window.enterApp === "function") window.enterApp();
+
       currentUser = email; msgCount = msgsUsed; history = []; lastDebateContext = null; currentConversationId = 0;
       localStorage.setItem("dm_user", email);
       // Remet le compteur guest à zéro quand on se connecte
@@ -2849,6 +2841,7 @@
       if (guestWall) guestWall.style.display = "flex";
     }
     function openAuthFromGuest(defaultTab) {
+      if (typeof window.enterApp === "function") window.enterApp();
       if (guestWall) guestWall.style.display = "none";
       document.getElementById("chat-screen").style.display = "none";
       document.getElementById("mode-bar").style.display = "none";
@@ -4866,14 +4859,9 @@
     box-shadow: 0 14px 30px rgba(0,0,0,.18);
   }
 
-  /* Transitions entre landing et app */
+  /* Transitions entre landing et app — masquer complètement (évite écran vide) */
   body.dm-app-mode #landing-page {
-    animation: dmLandingOut .32s ease both;
-  }
-
-  @keyframes dmLandingOut {
-    from { opacity: 1; filter: blur(0); }
-    to { opacity: 0; filter: blur(7px); }
+    display: none !important;
   }
 
   /* Petits champs lumineux ajoutés par JS */
