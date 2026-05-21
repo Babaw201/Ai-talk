@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Double Mind — Tarifs</title>
+  <meta name="description" content="Compare GPT et Claude, obtiens un verdict IA. Plans Gratuit, Plus, Scale et Pro." />
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #05070d;
+      --card: rgba(12, 18, 32, 0.94);
+      --border: rgba(109, 140, 197, 0.2);
+      --border-strong: rgba(109, 140, 197, 0.35);
+      --text: #edf3ff;
+      --muted: #8c9bb8;
+      --blue: #5aa8ff;
+      --orange: #ff9b45;
+      --green: #39d98a;
+      --gold: #ffc850;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      font-family: Inter, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 0%, rgba(43, 94, 193, 0.14), transparent 32%),
+        radial-gradient(circle at 85% 8%, rgba(255, 122, 26, 0.08), transparent 28%),
+        linear-gradient(180deg, #07101c 0%, #03050a 100%);
+    }
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 20px; max-width: 1100px; margin: 0 auto;
+      border-bottom: 1px solid var(--border);
+    }
+    .brand {
+      font-family: Orbitron, sans-serif; font-size: 18px; font-weight: 900;
+      text-decoration: none; letter-spacing: 0.5px;
+    }
+    .brand .b { color: var(--blue); }
+    .brand .o { color: var(--orange); }
+    .nav a.link { color: var(--muted); text-decoration: none; font-weight: 700; font-size: 14px; }
+    .nav a.link:hover { color: var(--text); }
+    .nav-cta {
+      background: linear-gradient(180deg, #69b4ff, #4f88ff);
+      color: #08111f; font-weight: 800; font-size: 13px;
+      padding: 10px 16px; border-radius: 12px; text-decoration: none;
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 36px 16px 64px; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 12px; border-radius: 999px;
+      border: 1px solid var(--border); font-size: 12px; font-weight: 700; color: var(--muted);
+      margin-bottom: 14px;
+    }
+    .hero-tag span { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+    h1 {
+      font-size: clamp(28px, 5vw, 40px); line-height: 1.15; margin-bottom: 12px;
+      max-width: 720px;
+    }
+    h1 em { font-style: normal; color: var(--blue); }
+    .sub { color: var(--muted); max-width: 560px; line-height: 1.65; margin-bottom: 36px; font-size: 15px; }
+
+    .compare {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+      margin-bottom: 28px; font-size: 12px; color: var(--muted);
+    }
+    .compare div { text-align: center; padding: 8px; }
+    .compare strong { display: block; color: var(--text); font-size: 13px; margin-top: 4px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      align-items: stretch;
+    }
+    .plan {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .plan:hover { border-color: var(--border-strong); transform: translateY(-2px); }
+    .plan.popular {
+      border-color: rgba(90, 168, 255, 0.5);
+      box-shadow: 0 0 0 1px rgba(90, 168, 255, 0.1), 0 20px 48px rgba(18, 52, 112, 0.22);
+      position: relative;
+    }
+    .badge {
+      position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+      font-size: 10px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase;
+      padding: 5px 12px; border-radius: 999px;
+      background: linear-gradient(180deg, #69b4ff, #4f88ff);
+      color: #08111f; white-space: nowrap;
+    }
+    .plan h2 { font-size: 18px; font-weight: 800; }
+    .plan-desc { font-size: 13px; color: var(--muted); line-height: 1.45; min-height: 40px; }
+    .price { font-size: 34px; font-weight: 800; letter-spacing: -0.5px; }
+    .price span { font-size: 14px; font-weight: 600; color: var(--muted); }
+    ul { list-style: none; display: flex; flex-direction: column; gap: 11px; flex: 1; }
+    li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 14px; line-height: 1.45; color: #c5d2ea;
+    }
+    li::before {
+      content: "✓"; color: var(--green); font-weight: 800; flex-shrink: 0; margin-top: 1px;
+    }
+    li.off::before { content: "—"; color: var(--muted); }
+    li.off { color: var(--muted); opacity: 0.7; }
+    .btn {
+      display: block; text-align: center; padding: 13px 16px; border-radius: 12px;
+      font-weight: 800; font-size: 14px; text-decoration: none; border: 0; cursor: pointer;
+      margin-top: auto;
+    }
+    .btn-ghost { background: rgba(255,255,255,0.06); color: var(--text); border: 1px solid var(--border); }
+    .btn-primary { background: linear-gradient(180deg, #69b4ff, #4f88ff); color: #08111f; }
+    .btn-gold { background: linear-gradient(180deg, #ffd76a, #e8a820); color: #1a1200; }
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    .faq {
+      margin-top: 40px; display: grid; gap: 12px;
+    }
+    .faq-item {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 16px 18px;
+    }
+    .faq-item strong { display: block; margin-bottom: 6px; font-size: 14px; }
+    .faq-item p { color: var(--muted); font-size: 13px; line-height: 1.55; }
+    .note {
+      margin-top: 20px; padding: 14px 16px; border-radius: 14px;
+      border: 1px solid rgba(255, 200, 80, 0.22);
+      background: rgba(255, 200, 80, 0.06);
+      font-size: 13px; color: #d4c4a0; line-height: 1.55;
+    }
+    @media (max-width: 900px) { .compare { display: none; } }
+    @media (max-width: 600px) {
+      .nav { flex-wrap: wrap; gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a class="brand" href="/"><span class="b">Double</span> <span class="o">Mind</span></a>
+    <a class="link" href="/">Accueil</a>
+    <a class="nav-cta" href="/" onclick="if(window.enterApp){enterApp();return false;}">Essayer gratuitement</a>
+  </nav>
+
+  <div class="wrap">
+    <div class="hero-tag"><span></span> Une question · Deux IA · Un verdict</div>
+    <h1>Obtiens plusieurs points de vue IA et un <em>verdict clair</em> en quelques secondes.</h1>
+    <p class="sub">GPT et Claude débattent. Le juge tranche. Tu décides plus vite — sans jongler entre plusieurs outils.</p>
+
+    <div class="compare" aria-hidden="true">
+      <div>Prompts / jour<strong>5 → 50+</strong></div>
+      <div>Verdicts / jour<strong>2 → 15+</strong></div>
+      <div>Modèles<strong>GPT + Claude</strong></div>
+      <div>Juge<strong>mini → 4o</strong></div>
+    </div>
+
+    <div class="grid">
+      <article class="plan">
+        <h2>Gratuit</h2>
+        <p class="plan-desc">Pour tester et décider sur tes vraies questions.</p>
+        <div class="price">0 € <span>/ mois</span></div>
+        <ul>
+          <li>5 prompts par jour</li>
+          <li>2 verdicts par jour</li>
+          <li>GPT-4o mini + Claude Haiku</li>
+          <li>Juge GPT-4o mini</li>
+          <li>5 modes : Classique, Débat, Expert, Créatif, Clash</li>
+          <li>Historique & partage</li>
+        </ul>
+        <a class="btn btn-ghost" href="/">Commencer gratuitement</a>
+      </article>
+
+      <article class="plan popular">
+        <span class="badge">Le plus populaire</span>
+        <h2>Plus</h2>
+        <p class="plan-desc">Pour les étudiants et décideurs réguliers.</p>
+        <div class="price">9,99 $ <span>/ mois</span></div>
+        <ul>
+          <li>50 prompts par jour</li>
+          <li>15 verdicts par jour</li>
+          <li>GPT + Claude (standard)</li>
+          <li>Juge amélioré</li>
+          <li>Historique illimité</li>
+          <li>Partage viral des débats</li>
+        </ul>
+        <button class="btn btn-primary" type="button" disabled>Bientôt disponible</button>
+      </article>
+
+      <article class="plan">
+        <h2>Scale</h2>
+        <p class="plan-desc">Usage régulier sans stress de quota.</p>
+        <div class="price">15 $ <span>/ mois</span></div>
+        <ul>
+          <li>100 prompts par mois</li>
+          <li>30 verdicts par mois</li>
+          <li>Tous les modes</li>
+          <li>Idéal projet perso / études</li>
+          <li class="off">Modèles premium (bientôt)</li>
+        </ul>
+        <button class="btn btn-ghost" type="button" disabled>Bientôt disponible</button>
+      </article>
+
+      <article class="plan">
+        <h2>Pro</h2>
+        <p class="plan-desc">Décisions business et usage intensif.</p>
+        <div class="price">30 $ <span>/ mois</span></div>
+        <ul>
+          <li>Limites très élevées</li>
+          <li>Juge GPT-4o (plus précis)</li>
+          <li>Modèles avancés (roadmap)</li>
+          <li>DeepSeek, Grok, Mistral, Gemini</li>
+          <li>Pour power users</li>
+        </ul>
+        <button class="btn btn-gold" type="button" disabled>Bientôt disponible</button>
+      </article>
+    </div>
+
+    <div class="faq">
+      <div class="faq-item">
+        <strong>Pourquoi payer alors que ChatGPT existe ?</strong>
+        <p>Double Mind ne donne pas une seule réponse : tu compares GPT et Claude, tu vois leurs désaccords, et le juge te donne une décision claire. Tu gagnes du temps sur les choix importants.</p>
+      </div>
+      <div class="faq-item">
+        <strong>Est-ce que mes messages sont privés ?</strong>
+        <p>Tes messages sont envoyés aux API OpenAI et Anthropic pour générer les réponses. On ne revend pas tes données. Le partage public est volontaire (bouton Partager).</p>
+      </div>
+      <div class="faq-item">
+        <strong>Quand les paiements seront actifs ?</strong>
+        <p>Très bientôt — la V1 gratuite reste disponible. Inscris-toi maintenant pour garder ton historique.</p>
+      </div>
+    </div>
+
+    <p class="note">
+      Paiement pas encore activé. Les plans Plus / Scale / Pro arrivent après validation des coûts API réels. En attendant : profite du gratuit (5 prompts + 2 verdicts / jour).
+    </p>
+  </div>
+</body>
+</html>
