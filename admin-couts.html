@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Double Mind — Coûts API (admin)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#05070d; --card:#0c1220; --border:rgba(109,140,197,0.2); --text:#edf3ff; --muted:#8c9bb8; --green:#39d98a; --orange:#ff9b45; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:Inter,sans-serif; background:var(--bg); color:var(--text); padding:24px 16px; }
+    .wrap { max-width:900px; margin:0 auto; }
+    h1 { font-size:22px; margin-bottom:6px; }
+    p.sub { color:var(--muted); font-size:14px; margin-bottom:20px; line-height:1.5; }
+    .row { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:20px; }
+    input, select, button {
+      padding:10px 14px; border-radius:10px; border:1px solid var(--border);
+      background:rgba(255,255,255,0.05); color:var(--text); font-size:14px;
+    }
+    button { background:linear-gradient(180deg,#69b4ff,#4f88ff); color:#08111f; font-weight:700; border:0; cursor:pointer; }
+    .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin-bottom:24px; }
+    .card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:16px; }
+    .card small { color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:.5px; }
+    .card strong { display:block; font-size:22px; margin-top:6px; color:var(--green); }
+    table { width:100%; border-collapse:collapse; font-size:13px; margin-top:12px; }
+    th, td { text-align:left; padding:10px 8px; border-bottom:1px solid var(--border); }
+    th { color:var(--muted); font-weight:600; }
+    pre { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; overflow:auto; font-size:12px; margin-top:16px; }
+    .err { color:#ff8a8a; padding:12px; background:rgba(255,80,80,0.1); border-radius:10px; margin-top:12px; }
+    a { color:#5aa8ff; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Coûts API — Admin</h1>
+    <p class="sub">Réservé à <strong>baptiste.werner@gmail.com</strong>. Connecte-toi sur Double Mind avec ce compte, puis charge les stats.</p>
+
+    <div class="row">
+      <input type="email" id="email" placeholder="Email admin" value="baptiste.werner@gmail.com" style="flex:1;min-width:200px" />
+      <select id="days">
+        <option value="7">7 jours</option>
+        <option value="14">14 jours</option>
+        <option value="30" selected>30 jours</option>
+      </select>
+      <button type="button" onclick="loadCosts()">Charger les coûts</button>
+    </div>
+
+    <div id="err" class="err" style="display:none"></div>
+    <div id="cards" class="cards" style="display:none"></div>
+    <div id="daily-wrap" style="display:none">
+      <h2 style="font-size:16px;margin-bottom:8px">Par jour</h2>
+      <table><thead><tr><th>Date</th><th>Messages</th><th>GPT $</th><th>Claude $</th><th>Juge $</th><th>Total $</th></tr></thead><tbody id="daily"></tbody></table>
+    </div>
+    <div id="users-wrap" style="display:none;margin-top:24px">
+      <h2 style="font-size:16px;margin-bottom:8px">Top utilisateurs (coût)</h2>
+      <table><thead><tr><th>Email</th><th>Messages</th><th>Total $</th></tr></thead><tbody id="users"></tbody></table>
+    </div>
+    <p style="margin-top:20px;font-size:13px;color:var(--muted)">
+      Requêtes SQL manuelles : voir <code>double-mind-costs.sql</code> ·
+      <a href="abonnements.html">Page abonnements</a> ·
+      <a href="/">Retour site</a>
+    </p>
+    <pre id="raw" style="display:none"></pre>
+  </div>
+
+  <script>
+    const WORKER = "https://ai-talk-proxy.baptiste-werner.workers.dev";
+
+    async function loadCosts() {
+      const email = document.getElementById("email").value.trim();
+      const days = document.getElementById("days").value;
+      const errEl = document.getElementById("err");
+      errEl.style.display = "none";
+
+      try {
+        const res = await fetch(WORKER + "/admin-costs", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, days: Number(days) })
+        });
+        const data = await res.json();
+        if (!data.success) {
+          errEl.textContent = data.error || "Erreur";
+          errEl.style.display = "block";
+          return;
+        }
+
+        const t = data.totals || {};
+        const eur = (usd) => (Number(usd || 0) * 0.92).toFixed(2);
+
+        document.getElementById("cards").style.display = "grid";
+        document.getElementById("cards").innerHTML = `
+          <div class="card"><small>Total ${data.periodDays}j (USD)</small><strong>$${Number(t.cost_total_usd||0).toFixed(4)}</strong></div>
+          <div class="card"><small>≈ EUR</small><strong>${eur(t.cost_total_usd)} €</strong></div>
+          <div class="card"><small>GPT</small><strong>$${Number(t.cost_gpt_usd||0).toFixed(4)}</strong></div>
+          <div class="card"><small>Claude</small><strong>$${Number(t.cost_claude_usd||0).toFixed(4)}</strong></div>
+          <div class="card"><small>Juge</small><strong>$${Number(t.cost_judge_usd||0).toFixed(4)}</strong></div>
+          <div class="card"><small>Messages chat</small><strong>${t.total_messages||0}</strong></div>
+          <div class="card"><small>Users confirmés</small><strong>${data.confirmedUsers||0}</strong></div>
+        `;
+
+        document.getElementById("daily-wrap").style.display = "block";
+        document.getElementById("daily").innerHTML = (data.daily || []).map(d => `
+          <tr>
+            <td>${d.date}</td>
+            <td>${d.messages||0}</td>
+            <td>${Number(d.cost_gpt_usd||0).toFixed(4)}</td>
+            <td>${Number(d.cost_claude_usd||0).toFixed(4)}</td>
+            <td>${Number(d.cost_judge_usd||0).toFixed(4)}</td>
+            <td><strong>${Number(d.cost_total_usd||0).toFixed(4)}</strong></td>
+          </tr>
+        `).join("") || "<tr><td colspan='6'>Aucune donnée</td></tr>";
+
+        document.getElementById("users-wrap").style.display = "block";
+        document.getElementById("users").innerHTML = (data.topUsers || []).map(u => `
+          <tr><td>${u.email}</td><td>${u.messages||0}</td><td>${Number(u.cost_total_usd||0).toFixed(4)}</td></tr>
+        `).join("") || "<tr><td colspan='3'>Aucune donnée</td></tr>";
+
+        document.getElementById("raw").style.display = "block";
+        document.getElementById("raw").textContent = JSON.stringify(data, null, 2);
+      } catch (e) {
+        errEl.textContent = "Erreur réseau : " + e.message;
+        errEl.style.display = "block";
+      }
+    }
+  </script>
+</body>
+</html>
