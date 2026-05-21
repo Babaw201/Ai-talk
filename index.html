@@ -90,6 +90,22 @@
       border-radius: 12px; cursor: pointer; transition: 0.2s ease; display: none;
     }
     #new-conv-btn:hover { background: linear-gradient(180deg, rgba(57,217,138,0.2), rgba(57,217,138,0.1)); border-color: rgba(57,217,138,0.5); }
+    #share-btn {
+      border: 1px solid rgba(255,155,69,0.35);
+      background: linear-gradient(180deg, rgba(255,155,69,0.14), rgba(255,155,69,0.07));
+      color: var(--orange); font-weight: 700; font-size: 13px; padding: 10px 14px;
+      border-radius: 12px; cursor: pointer; transition: 0.2s ease; display: none;
+      flex-shrink: 0; white-space: nowrap;
+    }
+    #share-btn:hover { background: linear-gradient(180deg, rgba(255,155,69,0.22), rgba(255,155,69,0.12)); border-color: rgba(255,155,69,0.5); }
+    #pricing-link {
+      display: inline-flex; align-items: center; flex-shrink: 0; white-space: nowrap;
+      font-size: 12px; font-weight: 700; color: var(--muted); text-decoration: none;
+      padding: 10px 12px; border-radius: 12px;
+      border: 1px solid var(--border); background: rgba(255,255,255,0.03);
+      transition: 0.2s ease;
+    }
+    #pricing-link:hover { color: var(--white); border-color: var(--border-strong); background: rgba(255,255,255,0.06); }
 
     /* ─── AUTH SCREEN ─── */
     #auth-screen { flex: 1; display: flex; align-items: flex-start; justify-content: center; padding: 20px 14px; overflow-y: auto; }
@@ -310,7 +326,7 @@
       .status-wrap { padding: 6px 8px; }
       #msg-counter { font-size: 11px; min-width: 38px; }
       #auth-btn { padding: 8px 10px; font-size: 11px; border-radius: 10px; }
-      #history-btn, #new-conv-btn { padding: 8px 10px; font-size: 11px; border-radius: 10px; }
+      #history-btn, #new-conv-btn, #share-btn, #pricing-link { padding: 8px 10px; font-size: 11px; border-radius: 10px; }
       #mode-bar { padding: 7px 8px; gap: 6px; }
       .mode-label { font-size: 10px; }
       .mode-btn { padding: 7px 10px; font-size: 11px; }
@@ -361,11 +377,23 @@
     }
 
     @media (max-width: 480px) {
-      header { flex-wrap: wrap; padding: 8px 10px 6px; gap: 6px; }
-      .brand { flex: 1 1 100%; }
-      .header-right { flex: 1 1 100%; justify-content: flex-start; gap: 6px; padding-bottom: 2px; flex-wrap: wrap; }
-      #msg-counter { margin-left: auto; }
-      #auth-btn { margin-left: 4px; }
+      header { flex-wrap: nowrap; padding: 8px 10px; gap: 8px; align-items: center; }
+      .brand { flex: 0 1 auto; min-width: 0; max-width: 42%; }
+      .brand-logo { width: 28px; height: 28px; }
+      .brand-title { font-size: 14px; }
+      .header-right {
+        flex: 1 1 auto; min-width: 0;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        gap: 5px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 0;
+      }
+      .header-right::-webkit-scrollbar { display: none; }
+      #history-btn, #new-conv-btn, #share-btn, #auth-btn, #pricing-link { flex-shrink: 0; }
+      #msg-counter { margin-left: 0; }
     }
 
     @media (max-width: 420px) {
@@ -2126,6 +2154,8 @@
       <div class="header-right">
         <button id="new-conv-btn" onclick="startNewConversation()" title="Nouvelle conversation">✦ Nouvelle</button>
         <button id="history-btn" onclick="openHistoryDrawer()" title="Mes conversations">🕐 Historique</button>
+        <button id="share-btn" onclick="openShareModal()" title="Partager cette conversation" style="display:none;">🔗 Partager</button>
+        <a href="abonnements.html" id="pricing-link" title="Voir les tarifs">Tarifs</a>
         <div class="status-wrap">
           <div id="msg-counter">0 / 5</div>
           <div class="status-dot"></div>
@@ -2263,7 +2293,6 @@
       <div class="conversation-controls" id="conversation-controls">
         <button class="control-btn primary" id="continue-debate-btn" onclick="continueDebate()">Continuer le débat</button>
         <button class="control-btn gold" id="judge-btn" onclick="requestJudge()" style="display:none;">⚖️ Demander le verdict</button>
-        <button class="control-btn" id="share-btn" onclick="openShareModal()" style="display:none;">🔗 Partager</button>
         <button class="control-btn" onclick="resetConversationState()">Nouveau départ</button>
       </div>
 
@@ -2861,7 +2890,7 @@
       const judgeBtn = document.getElementById("judge-btn");
       if (judgeBtn) judgeBtn.style.display = show && currentUser ? "inline-block" : "none";
       const shareBtn = document.getElementById("share-btn");
-      if (shareBtn) shareBtn.style.display = (show && currentConversationId) ? "inline-block" : "none";
+      if (shareBtn) shareBtn.style.display = (show && currentConversationId && currentUser) ? "inline-block" : "none";
     }
     function resetConversationState() {
       lastDebateContext = null;
