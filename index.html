@@ -324,8 +324,16 @@
       .sender-label { font-size: 10px; margin-bottom: 4px; }
       .bubble { font-size: 13px; line-height: 1.55; padding: 11px 12px; border-radius: 14px; }
       .judge-summaries { grid-template-columns: 1fr; }
-      .conversation-controls { padding: 0 8px 7px; gap: 6px; }
-      .control-btn { flex: 1; min-width: 0; font-size: 11px; padding: 8px 8px; border-radius: 11px; }
+      .conversation-controls {
+        padding: 0 8px 7px;
+        gap: 6px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      .conversation-controls::-webkit-scrollbar { display: none; }
+      .control-btn { flex: 0 0 auto; min-width: max-content; font-size: 11px; padding: 8px 10px; border-radius: 11px; }
       #limit-wall { margin: 0 8px 8px; padding: 12px; }
       #guest-wall { margin: 0 8px 8px; padding: 14px; }
       #bottom-bar { padding: 6px 8px 8px; }
@@ -353,11 +361,22 @@
     }
 
     @media (max-width: 480px) {
-      header { flex-wrap: wrap; padding: 8px 10px 6px; gap: 6px; }
-      .brand { flex: 1 1 100%; }
-      .header-right { flex: 1 1 100%; justify-content: flex-start; gap: 6px; padding-bottom: 2px; }
-      #msg-counter { margin-left: auto; }
-      #auth-btn { margin-left: 4px; }
+      header { flex-wrap: nowrap; padding: 8px 10px; gap: 8px; }
+      .brand { flex: 1 1 auto; min-width: 0; }
+      .header-right {
+        flex: 0 0 auto;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        gap: 6px;
+        max-width: 62%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      .header-right::-webkit-scrollbar { display: none; }
+      #msg-counter { margin-left: 0; }
+      #auth-btn { margin-left: 0; flex-shrink: 0; }
+      #history-btn, #new-conv-btn { flex-shrink: 0; }
     }
 
     @media (max-width: 420px) {
@@ -2122,7 +2141,6 @@
           <div id="msg-counter">0 / 5</div>
           <div class="status-dot"></div>
         </div>
-        <a href="abonnements.html" id="pricing-link" style="font-size:12px;font-weight:700;color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:8px;border:1px solid var(--border);">Tarifs</a>
         <button id="auth-btn" onclick="handleAuthBtn()">Connexion</button>
       </div>
     </header>
