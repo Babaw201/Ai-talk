@@ -428,7 +428,54 @@
       .control-btn { font-size: 10.5px; padding: 7px 6px; }
       #send-btn { width: 40px; height: 40px; }
     }
-  </style>
+  
+    /* ═══ MOBILE FIXES ═══ */
+    #history-overlay, #history-drawer, #share-modal-overlay {
+      position: fixed !important;
+      z-index: 9999 !important;
+    }
+    #share-modal-overlay {
+      display: none;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 16px !important;
+    }
+    #share-modal-overlay.open { display: flex !important; }
+    #share-modal {
+      width: 100% !important;
+      max-width: 420px !important;
+      max-height: 90vh;
+      overflow-y: auto;
+      margin: auto;
+      position: relative;
+      z-index: 10000 !important;
+    }
+    #history-drawer {
+      top: 0 !important; left: 0 !important; bottom: 0 !important; right: auto !important;
+      width: min(340px, 88vw) !important;
+      transform: translateX(-100%) !important;
+      transition: transform 0.26s cubic-bezier(.4,0,.2,1) !important;
+    }
+    #history-drawer.open { transform: translateX(0) !important; }
+    #history-overlay {
+      top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
+    }
+    @media (max-width: 600px) {
+      #share-btn, #pricing-link { display: none !important; }
+      #new-conv-btn, #history-btn, #auth-btn { padding: 7px 9px !important; font-size: 10px !important; }
+      .status-wrap { padding: 5px 7px !important; }
+      #msg-counter { font-size: 10px !important; min-width: 32px !important; }
+      #app > header .header-right { gap: 4px !important; }
+    }
+    @media (max-width: 720px) {
+      .conversation-controls {
+        flex-wrap: nowrap !important; overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch; padding-bottom: 4px !important; scrollbar-width: none !important;
+      }
+      .conversation-controls::-webkit-scrollbar { display: none !important; }
+      .control-btn { flex-shrink: 0 !important; white-space: nowrap !important; font-size: 11px !important; padding: 8px 10px !important; }
+    }
+</style>
 </head>
 
   <!-- ═══ Landing page styles (from preview.html) ═══ -->
