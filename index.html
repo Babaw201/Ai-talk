@@ -180,8 +180,8 @@
 
     /* ─── CHAT SCREEN ─── */
     #chat-screen { flex: 1; display: none; flex-direction: column; min-height: 0; overflow: hidden; }
-    #mode-bar { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--border); background: rgba(8,13,22,0.72); backdrop-filter: blur(8px); overflow: hidden; scrollbar-width: none; flex-shrink: 0; }
-    #mode-bar-scroll { display: flex; align-items: center; gap: 10px; overflow-x: auto; scrollbar-width: none; flex: 1; }
+    #mode-bar { display: flex; align-items: center; gap: 0; padding: 0 14px; border-bottom: 1px solid var(--border); background: rgba(8,13,22,0.72); backdrop-filter: blur(8px); overflow: hidden; flex-shrink: 0; }
+    #mode-bar-scroll { display: flex; align-items: center; gap: 10px; overflow-x: auto; scrollbar-width: none; flex: 1; padding: 10px 0; }
     #mode-bar-scroll::-webkit-scrollbar { display: none; }
     #mode-bar-tarifs {
       margin-left: auto;
@@ -359,25 +359,63 @@
     .share-social-btn .s-icon { font-size: 17px; }
     .share-loading { text-align: center; color: var(--muted); font-size: 13px; padding: 20px 0; }
 
+    /* ── Header 3 lignes ── */
+    #app > header {
+      display: flex !important;
+      flex-direction: column !important;
+      padding: 0 !important;
+      gap: 0 !important;
+      grid-template-columns: none !important;
+      background: linear-gradient(180deg, rgba(7,12,22,0.96), rgba(7,12,22,0.78));
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+      flex-shrink: 0;
+      z-index: 10;
+      width: 100%;
+    }
+    .header-row { display: flex; align-items: center; width: 100%; }
+    .header-row-1 { justify-content: space-between; padding: 8px 14px; gap: 8px; }
+    .header-row-1-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .header-row-2 { padding: 0 10px 8px; gap: 6px; display: none; }
+    .header-row-2.visible { display: flex; }
+    .header-row-2 button { flex: 1; }
+    #mode-bar-tarifs {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--blue);
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(90,168,255,0.4);
+      background: rgba(90,168,255,0.1);
+      white-space: nowrap;
+      margin-left: 6px;
+    }
+    #mode-bar-tarifs:hover { color: var(--white); background: rgba(90,168,255,0.2); }
+
     /* ─── RESPONSIVE ─── */
     @media (max-width: 980px) { .hero-grid { grid-template-columns: repeat(2, 1fr); } .brand-subtitle { display: none; } }
 
     @media (max-width: 720px) {
-      #app > header { padding: 8px 10px; gap: 8px; }
       #app > header .brand { gap: 7px; }
-      #app > header .brand-logo { width: 30px; height: 30px; border-radius: 9px; }
-      #app > header .brand-title { font-size: 16px; letter-spacing: 0.5px; }
+      #app > header .brand-logo { width: 28px; height: 28px; border-radius: 8px; }
+      #app > header .brand-title { font-size: 14px; letter-spacing: 0.3px; }
       #app > header .brand-subtitle { display: none; }
-      #app > header .header-right { gap: 6px; overflow-x: auto; max-width: 72vw; scrollbar-width: none; }
-      #app > header .header-right::-webkit-scrollbar { display: none; }
-      .status-wrap { padding: 6px 8px; }
-      #msg-counter { font-size: 11px; min-width: 38px; }
-      #auth-btn { padding: 8px 10px; font-size: 11px; border-radius: 10px; }
-      #history-btn, #new-conv-btn, #share-btn, #pricing-link { padding: 8px 10px; font-size: 11px; border-radius: 10px; }
-      #mode-bar { padding: 7px 8px; gap: 6px; }
-      .mode-label { display: none; }
+      .header-row-1 { padding: 6px 10px; }
+      .header-row-1-right { gap: 5px; }
+      #app #pricing-link { padding: 6px 9px; font-size: 11px; border-radius: 8px; }
+      #auth-btn { padding: 6px 9px; font-size: 11px; border-radius: 8px; }
+      .status-wrap { padding: 5px 7px; gap: 4px; }
+      #msg-counter { font-size: 10px; min-width: 30px; }
+      .header-row-2 { padding: 0 8px 6px; gap: 5px; }
+      .header-row-2 button { font-size: 11px; padding: 6px 8px; border-radius: 9px; }
+      #mode-bar { padding: 0 8px; gap: 0; }
+      #mode-bar-scroll { gap: 6px; padding: 7px 0; }
+      .mode-label { font-size: 10px; }
       .mode-btn { padding: 7px 10px; font-size: 11px; }
-      #mode-bar-tarifs { padding: 6px 10px; font-size: 11px; }
       #chat-area { padding: 10px 8px 10px; gap: 10px; }
       .hero-card { padding: 14px 12px; border-radius: 18px; }
       .hero-title { font-size: 20px; }
@@ -463,93 +501,64 @@
       top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
     }
 
-    /* ── Header 3 lignes ── */
-    #app > header {
-      display: flex;
-      flex-direction: column;
-      padding: 0;
-      gap: 0;
-      border-bottom: 1px solid var(--border);
-      background: rgba(8,13,22,0.88);
-      backdrop-filter: blur(18px);
-      flex-shrink: 0;
-    }
-    .header-row { display: flex; align-items: center; width: 100%; }
-    .header-row-1 { justify-content: space-between; padding: 8px 12px; gap: 8px; }
-    .header-row-1-right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-    .header-row-2 { padding: 0 10px 7px; gap: 6px; display: none; }
-    .header-row-2.visible { display: flex; }
-
-    @media (min-width: 721px) {
-      #app > header { flex-direction: row; align-items: center; padding: 10px 20px; gap: 12px; }
-      .header-row { display: contents; }
-      .header-row-2 { padding: 0; }
-      .header-row-2.visible { display: flex; }
-      .header-row-1 { padding: 0; gap: 0; }
-      .header-row-1-right { gap: 10px; }
-    }
-
+    /* Header mobile compact */
     @media (max-width: 720px) {
-      #app > header .brand { gap: 7px; }
-      #app > header .brand-logo { width: 30px; height: 30px; border-radius: 9px; }
-      #app > header .brand-title { font-size: 15px; letter-spacing: 0.3px; }
-      #app > header .brand-subtitle { display: none; }
-      #app #pricing-link { padding: 6px 10px; font-size: 11px; border-radius: 8px; }
-      #auth-btn { padding: 6px 10px; font-size: 11px; border-radius: 8px; }
-      .status-wrap { padding: 5px 7px; gap: 4px; }
-      #msg-counter { font-size: 10px; min-width: 32px; }
-      .header-row-2 button { flex: 1; padding: 6px 8px; font-size: 11px; border-radius: 9px; justify-content: center; }
-      #mode-bar { padding: 7px 8px; gap: 6px; }
-      .mode-label { display: none; }
-      .mode-btn { padding: 7px 10px; font-size: 11px; }
-      #mode-bar-tarifs { padding: 6px 10px; font-size: 11px; }
-      #chat-area { padding: 10px 8px 10px; gap: 10px; }
-      .hero-card { padding: 14px 12px; border-radius: 18px; }
-      .hero-title { font-size: 20px; }
-      .hero-subtitle { font-size: 13px; line-height: 1.5; }
-      .hero-grid { grid-template-columns: 1fr; gap: 8px; margin-top: 12px; }
-      .msg { max-width: 100%; gap: 6px; }
-      .avatar { width: 28px; height: 28px; border-radius: 10px; font-size: 9px; margin-top: 18px; }
-      .sender-label { font-size: 10px; margin-bottom: 4px; }
-      .bubble { font-size: 13px; line-height: 1.55; padding: 11px 12px; border-radius: 14px; }
-      .judge-summaries { grid-template-columns: 1fr; }
-      .conversation-controls { padding: 0 8px 7px; gap: 6px; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-      .conversation-controls::-webkit-scrollbar { display: none; }
-      .control-btn { flex: 0 0 auto; min-width: max-content; font-size: 11px; padding: 8px 10px; border-radius: 11px; }
-      #limit-wall { margin: 0 8px 8px; padding: 12px; }
-      #guest-wall { margin: 0 8px 8px; padding: 14px; }
-      #bottom-bar { padding: 6px 8px 8px; }
-      .composer-options { display: none; }
-      #options-toggle-btn { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; width: 100%; border: 1px solid var(--border); background: rgba(255,255,255,0.03); color: var(--muted); padding: 8px 12px; border-radius: 12px; font-size: 12px; font-weight: 700; cursor: pointer; justify-content: space-between; }
-      #options-toggle-btn .toggle-left { display: flex; align-items: center; gap: 8px; }
-      #options-toggle-btn .toggle-arrow { font-size: 10px; transition: transform 0.2s ease; }
-      #options-toggle-btn.open .toggle-arrow { transform: rotate(180deg); }
-      #options-panel { display: none; flex-direction: column; gap: 6px; margin-bottom: 6px; animation: slideDown 0.18s ease; }
-      #options-panel.open { display: flex; }
-      @keyframes slideDown { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
-      .options-panel-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-      .option-card { padding: 9px 10px; border-radius: 12px; }
-      .option-title { font-size: 10px; margin-bottom: 7px; }
-      .pill-row { gap: 5px; flex-wrap: wrap; }
-      .pill-btn { font-size: 11px; padding: 7px 9px; }
-      .input-shell { padding: 6px 6px 6px 10px; gap: 6px; border-radius: 14px; }
-      .input-topline { font-size: 10px; margin-bottom: 4px; gap: 6px; }
-      #user-input { font-size: 14px; min-height: 22px; max-height: 100px; padding: 0 2px 1px; }
-      #send-btn { width: 42px; height: 42px; border-radius: 12px; font-size: 16px; }
-      .auth-panel { padding: 16px; border-radius: 18px; }
-      .auth-title { font-size: 20px; }
-      .auth-highlight { grid-template-columns: 1fr; gap: 8px; }
-      .code-input { font-size: 22px; letter-spacing: 5px; padding: 14px 54px 14px 10px; }
+      #app > header {
+        padding: 6px 10px !important;
+        flex-wrap: nowrap !important;
+        min-height: 46px !important;
+      }
+      #app > header .brand { min-width: 0 !important; flex: 0 0 auto !important; }
+      #app > header .brand-logo { width: 28px !important; height: 28px !important; border-radius: 8px !important; }
+      #app > header .brand-title { font-size: 14px !important; letter-spacing: 0 !important; }
+      #app > header .brand-subtitle { display: none !important; }
+      #app > header .header-right { gap: 4px !important; flex-wrap: nowrap !important; }
+
+      /* Cacher les boutons non essentiels sur mobile */
+      #new-conv-btn { display: none !important; }
+
+      /* Historique : icône seulement */
+      #history-btn {
+        padding: 6px 8px !important;
+        font-size: 0 !important; /* cache le texte */
+      }
+      #history-btn::before { content: "🕐"; font-size: 16px; }
+
+      #auth-btn { padding: 6px 10px !important; font-size: 11px !important; border-radius: 8px !important; }
+      .status-wrap { padding: 5px 6px !important; gap: 5px !important; }
+      #msg-counter { font-size: 10px !important; min-width: 30px !important; }
+
+      /* Hero card mobile : plus compact */
+      .hero-card {
+        padding: 14px 12px !important;
+        border-radius: 14px !important;
+      }
+      .hero-badge { font-size: 11px !important; padding: 6px 10px !important; margin-bottom: 10px !important; }
+      .hero-title { font-size: 18px !important; line-height: 1.25 !important; margin-bottom: 8px !important; }
+      .hero-subtitle { font-size: 12px !important; line-height: 1.5 !important; }
+      .hero-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 6px !important;
+        margin-top: 10px !important;
+      }
+      .hero-mode { padding: 8px !important; }
+      .hero-mode strong { font-size: 11px !important; }
+      .hero-mode span { font-size: 10px !important; }
+
+      /* Conversation controls scroll horizontal */
+      .conversation-controls {
+        flex-wrap: nowrap !important; overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch; padding: 0 8px 8px !important;
+        scrollbar-width: none !important; gap: 6px !important;
+      }
+      .conversation-controls::-webkit-scrollbar { display: none !important; }
+      .control-btn {
+        flex-shrink: 0 !important; white-space: nowrap !important;
+        font-size: 11px !important; padding: 8px 10px !important;
+      }
+
       /* Share btn dans controls : visible ici */
       #share-btn { display: inline-block !important; }
-    }
-
-    @media (max-width: 420px) {
-      .options-panel-inner { grid-template-columns: 1fr; }
-      .mode-btn { padding: 6px 9px; font-size: 10px; }
-      .bubble { font-size: 12.5px; padding: 10px 11px; }
-      .control-btn { font-size: 10.5px; padding: 7px 6px; }
-      #send-btn { width: 40px; height: 40px; }
     }
 </style>
 </head>
@@ -2292,7 +2301,7 @@
   <div id="app">
 
     <header>
-      <!-- Ligne 1 : nom · tarifs · compteur · déconnexion -->
+      <!-- Ligne 1 : nom · tarifs · compteur · déco -->
       <div class="header-row header-row-1">
         <div class="brand">
           <img src="logo.png" class="brand-logo" alt="Double Mind" onerror="this.style.display='none'">
@@ -2310,11 +2319,11 @@
           <button id="auth-btn" onclick="handleAuthBtn()">Connexion</button>
         </div>
       </div>
-      <!-- Ligne 2 : partager · historique · nouvelle -->
+      <!-- Ligne 2 : partager · historique · nouvelle (visible quand connecté) -->
       <div class="header-row header-row-2">
-        <button id="share-btn" onclick="openShareModal()" title="Partager" style="display:none;">🔗 Partager</button>
-        <button id="history-btn" onclick="openHistoryDrawer()" title="Historique" style="display:none;">🕐 Historique</button>
-        <button id="new-conv-btn" onclick="startNewConversation()" title="Nouvelle" style="display:none;">✶ Nouvelle</button>
+        <button id="share-btn" onclick="openShareModal()" style="display:none;">🔗 Partager</button>
+        <button id="history-btn" onclick="openHistoryDrawer()" style="display:none;">🕐 Historique</button>
+        <button id="new-conv-btn" onclick="startNewConversation()" style="display:none;">✶ Nouvelle</button>
       </div>
     </header>
 
@@ -3285,7 +3294,7 @@
 
     <!-- CHAT SCREEN -->
     <div id="chat-screen">
-      <div id="mode-bar">
+            <div id="mode-bar">
         <div id="mode-bar-scroll">
           <span class="mode-label">Modes</span>
           <button class="mode-btn active" data-mode="classic" onclick="setMode(this)">🔵 Classique</button>
@@ -3852,7 +3861,7 @@
       document.getElementById("mode-bar").style.display = "flex";
       document.getElementById("history-btn").style.display = "block";
       document.getElementById("new-conv-btn").style.display = "block";
-      document.querySelector(".header-row-2").classList.add("visible");
+      var r2 = document.querySelector(".header-row-2"); if(r2) r2.classList.add("visible");
       if (guestWall) guestWall.style.display = "none";
       limitWall.style.display = "none";
       bottomBar.style.display = "block";
@@ -3871,8 +3880,8 @@
       document.getElementById("auth-btn").className = "";
       document.getElementById("history-btn").style.display = "none";
       document.getElementById("new-conv-btn").style.display = "none";
+      var r2 = document.querySelector(".header-row-2"); if(r2) r2.classList.remove("visible");
       counter.style.display = "none";
-      document.querySelector(".header-row-2").classList.remove("visible");
       // Retour au chat sans compte (pas à l'écran d'auth)
       document.getElementById("auth-screen").style.display = "none";
       document.getElementById("chat-screen").style.display = "flex";
