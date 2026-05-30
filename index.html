@@ -375,8 +375,9 @@
       #auth-btn { padding: 8px 10px; font-size: 11px; border-radius: 10px; }
       #history-btn, #new-conv-btn, #share-btn, #pricing-link { padding: 8px 10px; font-size: 11px; border-radius: 10px; }
       #mode-bar { padding: 7px 8px; gap: 6px; }
-      .mode-label { font-size: 10px; }
+      .mode-label { display: none; }
       .mode-btn { padding: 7px 10px; font-size: 11px; }
+      #mode-bar-tarifs { padding: 6px 10px; font-size: 11px; }
       #chat-area { padding: 10px 8px 10px; gap: 10px; }
       .hero-card { padding: 14px 12px; border-radius: 18px; }
       .hero-title { font-size: 20px; }
@@ -473,20 +474,40 @@
       #app > header .brand-logo { width: 28px !important; height: 28px !important; border-radius: 8px !important; }
       #app > header .brand-title { font-size: 14px !important; letter-spacing: 0 !important; }
       #app > header .brand-subtitle { display: none !important; }
-      #app > header .header-right { gap: 4px !important; flex-wrap: nowrap !important; }
+      #app > header .header-right {
+        gap: 4px !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        scrollbar-width: none !important;
+        -webkit-overflow-scrolling: touch;
+        max-width: calc(100vw - 120px) !important;
+        flex: 1 1 0 !important;
+        justify-content: flex-end !important;
+      }
+      #app > header .header-right::-webkit-scrollbar { display: none !important; }
 
       /* Cacher les boutons non essentiels sur mobile */
       #new-conv-btn { display: none !important; }
+      #share-btn { display: none !important; }
 
       /* Historique : icône seulement */
       #history-btn {
         padding: 6px 8px !important;
-        font-size: 0 !important; /* cache le texte */
+        font-size: 0 !important;
+        flex-shrink: 0 !important;
       }
-      #history-btn::before { content: "🕐"; font-size: 16px; }
+      #history-btn::before { content: "🕐"; font-size: 15px; }
 
-      #auth-btn { padding: 6px 10px !important; font-size: 11px !important; border-radius: 8px !important; }
-      .status-wrap { padding: 5px 6px !important; gap: 5px !important; }
+      /* Pricing link compact */
+      #app #pricing-link {
+        padding: 6px 10px !important;
+        font-size: 11px !important;
+        border-radius: 8px !important;
+        flex-shrink: 0 !important;
+      }
+
+      #auth-btn { padding: 6px 10px !important; font-size: 11px !important; border-radius: 8px !important; flex-shrink: 0 !important; }
+      .status-wrap { padding: 5px 6px !important; gap: 5px !important; flex-shrink: 0 !important; }
       #msg-counter { font-size: 10px !important; min-width: 30px !important; }
 
       /* Hero card mobile : plus compact */
