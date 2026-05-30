@@ -463,84 +463,93 @@
       top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
     }
 
-    /* Header mobile compact */
+    /* ── Header 3 lignes ── */
+    #app > header {
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+      background: rgba(8,13,22,0.88);
+      backdrop-filter: blur(18px);
+      flex-shrink: 0;
+    }
+    .header-row { display: flex; align-items: center; width: 100%; }
+    .header-row-1 { justify-content: space-between; padding: 8px 12px; gap: 8px; }
+    .header-row-1-right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    .header-row-2 { padding: 0 10px 7px; gap: 6px; display: none; }
+    .header-row-2.visible { display: flex; }
+
+    @media (min-width: 721px) {
+      #app > header { flex-direction: row; align-items: center; padding: 10px 20px; gap: 12px; }
+      .header-row { display: contents; }
+      .header-row-2 { padding: 0; }
+      .header-row-2.visible { display: flex; }
+      .header-row-1 { padding: 0; gap: 0; }
+      .header-row-1-right { gap: 10px; }
+    }
+
     @media (max-width: 720px) {
-      #app > header {
-        padding: 6px 10px !important;
-        flex-wrap: nowrap !important;
-        min-height: 46px !important;
-      }
-      #app > header .brand { min-width: 0 !important; flex: 0 0 auto !important; }
-      #app > header .brand-logo { width: 28px !important; height: 28px !important; border-radius: 8px !important; }
-      #app > header .brand-title { font-size: 14px !important; letter-spacing: 0 !important; }
-      #app > header .brand-subtitle { display: none !important; }
-      #app > header .header-right {
-        gap: 4px !important;
-        flex-wrap: nowrap !important;
-        overflow-x: auto !important;
-        scrollbar-width: none !important;
-        -webkit-overflow-scrolling: touch;
-        max-width: calc(100vw - 120px) !important;
-        flex: 1 1 0 !important;
-        justify-content: flex-end !important;
-      }
-      #app > header .header-right::-webkit-scrollbar { display: none !important; }
-
-      /* Cacher les boutons non essentiels sur mobile */
-      #new-conv-btn { display: none !important; }
-      #share-btn { display: none !important; }
-
-      /* Historique : icône seulement */
-      #history-btn {
-        padding: 6px 8px !important;
-        font-size: 0 !important;
-        flex-shrink: 0 !important;
-      }
-      #history-btn::before { content: "🕐"; font-size: 15px; }
-
-      /* Pricing link compact */
-      #app #pricing-link {
-        padding: 6px 10px !important;
-        font-size: 11px !important;
-        border-radius: 8px !important;
-        flex-shrink: 0 !important;
-      }
-
-      #auth-btn { padding: 6px 10px !important; font-size: 11px !important; border-radius: 8px !important; flex-shrink: 0 !important; }
-      .status-wrap { padding: 5px 6px !important; gap: 5px !important; flex-shrink: 0 !important; }
-      #msg-counter { font-size: 10px !important; min-width: 30px !important; }
-
-      /* Hero card mobile : plus compact */
-      .hero-card {
-        padding: 14px 12px !important;
-        border-radius: 14px !important;
-      }
-      .hero-badge { font-size: 11px !important; padding: 6px 10px !important; margin-bottom: 10px !important; }
-      .hero-title { font-size: 18px !important; line-height: 1.25 !important; margin-bottom: 8px !important; }
-      .hero-subtitle { font-size: 12px !important; line-height: 1.5 !important; }
-      .hero-grid {
-        grid-template-columns: 1fr 1fr !important;
-        gap: 6px !important;
-        margin-top: 10px !important;
-      }
-      .hero-mode { padding: 8px !important; }
-      .hero-mode strong { font-size: 11px !important; }
-      .hero-mode span { font-size: 10px !important; }
-
-      /* Conversation controls scroll horizontal */
-      .conversation-controls {
-        flex-wrap: nowrap !important; overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch; padding: 0 8px 8px !important;
-        scrollbar-width: none !important; gap: 6px !important;
-      }
-      .conversation-controls::-webkit-scrollbar { display: none !important; }
-      .control-btn {
-        flex-shrink: 0 !important; white-space: nowrap !important;
-        font-size: 11px !important; padding: 8px 10px !important;
-      }
-
+      #app > header .brand { gap: 7px; }
+      #app > header .brand-logo { width: 30px; height: 30px; border-radius: 9px; }
+      #app > header .brand-title { font-size: 15px; letter-spacing: 0.3px; }
+      #app > header .brand-subtitle { display: none; }
+      #app #pricing-link { padding: 6px 10px; font-size: 11px; border-radius: 8px; }
+      #auth-btn { padding: 6px 10px; font-size: 11px; border-radius: 8px; }
+      .status-wrap { padding: 5px 7px; gap: 4px; }
+      #msg-counter { font-size: 10px; min-width: 32px; }
+      .header-row-2 button { flex: 1; padding: 6px 8px; font-size: 11px; border-radius: 9px; justify-content: center; }
+      #mode-bar { padding: 7px 8px; gap: 6px; }
+      .mode-label { display: none; }
+      .mode-btn { padding: 7px 10px; font-size: 11px; }
+      #mode-bar-tarifs { padding: 6px 10px; font-size: 11px; }
+      #chat-area { padding: 10px 8px 10px; gap: 10px; }
+      .hero-card { padding: 14px 12px; border-radius: 18px; }
+      .hero-title { font-size: 20px; }
+      .hero-subtitle { font-size: 13px; line-height: 1.5; }
+      .hero-grid { grid-template-columns: 1fr; gap: 8px; margin-top: 12px; }
+      .msg { max-width: 100%; gap: 6px; }
+      .avatar { width: 28px; height: 28px; border-radius: 10px; font-size: 9px; margin-top: 18px; }
+      .sender-label { font-size: 10px; margin-bottom: 4px; }
+      .bubble { font-size: 13px; line-height: 1.55; padding: 11px 12px; border-radius: 14px; }
+      .judge-summaries { grid-template-columns: 1fr; }
+      .conversation-controls { padding: 0 8px 7px; gap: 6px; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+      .conversation-controls::-webkit-scrollbar { display: none; }
+      .control-btn { flex: 0 0 auto; min-width: max-content; font-size: 11px; padding: 8px 10px; border-radius: 11px; }
+      #limit-wall { margin: 0 8px 8px; padding: 12px; }
+      #guest-wall { margin: 0 8px 8px; padding: 14px; }
+      #bottom-bar { padding: 6px 8px 8px; }
+      .composer-options { display: none; }
+      #options-toggle-btn { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; width: 100%; border: 1px solid var(--border); background: rgba(255,255,255,0.03); color: var(--muted); padding: 8px 12px; border-radius: 12px; font-size: 12px; font-weight: 700; cursor: pointer; justify-content: space-between; }
+      #options-toggle-btn .toggle-left { display: flex; align-items: center; gap: 8px; }
+      #options-toggle-btn .toggle-arrow { font-size: 10px; transition: transform 0.2s ease; }
+      #options-toggle-btn.open .toggle-arrow { transform: rotate(180deg); }
+      #options-panel { display: none; flex-direction: column; gap: 6px; margin-bottom: 6px; animation: slideDown 0.18s ease; }
+      #options-panel.open { display: flex; }
+      @keyframes slideDown { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+      .options-panel-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+      .option-card { padding: 9px 10px; border-radius: 12px; }
+      .option-title { font-size: 10px; margin-bottom: 7px; }
+      .pill-row { gap: 5px; flex-wrap: wrap; }
+      .pill-btn { font-size: 11px; padding: 7px 9px; }
+      .input-shell { padding: 6px 6px 6px 10px; gap: 6px; border-radius: 14px; }
+      .input-topline { font-size: 10px; margin-bottom: 4px; gap: 6px; }
+      #user-input { font-size: 14px; min-height: 22px; max-height: 100px; padding: 0 2px 1px; }
+      #send-btn { width: 42px; height: 42px; border-radius: 12px; font-size: 16px; }
+      .auth-panel { padding: 16px; border-radius: 18px; }
+      .auth-title { font-size: 20px; }
+      .auth-highlight { grid-template-columns: 1fr; gap: 8px; }
+      .code-input { font-size: 22px; letter-spacing: 5px; padding: 14px 54px 14px 10px; }
       /* Share btn dans controls : visible ici */
       #share-btn { display: inline-block !important; }
+    }
+
+    @media (max-width: 420px) {
+      .options-panel-inner { grid-template-columns: 1fr; }
+      .mode-btn { padding: 6px 9px; font-size: 10px; }
+      .bubble { font-size: 12.5px; padding: 10px 11px; }
+      .control-btn { font-size: 10.5px; padding: 7px 6px; }
+      #send-btn { width: 40px; height: 40px; }
     }
 </style>
 </head>
@@ -2283,6 +2292,880 @@
   <div id="app">
 
     <header>
+      <!-- Ligne 1 : nom · tarifs · compteur · déconnexion -->
+      <div class="header-row header-row-1">
+        <div class="brand">
+          <img src="logo.png" class="brand-logo" alt="Double Mind" onerror="this.style.display='none'">
+          <div>
+            <div class="brand-title"><span class="blue">Double</span> <span class="orange">Mind</span></div>
+            <div class="brand-subtitle">Compare two minds. Make better decisions.</div>
+          </div>
+        </div>
+        <div class="header-row-1-right">
+          <a href="abonnements.html" id="pricing-link" title="Voir les tarifs">Tarifs</a>
+          <div class="status-wrap">
+            <div id="msg-counter">0 / 5</div>
+            <div class="status-dot"></div>
+          </div>
+          <button id="auth-btn" onclick="handleAuthBtn()">Connexion</button>
+        </div>
+      </div>
+      <!-- Ligne 2 : partager · historique · nouvelle -->
+      <div class="header-row header-row-2">
+        <button id="share-btn" onclick="openShareModal()" title="Partager" style="display:none;">🔗 Partager</button>
+        <button id="history-btn" onclick="openHistoryDrawer()" title="Historique" style="display:none;">🕐 Historique</button>
+        <button id="new-conv-btn" onclick="startNewConversation()" title="Nouvelle" style="display:none;">✶ Nouvelle</button>
+      </div>
+    </header>
+
+  <main id="main">
+    <section class="container hero" id="top" style="display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;padding-top:64px;padding-bottom:64px;">
+      <div>
+        <div class="eyebrow"><span class="eyebrow-dot"></span> GPT + Claude + Juge IA dans une seule interface</div>
+        <h1>
+          Une question.
+          <span class="gradient-text">Deux IA. Une meilleure décision.</span>
+        </h1>
+        <p class="hero-text">
+          Double Mind compare GPT et Claude, fait ressortir leurs désaccords, puis transforme leurs réponses en verdict clair avec scores, gagnant et recommandation.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#" onclick="enterApp(); return false;">Essayer gratuitement →</a>
+          <a class="btn btn-secondary" href="#fonctionnement">Voir comment ça marche</a>
+        </div>
+
+        <div class="hero-note" aria-label="Bénéfices rapides">
+          <span class="mini-proof"><span>✓</span> Pas de copier-coller entre deux IA</span>
+          <span class="mini-proof"><span>✓</span> Comparaison lisible</span>
+          <span class="mini-proof"><span>✓</span> Verdict final exploitable</span>
+        </div>
+
+        <div class="stats" aria-label="Statistiques Double Mind">
+          <div class="stat-card"><div class="stat-number cyan">2</div><div class="stat-label">IA comparées</div></div>
+          <div class="stat-card"><div class="stat-number violet">5</div><div class="stat-label">Modes de réflexion</div></div>
+          <div class="stat-card"><div class="stat-number yellow">1</div><div class="stat-label">Décision finale</div></div>
+        </div>
+      </div>
+
+      <!-- HERO RIGHT : illustration abstraite Double Mind -->
+      <div class="dm-abstract-hero" aria-label="Illustration abstraite Double Mind : GPT et Claude convergent vers un verdict">
+        <svg viewBox="0 0 620 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+          <defs>
+            <radialGradient id="dmGlowBlue" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.42"/>
+              <stop offset="100%" stop-color="#22d3ee" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="dmGlowOrange" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#fb923c" stop-opacity="0.40"/>
+              <stop offset="100%" stop-color="#fb923c" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="dmGlowViolet" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.34"/>
+              <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="dmGlowGold" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#facc15" stop-opacity="0.38"/>
+              <stop offset="100%" stop-color="#facc15" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="dmLineBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.95"/>
+              <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.72"/>
+            </linearGradient>
+            <linearGradient id="dmLineOrange" x1="100%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#fb923c" stop-opacity="0.95"/>
+              <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.72"/>
+            </linearGradient>
+            <linearGradient id="dmLineGold" x1="50%" y1="0%" x2="50%" y2="100%">
+              <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.74"/>
+              <stop offset="100%" stop-color="#facc15" stop-opacity="0.95"/>
+            </linearGradient>
+            <filter id="dmSoftBlur"><feGaussianBlur stdDeviation="10"/></filter>
+            <filter id="dmNodeShadow" x="-40%" y="-40%" width="180%" height="180%">
+              <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#000000" flood-opacity="0.32"/>
+            </filter>
+          </defs>
+
+          <!-- halos -->
+          <circle cx="168" cy="228" r="150" fill="url(#dmGlowBlue)" opacity="0.92"/>
+          <circle cx="452" cy="228" r="150" fill="url(#dmGlowOrange)" opacity="0.88"/>
+          <circle cx="310" cy="314" r="154" fill="url(#dmGlowViolet)" opacity="0.86"/>
+          <circle cx="310" cy="456" r="128" fill="url(#dmGlowGold)" opacity="0.82"/>
+
+          <!-- grille / orbites fines -->
+          <g opacity="0.55">
+            <circle cx="310" cy="310" r="238" fill="none" stroke="rgba(255,255,255,0.055)" stroke-width="1"/>
+            <circle cx="310" cy="310" r="178" fill="none" stroke="rgba(255,255,255,0.075)" stroke-width="1"/>
+            <circle cx="310" cy="310" r="104" fill="none" stroke="rgba(255,255,255,0.085)" stroke-width="1"/>
+            <ellipse cx="310" cy="310" rx="242" ry="86" fill="none" stroke="rgba(255,255,255,0.060)" stroke-width="1" transform="rotate(-18 310 310)"/>
+            <ellipse cx="310" cy="310" rx="242" ry="86" fill="none" stroke="rgba(255,255,255,0.052)" stroke-width="1" transform="rotate(18 310 310)"/>
+          </g>
+
+          <!-- connexions -->
+          <path d="M168 228 C214 244, 248 276, 310 310" fill="none" stroke="url(#dmLineBlue)" stroke-width="3" stroke-linecap="round" stroke-dasharray="10 9">
+            <animate attributeName="stroke-dashoffset" from="0" to="-38" dur="2.6s" repeatCount="indefinite"/>
+          </path>
+          <path d="M452 228 C406 244, 372 276, 310 310" fill="none" stroke="url(#dmLineOrange)" stroke-width="3" stroke-linecap="round" stroke-dasharray="10 9">
+            <animate attributeName="stroke-dashoffset" from="0" to="-38" dur="2.9s" repeatCount="indefinite"/>
+          </path>
+          <path d="M310 310 C310 352, 310 394, 310 456" fill="none" stroke="url(#dmLineGold)" stroke-width="3" stroke-linecap="round" stroke-dasharray="10 9">
+            <animate attributeName="stroke-dashoffset" from="0" to="-38" dur="2.2s" repeatCount="indefinite"/>
+          </path>
+
+          <!-- nappes abstraites -->
+          <path d="M126 390 C198 354, 232 388, 310 348 C384 310, 442 356, 500 314" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="1.4"/>
+          <path d="M98 318 C180 294, 238 334, 310 292 C384 248, 430 288, 520 252" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="1.2"/>
+          <path d="M128 456 C208 408, 250 450, 310 410 C372 370, 422 426, 500 376" fill="none" stroke="rgba(250,204,21,0.12)" stroke-width="1.3"/>
+
+          <!-- GPT node -->
+          <g filter="url(#dmNodeShadow)">
+            <circle cx="168" cy="228" r="70" fill="rgba(34,211,238,0.11)" stroke="rgba(103,232,249,0.46)" stroke-width="1.6"/>
+            <circle cx="168" cy="228" r="48" fill="rgba(34,211,238,0.10)" stroke="rgba(103,232,249,0.25)" stroke-width="1">
+              <animate attributeName="r" values="48;54;48" dur="3.2s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="1;.62;1" dur="3.2s" repeatCount="indefinite"/>
+            </circle>
+            <text x="168" y="220" text-anchor="middle" font-size="25" fill="#67e8f9">⚡</text>
+            <text x="168" y="247" text-anchor="middle" font-size="15" font-weight="900" fill="#e0f7ff" font-family="Inter,system-ui,sans-serif">GPT</text>
+          </g>
+
+          <!-- Claude node -->
+          <g filter="url(#dmNodeShadow)">
+            <circle cx="452" cy="228" r="70" fill="rgba(251,146,60,0.12)" stroke="rgba(253,186,116,0.48)" stroke-width="1.6"/>
+            <circle cx="452" cy="228" r="48" fill="rgba(251,146,60,0.10)" stroke="rgba(253,186,116,0.27)" stroke-width="1">
+              <animate attributeName="r" values="48;54;48" dur="3.6s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="1;.62;1" dur="3.6s" repeatCount="indefinite"/>
+            </circle>
+            <text x="452" y="220" text-anchor="middle" font-size="25" fill="#fdba74">✹</text>
+            <text x="452" y="247" text-anchor="middle" font-size="15" font-weight="900" fill="#fff1df" font-family="Inter,system-ui,sans-serif">CLD</text>
+          </g>
+
+          <!-- Analyse centrale -->
+          <g filter="url(#dmNodeShadow)">
+            <circle cx="310" cy="310" r="78" fill="rgba(139,92,246,0.14)" stroke="rgba(196,181,253,0.44)" stroke-width="1.6"/>
+            <circle cx="310" cy="310" r="54" fill="rgba(139,92,246,0.12)" stroke="rgba(196,181,253,0.25)" stroke-width="1">
+              <animate attributeName="r" values="54;60;54" dur="2.8s" repeatCount="indefinite"/>
+            </circle>
+            <text x="310" y="303" text-anchor="middle" font-size="28" fill="#ddd6fe">🧠</text>
+            <text x="310" y="333" text-anchor="middle" font-size="13" font-weight="900" fill="#c4b5fd" font-family="Inter,system-ui,sans-serif" letter-spacing="1.8">ANALYSE</text>
+          </g>
+
+          <!-- Verdict -->
+          <g filter="url(#dmNodeShadow)">
+            <circle cx="310" cy="456" r="72" fill="rgba(250,204,21,0.12)" stroke="rgba(253,224,71,0.48)" stroke-width="1.6"/>
+            <circle cx="310" cy="456" r="49" fill="rgba(250,204,21,0.10)" stroke="rgba(253,224,71,0.25)" stroke-width="1">
+              <animate attributeName="r" values="49;55;49" dur="4s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="1;.66;1" dur="4s" repeatCount="indefinite"/>
+            </circle>
+            <text x="310" y="447" text-anchor="middle" font-size="28" fill="#fde047">⚖️</text>
+            <text x="310" y="477" text-anchor="middle" font-size="13" font-weight="900" fill="#fef3c7" font-family="Inter,system-ui,sans-serif" letter-spacing="1.8">VERDICT</text>
+          </g>
+
+          <!-- particules -->
+          <g opacity="0.95">
+            <circle cx="106" cy="152" r="3" fill="#67e8f9"><animate attributeName="cy" values="152;143;152" dur="4.2s" repeatCount="indefinite"/></circle>
+            <circle cx="236" cy="128" r="2.2" fill="#c4b5fd"><animate attributeName="cy" values="128;120;128" dur="3.6s" repeatCount="indefinite"/></circle>
+            <circle cx="512" cy="156" r="3" fill="#fdba74"><animate attributeName="cy" values="156;147;156" dur="4.6s" repeatCount="indefinite"/></circle>
+            <circle cx="528" cy="324" r="2.3" fill="#fb923c"><animate attributeName="cx" values="528;538;528" dur="4.1s" repeatCount="indefinite"/></circle>
+            <circle cx="100" cy="340" r="2.3" fill="#22d3ee"><animate attributeName="cx" values="100;90;100" dur="3.8s" repeatCount="indefinite"/></circle>
+            <circle cx="406" cy="502" r="2.8" fill="#fde047"><animate attributeName="cy" values="502;512;502" dur="5.2s" repeatCount="indefinite"/></circle>
+            <circle cx="212" cy="510" r="2.4" fill="#8b5cf6"><animate attributeName="cy" values="510;520;510" dur="4.9s" repeatCount="indefinite"/></circle>
+          </g>
+        </svg>
+
+        <div class="dm-float-card dm-card-gpt">
+          <div class="dm-card-icon">⚡</div>
+          <div><strong>GPT</strong><span>Structure rapide</span></div>
+        </div>
+        <div class="dm-float-card dm-card-claude">
+          <div class="dm-card-icon">✹</div>
+          <div><strong>Claude</strong><span>Nuance critique</span></div>
+        </div>
+        <div class="dm-float-card dm-card-judge">
+          <div class="dm-card-icon">⚖️</div>
+          <div><strong>Juge IA</strong><span>Décision finale</span></div>
+        </div>
+      </div>
+    </section>
+
+    <style>
+      @media (max-width: 768px) {
+        #top { grid-template-columns: 1fr !important; gap: 32px !important; }
+      }
+    </style>
+
+    <section class="marquee" aria-label="Ligne défilante Double Mind">
+      <div class="marquee-track">
+        <div class="marquee-item"><span class="spark">✦</span><span>GPT • Claude • Juge IA • Classique • Débat • Expert • Créatif • Clash • Verdict clair</span></div>
+        <div class="marquee-item"><span class="spark">✦</span><span>GPT • Claude • Juge IA • Classique • Débat • Expert • Créatif • Clash • Verdict clair</span></div>
+        <div class="marquee-item"><span class="spark">✦</span><span>GPT • Claude • Juge IA • Classique • Débat • Expert • Créatif • Clash • Verdict clair</span></div>
+        <div class="marquee-item"><span class="spark">✦</span><span>GPT • Claude • Juge IA • Classique • Débat • Expert • Créatif • Clash • Verdict clair</span></div>
+      </div>
+    </section>
+
+    <section class="proof-strip">
+      <div class="container proof-grid">
+        <div class="proof-item"><span class="check">✓</span><p>Compare deux raisonnements au lieu d’une seule réponse.</p></div>
+        <div class="proof-item"><span class="check">✓</span><p>Repère les accords, les contradictions et les angles morts.</p></div>
+        <div class="proof-item"><span class="check">✓</span><p>Transforme la discussion en décision claire et actionnable.</p></div>
+        <div class="proof-item"><span class="check">✓</span><p>Utilise des modes adaptés à ton objectif.</p></div>
+      </div>
+    </section>
+
+    <section class="container section" id="fonctionnement">
+      <div class="section-heading">
+        <p class="section-kicker">Comment ça marche</p>
+        <h2>Tu ne lis pas juste une réponse. Tu compares un raisonnement.</h2>
+      </div>
+
+      <div class="steps-grid">
+        <article class="step-card">
+          <div class="step-number">1</div>
+          <h3>Pose ta question</h3>
+          <p>Tu écris ton problème, ton idée ou ta décision à prendre. Le produit doit rester simple dès le premier écran.</p>
+        </article>
+        <article class="step-card">
+          <div class="step-number">2</div>
+          <h3>GPT et Claude répondent</h3>
+          <p>Les deux IA apportent des angles différents : structure, nuance, critique, créativité ou confrontation selon le mode choisi.</p>
+        </article>
+        <article class="step-card">
+          <div class="step-number">3</div>
+          <h3>Le Juge IA tranche</h3>
+          <p>Le verdict résume, note, choisit le meilleur raisonnement et donne une recommandation claire pour passer à l’action.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="container section compare-section" id="pourquoi">
+      <div class="section-heading">
+        <p class="section-kicker">Pourquoi c’est utile</p>
+        <h2>Une seule IA peut être convaincante… même quand elle oublie quelque chose.</h2>
+      </div>
+
+      <div class="benefit-grid">
+        <article class="benefit-card">
+          <div class="benefit-icon cyan">◎</div>
+          <h3>Moins d’angles morts</h3>
+          <p>Quand GPT et Claude ne mettent pas l’accent sur les mêmes points, tu vois mieux ce qu’une seule réponse aurait pu cacher.</p>
+        </article>
+        <article class="benefit-card">
+          <div class="benefit-icon orange">✹</div>
+          <h3>Plus de recul</h3>
+          <p>La comparaison évite de croire trop vite une réponse bien écrite. Tu peux vérifier, nuancer et décider plus proprement.</p>
+        </article>
+        <article class="benefit-card">
+          <div class="benefit-icon yellow">⚖️</div>
+          <h3>Une fin claire</h3>
+          <p>Le Juge IA évite le flou : il résume les positions, donne des scores et propose une recommandation finale.</p>
+        </article>
+        <article class="benefit-card">
+          <div class="benefit-icon violet">↗</div>
+          <h3>Meilleure expérience</h3>
+          <p>L’utilisateur ne jongle plus entre plusieurs outils. Il voit GPT, Claude et le verdict dans une seule interface lisible.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="container section" id="modes">
+      <div class="section-heading">
+        <p class="section-kicker">Modes intelligents</p>
+        <h2>Choisis le style de réflexion adapté à ta question.</h2>
+      </div>
+
+      <div class="modes-grid">
+        <article class="mode-card"><div class="mode-icon cyan">🔵</div><h3 class="cyan">Classique</h3><p>Pour obtenir deux réponses propres, équilibrées et faciles à comparer.</p></article>
+        <article class="mode-card"><div class="mode-icon blue">⚔️</div><h3 class="blue">Débat</h3><p>Pour confronter les arguments et faire ressortir les désaccords utiles.</p></article>
+        <article class="mode-card"><div class="mode-icon violet">🧠</div><h3 class="violet">Expert</h3><p>Pour une analyse plus profonde, structurée et orientée décision.</p></article>
+        <article class="mode-card"><div class="mode-icon orange">🎨</div><h3 class="orange">Créatif</h3><p>Pour explorer plusieurs idées, améliorer un concept ou trouver un angle original.</p></article>
+        <article class="mode-card"><div class="mode-icon red">🔥</div><h3 class="red">Clash</h3><p>Pour tester une idée durement et repérer ses faiblesses rapidement.</p></article>
+      </div>
+    </section>
+
+    <section class="container section" id="cas-usages">
+      <div class="section-heading">
+        <p class="section-kicker">Cas d’usage</p>
+        <h2>Double Mind devient fort quand la réponse doit servir à décider.</h2>
+      </div>
+
+      <div class="use-grid">
+        <article class="use-card"><div class="use-icon">💼</div><h3>Idée business</h3><p>Tester la rentabilité, les risques, le positionnement et la différenciation.</p></article>
+        <article class="use-card"><div class="use-icon">📚</div><h3>Apprentissage</h3><p>Comprendre un sujet avec deux explications puis retenir une synthèse claire.</p></article>
+        <article class="use-card"><div class="use-icon">✍️</div><h3>Rédaction</h3><p>Comparer deux propositions de textes et choisir la plus convaincante.</p></article>
+        <article class="use-card"><div class="use-icon">🚀</div><h3>Stratégie</h3><p>Choisir entre lancer maintenant, attendre, pivoter ou améliorer une offre.</p></article>
+        <article class="use-card"><div class="use-icon">🎨</div><h3>Créativité</h3><p>Obtenir plusieurs angles d’idées et faire sélectionner le plus prometteur.</p></article>
+        <article class="use-card"><div class="use-icon">🧩</div><h3>Analyse critique</h3><p>Repérer ce qui est solide, flou, exagéré ou à vérifier dans un raisonnement.</p></article>
+      </div>
+    </section>
+
+    <section class="container section discussion-section" id="discussion">
+      <div class="section-heading">
+        <p class="section-kicker">Démo interactive</p>
+        <h2>Teste la logique GPT / Claude / Juge IA.</h2>
+      </div>
+
+      <div class="discussion-layout">
+        <aside class="discussion-panel" aria-label="Configuration de la discussion">
+          <p class="panel-label">Configuration</p>
+          <h3>Choisis le mode, les IA et la question.</h3>
+
+          <div class="mini-controls">
+            <div class="control-box">
+              <div class="control-title">Mode</div>
+              <div class="pill-row" id="modeChoices">
+                <button class="choice-btn active" type="button" data-mode="Classique">🔵 Classique</button>
+                <button class="choice-btn" type="button" data-mode="Débat">⚔️ Débat</button>
+                <button class="choice-btn" type="button" data-mode="Expert">🧠 Expert</button>
+                <button class="choice-btn" type="button" data-mode="Créatif">🎨 Créatif</button>
+                <button class="choice-btn" type="button" data-mode="Clash">🔥 Clash</button>
+              </div>
+            </div>
+
+            <div class="control-box">
+              <div class="control-title">Qui répond ?</div>
+              <div class="pill-row" id="responseChoices">
+                <button class="choice-btn" type="button" data-response="GPT seul">GPT seul</button>
+                <button class="choice-btn" type="button" data-response="Claude seul">Claude seul</button>
+                <button class="choice-btn active" type="button" data-response="Les deux">Les deux</button>
+              </div>
+            </div>
+
+            <div class="control-box">
+              <div class="control-title">Qui commence ?</div>
+              <div class="pill-row" id="starterChoices">
+                <button class="choice-btn active" type="button" data-starter="GPT commence">GPT commence</button>
+                <button class="choice-btn" type="button" data-starter="Claude commence">Claude commence</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="prompt-list" aria-label="Questions exemples" style="margin-top:22px;">
+            <p class="panel-label" style="margin-bottom:10px;">Questions exemples</p>
+            <button class="prompt-chip active" type="button" data-question="Pourquoi utiliser Double Mind ?">Pourquoi utiliser Double Mind ?</button>
+            <button class="prompt-chip" type="button" data-question="Comment décider entre deux options ?">Comment décider entre deux options ?</button>
+            <button class="prompt-chip" type="button" data-question="Quelle IA est la meilleure pour coder ?">Quelle IA est la meilleure pour coder ?</button>
+            <button class="prompt-chip" type="button" data-question="Comment améliorer ma productivité ?">Comment améliorer ma productivité ?</button>
+          </div>
+
+          <!-- Mini légende des couleurs -->
+          <div style="margin-top:22px;padding:16px;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);">
+            <div class="control-title" style="margin-bottom:12px;">Légende</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;align-items:center;gap:10px;font-size:13px;">
+                <span style="width:10px;height:10px;border-radius:50%;background:#22d3ee;flex-shrink:0;box-shadow:0 0 6px #22d3ee;"></span>
+                <span style="color:rgba(255,255,255,0.6);">Bleu — réponse GPT</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;font-size:13px;">
+                <span style="width:10px;height:10px;border-radius:50%;background:#fb923c;flex-shrink:0;box-shadow:0 0 6px #fb923c;"></span>
+                <span style="color:rgba(255,255,255,0.6);">Orange — réponse Claude</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;font-size:13px;">
+                <span style="width:10px;height:10px;border-radius:50%;background:#facc15;flex-shrink:0;box-shadow:0 0 6px #facc15;"></span>
+                <span style="color:rgba(255,255,255,0.6);">Jaune — verdict du Juge IA</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Illustration abstraite : deux IA → analyse → verdict -->
+          <div class="dm-left-illustration" aria-label="Illustration abstraite Double Mind">
+            <div class="dm-orbit-glow dm-glow-blue"></div>
+            <div class="dm-orbit-glow dm-glow-orange"></div>
+            <div class="dm-orbit-glow dm-glow-gold"></div>
+            <svg class="dm-left-svg" viewBox="0 0 420 340" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="dmNodeBlue" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#67e8f9" stop-opacity="0.90"/>
+                  <stop offset="45%" stop-color="#22d3ee" stop-opacity="0.22"/>
+                  <stop offset="100%" stop-color="#22d3ee" stop-opacity="0"/>
+                </radialGradient>
+                <radialGradient id="dmNodeOrange" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#fdba74" stop-opacity="0.90"/>
+                  <stop offset="45%" stop-color="#fb923c" stop-opacity="0.24"/>
+                  <stop offset="100%" stop-color="#fb923c" stop-opacity="0"/>
+                </radialGradient>
+                <radialGradient id="dmNodeViolet" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#c4b5fd" stop-opacity="0.85"/>
+                  <stop offset="48%" stop-color="#8b5cf6" stop-opacity="0.24"/>
+                  <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+                </radialGradient>
+                <radialGradient id="dmNodeGold" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#fde047" stop-opacity="0.92"/>
+                  <stop offset="48%" stop-color="#facc15" stop-opacity="0.23"/>
+                  <stop offset="100%" stop-color="#facc15" stop-opacity="0"/>
+                </radialGradient>
+                <linearGradient id="dmLineBlue" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#67e8f9" stop-opacity="0.92"/>
+                  <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.55"/>
+                </linearGradient>
+                <linearGradient id="dmLineOrange" x1="1" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#fdba74" stop-opacity="0.92"/>
+                  <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.55"/>
+                </linearGradient>
+                <linearGradient id="dmLineGold" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#a78bfa" stop-opacity="0.78"/>
+                  <stop offset="100%" stop-color="#facc15" stop-opacity="0.88"/>
+                </linearGradient>
+                <filter id="dmBlur"><feGaussianBlur stdDeviation="8"/></filter>
+              </defs>
+
+              <circle cx="210" cy="164" r="126" fill="none" stroke="rgba(255,255,255,.055)" stroke-width="1"/>
+              <ellipse cx="210" cy="164" rx="154" ry="84" fill="none" stroke="rgba(255,255,255,.045)" stroke-width="1" transform="rotate(-12 210 164)"/>
+              <ellipse cx="210" cy="164" rx="154" ry="84" fill="none" stroke="rgba(255,255,255,.04)" stroke-width="1" transform="rotate(12 210 164)"/>
+
+              <path class="dm-flow-line" d="M101 112 C151 86 175 110 210 164" stroke="url(#dmLineBlue)"/>
+              <path class="dm-flow-line dm-flow-line-2" d="M319 112 C268 86 245 110 210 164" stroke="url(#dmLineOrange)"/>
+              <path class="dm-flow-line dm-flow-line-3" d="M210 164 C208 206 208 232 210 266" stroke="url(#dmLineGold)"/>
+
+              <circle cx="101" cy="112" r="61" fill="url(#dmNodeBlue)" filter="url(#dmBlur)"/>
+              <circle cx="319" cy="112" r="61" fill="url(#dmNodeOrange)" filter="url(#dmBlur)"/>
+              <circle cx="210" cy="164" r="66" fill="url(#dmNodeViolet)" filter="url(#dmBlur)"/>
+              <circle cx="210" cy="266" r="64" fill="url(#dmNodeGold)" filter="url(#dmBlur)"/>
+
+              <g class="dm-node dm-node-gpt">
+                <circle cx="101" cy="112" r="42" fill="rgba(7,15,30,.78)" stroke="rgba(103,232,249,.55)"/>
+                <text x="101" y="108" text-anchor="middle" font-size="22" fill="#67e8f9">⚡</text>
+                <text x="101" y="131" text-anchor="middle" font-size="12" font-weight="900" fill="#bfdbfe" font-family="Inter, system-ui">GPT</text>
+              </g>
+              <g class="dm-node dm-node-claude">
+                <circle cx="319" cy="112" r="42" fill="rgba(29,16,8,.78)" stroke="rgba(251,146,60,.58)"/>
+                <text x="319" y="108" text-anchor="middle" font-size="22" fill="#fdba74">✹</text>
+                <text x="319" y="131" text-anchor="middle" font-size="12" font-weight="900" fill="#fed7aa" font-family="Inter, system-ui">CLAUDE</text>
+              </g>
+              <g class="dm-node dm-node-core">
+                <circle cx="210" cy="164" r="45" fill="rgba(24,18,49,.82)" stroke="rgba(196,181,253,.50)"/>
+                <text x="210" y="158" text-anchor="middle" font-size="24" fill="#c4b5fd">◈</text>
+                <text x="210" y="181" text-anchor="middle" font-size="10" font-weight="900" fill="#ddd6fe" font-family="Inter, system-ui" letter-spacing="1.2">ANALYSE</text>
+              </g>
+              <g class="dm-node dm-node-judge">
+                <circle cx="210" cy="266" r="44" fill="rgba(38,30,8,.84)" stroke="rgba(250,204,21,.56)"/>
+                <text x="210" y="261" text-anchor="middle" font-size="23" fill="#fde047">⚖</text>
+                <text x="210" y="284" text-anchor="middle" font-size="10" font-weight="900" fill="#fef3c7" font-family="Inter, system-ui" letter-spacing="1.2">VERDICT</text>
+              </g>
+
+              <circle class="dm-particle p1" cx="59" cy="216" r="3" fill="#67e8f9"/>
+              <circle class="dm-particle p2" cx="361" cy="210" r="3" fill="#fdba74"/>
+              <circle class="dm-particle p3" cx="139" cy="286" r="2.5" fill="#facc15"/>
+              <circle class="dm-particle p4" cx="279" cy="55" r="2.5" fill="#c4b5fd"/>
+              <circle class="dm-particle p5" cx="169" cy="47" r="2" fill="#67e8f9"/>
+            </svg>
+            <div class="dm-illustration-caption">
+              <strong>Scène Double Mind</strong>
+              <span>Deux avis s’opposent, l’analyse converge, le verdict tranche.</span>
+            </div>
+          </div>
+        </aside>
+
+        <article class="discussion-output" aria-label="Discussion entre GPT, Claude et le Juge IA">
+          <div class="output-top">
+            <div class="output-title">💬 Discussion IA</div>
+            <div class="live-status"><span class="live-dot"></span> Simulation active</div>
+          </div>
+
+          <div class="output-body" id="outputBody" aria-live="polite"></div>
+
+          <form class="chat-input" id="chatForm">
+            <label class="sr-only" for="userInput">Question à simuler</label>
+            <input id="userInput" type="text" placeholder="Pose une question à simuler..." autocomplete="off" aria-label="Question à simuler" />
+            <button class="send-btn" type="submit">Simuler →</button>
+          </form>
+        </article>
+      </div>
+    </section>
+
+
+    <section class="container cta">
+      <div class="cta-box">
+        <div class="cta-icon" aria-hidden="true">🧠</div>
+        <div>
+          <h2>Ta question mérite mieux qu’une seule réponse.</h2>
+          <p>Compare GPT et Claude, vois leurs désaccords, puis obtiens une décision claire avec le Juge IA.</p>
+        </div>
+        <a class="btn btn-primary" href="#" onclick="enterApp(); return false;">Essayer Double Mind →</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <p>© 2026 Double Mind. Tous droits réservés.</p>
+      <div class="footer-links"><a href="#">Confidentialité</a><span>•</span><a href="#">Conditions</a><span>•</span><a href="#">Contact</a></div>
+    </div>
+  </footer>
+
+  <script>
+  (function() {
+    const menuBtn = document.getElementById("menuBtn");
+    const mobileNav = document.getElementById("mobileNav");
+    const outputBody = document.getElementById("outputBody");
+    const chatForm = document.getElementById("chatForm");
+    const userInput = document.getElementById("userInput");
+    const promptButtons = document.querySelectorAll(".prompt-chip");
+    const modeButtons = document.querySelectorAll("#modeChoices .choice-btn");
+    const responseButtons = document.querySelectorAll("#responseChoices .choice-btn");
+    const starterButtons = document.querySelectorAll("#starterChoices .choice-btn");
+
+    let currentMode = "Classique";
+    let currentResponse = "Les deux";
+    let currentStarter = "GPT commence";
+    let currentQuestion = "Pourquoi utiliser Double Mind ?";
+    let debateContinued = false;
+    let verdictVisible = true;
+
+    const qaBank = {
+      "pourquoi utiliser double mind": {
+        gpt: {
+          classique: `<p>Double Mind sert à obtenir une réponse plus fiable qu’une réponse unique.</p><ol><li><strong>GPT</strong> apporte une structure rapide.</li><li><strong>Claude</strong> ajoute souvent une nuance ou une critique.</li><li><strong>Le Juge IA</strong> transforme les deux réponses en décision claire.</li></ol><p>La valeur n’est pas “plus de texte”, mais “plus de recul”.</p>`,
+          debat: `<p>Une seule IA peut te convaincre trop vite. Double Mind force la comparaison.</p><ol><li>Quand GPT et Claude sont d’accord, l’idée gagne en crédibilité.</li><li>Quand ils divergent, tu repères ce qu’il faut vérifier.</li><li>Le verdict final évite de rester dans le flou.</li></ol>`,
+          expert: `<p>Double Mind fonctionne comme un contrôle qualité sur les réponses IA.</p><ol><li><strong>Production :</strong> GPT formule une réponse claire.</li><li><strong>Critique :</strong> Claude complète ou remet en question.</li><li><strong>Synthèse :</strong> le juge extrait une recommandation exploitable.</li></ol>`,
+          creatif: `<p>Tu peux voir Double Mind comme une arène d’idées : deux intelligences proposent, puis un arbitre tranche.</p><ol><li>Plus visuel qu’un chat classique.</li><li>Plus mémorable qu’une réponse unique.</li><li>Plus simple à partager grâce au verdict.</li></ol>`,
+          clash: `<p>Parce qu’une seule réponse peut être belle mais incomplète.</p><ol><li>Double Mind expose les faiblesses.</li><li>Le débat rend les contradictions visibles.</li><li>Le Juge IA transforme la confrontation en décision.</li></ol>`
+        },
+        claude: {
+          classique: `<p>Double Mind est utile quand tu veux comparer au lieu de seulement recevoir une réponse.</p><ol><li>Tu vois les points communs.</li><li>Tu identifies les angles morts.</li><li>Tu repars avec une conclusion plus claire.</li></ol>`,
+          debat: `<p>GPT parle de structure, mais la vraie force est la friction entre les deux réponses.</p><ol><li>La contradiction révèle les limites.</li><li>La nuance empêche de simplifier trop vite.</li><li>Le juge donne une fin nette à la discussion.</li></ol>`,
+          expert: `<p>L’intérêt principal est la robustesse de décision.</p><ol><li>Deux modèles réduisent le risque d’un avis trop isolé.</li><li>La comparaison montre les désaccords utiles.</li><li>Le verdict synthétise ce qu’il faut vraiment retenir.</li></ol>`,
+          creatif: `<p>Double Mind rend l’IA plus vivante : GPT devient le stratège, Claude le critique, le Juge l’arbitre.</p><ol><li>C’est plus clair.</li><li>C’est plus engageant.</li><li>C’est plus utile pour décider.</li></ol>`,
+          clash: `<p>Le piège d’une seule IA, c’est la confiance excessive.</p><ol><li>Elle peut avoir tort avec un style très convaincant.</li><li>Une deuxième IA oblige à comparer.</li><li>Le juge évite de repartir sans conclusion.</li></ol>`
+        },
+        judge: {
+          gptSummary: "GPT explique clairement la promesse : structure, comparaison et décision finale.",
+          claudeSummary: "Claude insiste sur le vrai danger : une seule IA peut paraître fiable même quand elle oublie des points.",
+          gptScore: "8.4 / 10",
+          claudeScore: "8.9 / 10",
+          winner: "Claude",
+          recommendation: "Présente Double Mind comme un outil de décision, pas comme un simple double chatbot. Le message à garder : comparer, confronter, trancher."
+        }
+      },
+      "rentable": {
+        gpt: {
+          classique: `<p>Ton SaaS IA peut être rentable, mais seulement si le prix couvre l’usage moyen.</p><ol><li>Calcule le coût GPT + Claude + Juge IA.</li><li>Limite les prompts et les verdicts gratuits.</li><li>Fais payer surtout la valeur du verdict.</li></ol>`,
+          debat: `<p>Oui, l’idée peut être rentable, mais la marge peut disparaître vite.</p><ol><li>Le concept est différenciant.</li><li>Chaque débat coûte plus cher qu’un chatbot simple.</li><li>La monétisation doit contrôler l’abus.</li></ol>`,
+          expert: `<p>La rentabilité dépend de trois métriques : coût moyen par débat, revenu moyen par utilisateur et rétention.</p><ol><li>Mesure les tokens par session.</li><li>Fixe des limites claires.</li><li>Vérifie si les utilisateurs reviennent.</li></ol>`,
+          creatif: `<p>Rends le verdict désirable : c’est lui qui peut justifier le paiement.</p><ol><li>Démo virale.</li><li>Résultat partageable.</li><li>Décision finale lisible.</li></ol>`,
+          clash: `<p>Ton SaaS ne sera pas rentable juste parce qu’il utilise l’IA.</p><ol><li>Si le verdict n’est pas utile, les gens ne paieront pas.</li><li>Si les coûts API montent, tu perds de l’argent.</li><li>Si tu n’es pas différent, ChatGPT gratuit reste dangereux.</li></ol>`
+        },
+        claude: {
+          classique: `<p>La question centrale n’est pas “est-ce que l’IA se vend ?”, mais “est-ce que le verdict fait gagner assez de temps pour être payé ?”.</p><ol><li>La valeur doit être visible en une démo.</li><li>Les coûts doivent être mesurés.</li><li>Les limites d’usage doivent être simples.</li></ol>`,
+          debat: `<p>Je nuance GPT : ton plus gros risque est la valeur perçue.</p><ol><li>Deux réponses seules ne suffisent pas.</li><li>Le juge doit donner une vraie conclusion.</li><li>La rétention comptera plus que les premiers tests.</li></ol>`,
+          expert: `<p>Ton modèle économique doit protéger la marge.</p><ol><li>Gratuit : faible limite.</li><li>Payant : crédits ou quotas clairs.</li><li>Premium : meilleurs modèles ou plus de verdicts, mais avec coût surveillé.</li></ol>`,
+          creatif: `<p>Tu peux vendre l’idée comme “un comité IA pour décider plus vite”.</p><ol><li>Deux avis.</li><li>Une confrontation.</li><li>Une décision.</li></ol>`,
+          clash: `<p>Le piège serait de confondre trafic et business.</p><ol><li>Des visiteurs ne veulent pas dire des abonnés.</li><li>Une belle interface ne suffit pas.</li><li>Il faut prouver que le verdict vaut de l’argent.</li></ol>`
+        },
+        judge: {
+          gptSummary: "GPT structure bien les leviers de rentabilité : coût, limites, prix et usage moyen.",
+          claudeSummary: "Claude voit le risque principal : la valeur perçue du verdict doit être assez forte pour justifier l’abonnement.",
+          gptScore: "8.0 / 10",
+          claudeScore: "9.1 / 10",
+          winner: "Claude",
+          recommendation: "Avant de monétiser, mesure le coût moyen d’un débat complet et teste si les utilisateurs reviennent pour le verdict, pas seulement pour la curiosité."
+        }
+      },
+      "ameliorer": {
+        gpt: {
+          classique: `<p>Pour améliorer ton site, rends la promesse visible immédiatement.</p><ol><li>Une question.</li><li>Deux IA.</li><li>Un verdict clair.</li></ol><p>La démo doit apparaître tôt et ressembler au vrai produit.</p>`,
+          debat: `<p>La page doit montrer la différence entre GPT et Claude, pas seulement dire qu’elle existe.</p><ol><li>GPT en bleu : structure.</li><li>Claude en orange : nuance.</li><li>Juge en jaune : décision.</li></ol>`,
+          expert: `<p>Priorités : hero plus clair, section “comment ça marche”, cas d’usage, démo interactive et CTA répétés.</p><ol><li>Moins de texte inutile.</li><li>Plus de preuves visuelles.</li><li>Plus de cohérence produit.</li></ol>`,
+          creatif: `<p>Fais de la landing page une mini-histoire : l’utilisateur pose une question, les deux IA s’opposent, le juge tranche.</p><ol><li>Tension.</li><li>Comparaison.</li><li>Conclusion.</li></ol>`,
+          clash: `<p>Le danger : faire une page belle mais pas assez compréhensible en 5 secondes.</p><ol><li>Réduis les phrases longues.</li><li>Montre la démo immédiatement.</li><li>Ne parle que de GPT, Claude et Juge IA.</li></ol>`
+        },
+        claude: {
+          classique: `<p>Je garderais le design sombre, mais je simplifierais le message.</p><ol><li>Le visiteur doit comprendre vite.</li><li>La démo doit être plus réaliste.</li><li>Le juge doit devenir l’élément central.</li></ol>`,
+          debat: `<p>Ton site ne doit pas vendre “plus d’IA”, mais “une meilleure décision”.</p><ol><li>Montre le problème d’une seule réponse.</li><li>Montre la comparaison.</li><li>Montre la décision finale.</li></ol>`,
+          expert: `<p>La cohérence est essentielle : si ton produit montre GPT et Claude, la landing page ne doit pas afficher d’autres modèles inutiles.</p><ol><li>Options réelles.</li><li>Codes couleur stables.</li><li>Verdict lisible.</li></ol>`,
+          creatif: `<p>Le slogan le plus efficace reste simple : “Une question. Deux IA. Une meilleure décision.”</p><ol><li>Mémorisable.</li><li>Clair.</li><li>Aligné avec ton produit.</li></ol>`,
+          clash: `<p>Ne surcharge pas la page avec trop d’effets.</p><ol><li>Le design doit aider le message.</li><li>Le message doit aider la conversion.</li><li>La conversion doit mener au test du produit.</li></ol>`
+        },
+        judge: {
+          gptSummary: "GPT propose les bonnes priorités : promesse claire, démo réaliste, CTA et cohérence visuelle.",
+          claudeSummary: "Claude insiste sur le positionnement : vendre une meilleure décision, pas seulement deux réponses IA.",
+          gptScore: "8.6 / 10",
+          claudeScore: "9.2 / 10",
+          winner: "Claude",
+          recommendation: "Garde la page sombre et premium, mais simplifie le message. Le visiteur doit comprendre en 5 secondes : je pose une question, GPT et Claude répondent, le juge tranche."
+        }
+      },
+      "lancer": {
+        gpt: {
+          classique: `<p>Tu devrais lancer une version limitée dès que le parcours principal fonctionne.</p><ol><li>Teste l’intérêt réel.</li><li>Mesure les coûts.</li><li>Améliore avec les retours.</li></ol>`,
+          debat: `<p>Lancer maintenant est utile, mais pas sans garde-fous.</p><ol><li>Oui pour les retours.</li><li>Non pour une ouverture illimitée.</li><li>Solution : bêta gratuite limitée.</li></ol>`,
+          expert: `<p>La bonne méthode : lancement progressif.</p><ol><li>Bêta privée.</li><li>Bêta publique limitée.</li><li>Monétisation après validation.</li></ol>`,
+          creatif: `<p>Lance comme une expérience publique : “J’ai créé un site où deux IA débattent et une troisième tranche.”</p><ol><li>Simple.</li><li>Curieux.</li><li>Facile à tester.</li></ol>`,
+          clash: `<p>Attendre trop longtemps peut devenir une excuse.</p><ol><li>Si le site marche, teste.</li><li>Si personne ne revient, corrige.</li><li>Si les coûts montent, limite.</li></ol>`
+        },
+        claude: {
+          classique: `<p>Je suis d’accord, mais “lancer” ne veut pas dire “monétiser tout de suite”.</p><ol><li>Lance une bêta.</li><li>Observe la compréhension du produit.</li><li>Mesure les coûts avant d’élargir.</li></ol>`,
+          debat: `<p>Le bon compromis : ne pas attendre la perfection, mais ne pas ouvrir sans limites.</p><ol><li>Limites de messages.</li><li>Suivi des tokens.</li><li>Retours utilisateurs.</li></ol>`,
+          expert: `<p>Pose-toi une question plus précise : quel niveau de lancement ?</p><ol><li>Privé : peu risqué.</li><li>Public limité : utile.</li><li>Payant : seulement si la valeur est claire.</li></ol>`,
+          creatif: `<p>Ton lancement peut raconter une histoire : deux IA s’affrontent, le juge décide.</p><ol><li>Ça se comprend vite.</li><li>Ça donne envie de tester.</li><li>Ça peut se partager.</li></ol>`,
+          clash: `<p>Ne te cache pas derrière “il faut encore améliorer”.</p><ol><li>Teste petit.</li><li>Mesure vraiment.</li><li>Décide avec des données.</li></ol>`
+        },
+        judge: {
+          gptSummary: "GPT recommande un lancement progressif pour obtenir des retours rapidement.",
+          claudeSummary: "Claude rappelle qu’il faut distinguer bêta, lancement public et monétisation.",
+          gptScore: "8.3 / 10",
+          claudeScore: "8.9 / 10",
+          winner: "Claude",
+          recommendation: "Lance une bêta limitée, pas une ouverture totale. Ton objectif immédiat : vérifier si les gens comprennent et réutilisent le verdict."
+        }
+      },
+      default: {
+        gpt: {
+          classique: `<p>Voici une réponse structurée à ta question.</p><ol><li>Clarifie l’objectif.</li><li>Compare plusieurs options.</li><li>Choisis l’action la plus utile.</li></ol>`,
+          debat: `<p>Je commencerais par défendre une réponse pragmatique : il faut décider avec les informations disponibles.</p><ol><li>Identifier le problème.</li><li>Voir les risques.</li><li>Passer à l’action.</li></ol>`,
+          expert: `<p>Analyse experte : commence par les critères de décision, puis compare les conséquences possibles.</p><ol><li>Impact.</li><li>Coût.</li><li>Risque.</li><li>Facilité d’exécution.</li></ol>`,
+          creatif: `<p>Une piste créative serait de transformer cette question en expérience : tester rapidement, mesurer, puis améliorer.</p>`,
+          clash: `<p>La réponse directe : sans critère clair, tu risques de choisir au feeling.</p><ol><li>Définis ce que tu veux.</li><li>Teste une option.</li><li>Corrige vite.</li></ol>`
+        },
+        claude: {
+          classique: `<p>Je compléterais en disant que la meilleure réponse dépend du contexte.</p><ol><li>Qu’est-ce qui compte vraiment ?</li><li>Qu’est-ce qui peut mal tourner ?</li><li>Quelle action simple peux-tu tester ?</li></ol>`,
+          debat: `<p>Je nuance GPT : décider vite est utile, mais seulement si tu ne confonds pas vitesse et précipitation.</p><ol><li>Clarifie les risques.</li><li>Choisis une petite action.</li><li>Observe le résultat.</li></ol>`,
+          expert: `<p>Un bon raisonnement doit séparer les faits, les hypothèses et les décisions.</p><ol><li>Faits connus.</li><li>Hypothèses à vérifier.</li><li>Action la plus raisonnable.</li></ol>`,
+          creatif: `<p>Tu peux aborder le problème sous plusieurs angles : stratégie, apprentissage, communication ou expérimentation.</p>`,
+          clash: `<p>Le vrai risque serait de chercher une réponse parfaite au lieu de construire une réponse testable.</p>`
+        },
+        judge: {
+          gptSummary: "GPT donne une réponse structurée et orientée action.",
+          claudeSummary: "Claude apporte davantage de prudence et de nuance sur le contexte.",
+          gptScore: "8.0 / 10",
+          claudeScore: "8.5 / 10",
+          winner: "Claude",
+          recommendation: "Combine les deux : garde la structure de GPT, mais ajoute les limites et conditions données par Claude avant d’agir."
+        }
+      }
+    };
+
+    function normalize(text) {
+      return text
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[’']/g, "")
+        .trim();
+    }
+
+    function modeKey() { return normalize(currentMode); }
+    function escapeHtml(text) {
+      return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+    function getTopic() {
+      const q = normalize(currentQuestion);
+      if (q.includes("rentable") || q.includes("saas")) return "rentable";
+      if (q.includes("ameliorer") || q.includes("site")) return "ameliorer";
+      if (q.includes("lancer") || q.includes("attendre")) return "lancer";
+      if (q.includes("double mind") || q.includes("utiliser")) return "pourquoi utiliser double mind";
+      return "default";
+    }
+    function data() { return qaBank[getTopic()] || qaBank.default; }
+    function answerFor(model) {
+      const key = modeKey();
+      return data()[model][key] || data()[model].classique;
+    }
+
+    function buildUserBlock(question) {
+      return `<div class="user-block"><div class="user-stack"><div class="user-meta"><div class="user-label">Vous</div><div class="user-bubble">${escapeHtml(question)}</div></div><div class="side-badge">YOU</div></div></div>`;
+    }
+    function buildGPTCard() {
+      return `<div class="response-block"><div class="response-label gpt">GPT · réponse structurée</div><div class="response-side gpt">GPT</div><div class="response-card gpt">${answerFor("gpt")}</div></div>`;
+    }
+    function buildClaudeCard() {
+      return `<div class="response-block"><div class="response-label claude">Claude · réponse critique</div><div class="response-side claude">CLD</div><div class="response-card claude">${answerFor("claude")}</div></div>`;
+    }
+    function buildActions() {
+      return `<div class="action-stage"><div class="action-stage-line" aria-hidden="true"><span></span><span></span><span></span></div><div class="action-row"><button class="action-btn primary" type="button" id="continueBtn"><span class="btn-orb">↻</span><span>Continuer le débat</span></button><button class="action-btn judge" type="button" id="judgeBtn"><span class="btn-orb">⚖</span><span>${verdictVisible ? "Masquer le verdict" : "Demander le verdict"}</span></button><button class="action-btn share" type="button" id="shareBtn"><span class="btn-orb">🔗</span><span>Partager</span></button><button class="action-btn reset" type="button" id="resetBtn"><span class="btn-orb">✦</span><span>Nouveau départ</span></button></div></div>`;
+    }
+    function buildJudgePanel() {
+      if (!verdictVisible || currentResponse !== "Les deux") return "";
+      const j = data().judge;
+      return `<section class="judge-panel"><div class="judge-header"><div class="judge-icon">⚖️</div><div><div class="judge-panel-title">Verdict du Juge IA</div><div class="judge-subtitle">Résumé · Scores · Recommandation</div></div></div><div class="judge-grid"><div class="summary-card gpt"><div class="mini-title gpt">Résumé GPT</div><p>${j.gptSummary}</p></div><div class="summary-card claude"><div class="mini-title claude">Résumé Claude</div><p>${j.claudeSummary}</p></div><div class="score-card"><small>Score GPT</small><div class="score-value gpt">${j.gptScore}</div></div><div class="score-card"><small>Score Claude</small><div class="score-value claude">${j.claudeScore}</div></div><div class="winner-card"><div class="winner-title">Gagnant : ${j.winner}</div><p>${j.winner === "Claude" ? "Claude apporte davantage de nuance et repère mieux les limites concrètes." : "GPT apporte la réponse la plus claire et exploitable pour cette question."}</p></div><div class="reco-card"><div class="reco-title">Recommandation finale</div><p>${j.recommendation}</p></div></div></section>`;
+    }
+    function buildContinuation() {
+      if (!debateContinued || currentResponse !== "Les deux") return "";
+      const topic = getTopic();
+      const messages = {
+        "pourquoi utiliser double mind": "<p><strong>Suite du débat :</strong> les deux IA ajoutent que Double Mind est surtout utile pour les décisions où un seul avis peut être trop limité.</p>",
+        rentable: "<p><strong>Suite du débat :</strong> les deux IA ajoutent qu’il faut mesurer le coût réel par session avant de vendre un abonnement.</p>",
+        ameliorer: "<p><strong>Suite du débat :</strong> les deux IA ajoutent que la page doit montrer le vrai produit plus tôt, pas seulement le décrire.</p>",
+        lancer: "<p><strong>Suite du débat :</strong> les deux IA conseillent une bêta limitée plutôt qu’un lancement large sans contrôle des coûts.</p>",
+        default: "<p><strong>Suite du débat :</strong> les deux IA ajoutent qu’il faut transformer la réponse en action simple et mesurable.</p>"
+      };
+      return `<div class="response-block"><div class="response-label claude">Suite du débat</div><div class="response-side claude">↻</div><div class="response-card claude">${messages[topic] || messages.default}</div></div>`;
+    }
+
+    function renderDiscussion() {
+      let html = buildUserBlock(currentQuestion);
+      if (currentResponse === "GPT seul") {
+        html += buildGPTCard();
+      } else if (currentResponse === "Claude seul") {
+        html += buildClaudeCard();
+      } else if (currentStarter === "GPT commence") {
+        html += buildGPTCard() + buildClaudeCard();
+      } else {
+        html += buildClaudeCard() + buildGPTCard();
+      }
+      html += buildContinuation();
+      html += buildJudgePanel();
+      html += buildActions();
+      outputBody.innerHTML = html;
+      attachActionEvents();
+    }
+
+    function setActive(buttons, activeButton) {
+      buttons.forEach((button) => button.classList.remove("active"));
+      activeButton.classList.add("active");
+    }
+
+    modeButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        currentMode = button.dataset.mode;
+        debateContinued = false;
+        setActive(modeButtons, button);
+        renderDiscussion();
+      });
+    });
+
+    responseButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        currentResponse = button.dataset.response;
+        debateContinued = false;
+        verdictVisible = currentResponse === "Les deux";
+        setActive(responseButtons, button);
+        renderDiscussion();
+      });
+    });
+
+    starterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        currentStarter = button.dataset.starter;
+        debateContinued = false;
+        setActive(starterButtons, button);
+        renderDiscussion();
+      });
+    });
+
+    promptButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        currentQuestion = button.dataset.question;
+        debateContinued = false;
+        verdictVisible = currentResponse === "Les deux";
+        setActive(promptButtons, button);
+        renderDiscussion();
+      });
+    });
+
+    function attachActionEvents() {
+      const continueBtn = document.getElementById("continueBtn");
+      const judgeBtn = document.getElementById("judgeBtn");
+      const shareBtn = document.getElementById("shareBtn");
+      const resetBtn = document.getElementById("resetBtn");
+
+      if (continueBtn) {
+        continueBtn.style.display = currentResponse === "Les deux" ? "inline-flex" : "none";
+        continueBtn.addEventListener("click", () => {
+          debateContinued = true;
+          renderDiscussion();
+        });
+      }
+      if (judgeBtn) {
+        judgeBtn.style.display = currentResponse === "Les deux" ? "inline-flex" : "none";
+        judgeBtn.addEventListener("click", () => {
+          verdictVisible = !verdictVisible;
+          renderDiscussion();
+        });
+      }
+      if (shareBtn) {
+        shareBtn.addEventListener("click", async () => {
+          const text = `Double Mind — Question : ${currentQuestion}`;
+          try {
+            if (navigator.share) {
+              await navigator.share({ title: "Double Mind", text });
+            } else if (navigator.clipboard) {
+              await navigator.clipboard.writeText(text);
+              shareBtn.textContent = "Copié ✓";
+              setTimeout(() => { shareBtn.textContent = "🔗 Partager"; }, 1300);
+            }
+          } catch (error) {
+            console.log(error);
+          }
+        });
+      }
+      if (resetBtn) {
+        resetBtn.addEventListener("click", () => {
+          currentQuestion = "Pourquoi utiliser Double Mind ?";
+          debateContinued = false;
+          verdictVisible = currentResponse === "Les deux";
+          promptButtons.forEach((button) => button.classList.remove("active"));
+          promptButtons[0].classList.add("active");
+          renderDiscussion();
+        });
+      }
+    }
+
+    chatForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const value = userInput.value.trim();
+      if (!value) return;
+      currentQuestion = value;
+      debateContinued = false;
+      verdictVisible = currentResponse === "Les deux";
+      promptButtons.forEach((button) => button.classList.remove("active"));
+      renderDiscussion();
+      userInput.value = "";
+    });
+
+    if (menuBtn) {
+      menuBtn.addEventListener("click", () => {
+        const isOpen = mobileNav.classList.toggle("open");
+        menuBtn.setAttribute("aria-expanded", String(isOpen));
+        menuBtn.textContent = isOpen ? "×" : "☰";
+      });
+      mobileNav.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", () => {
+          mobileNav.classList.remove("open");
+          menuBtn.setAttribute("aria-expanded", "false");
+          menuBtn.textContent = "☰";
+        });
+      });
+    }
+
+    renderDiscussion();
+  })();
+  </script>
+</div><!-- #landing-page -->
+
+<script>
+  function enterApp() {
+    var landing = document.getElementById('landing-page');
+    var app     = document.getElementById('app');
+    var auth    = document.getElementById('auth-screen');
+    var chat    = document.getElementById('chat-screen');
+    var modeBar = document.getElementById('mode-bar');
+
+    // 1. Cache la landing
+    if (landing) landing.setAttribute('style', 'display:none!important');
+
+    // 2. Restore overflow:hidden pour l'app
+    document.documentElement.style.cssText = 'overflow:hidden;height:100%';
+    document.body.style.cssText = 'overflow:hidden;height:100%';
+
+    // 3. Affiche l'app
+    if (app) app.setAttribute('style', 'display:flex!important;flex-direction:column;height:100dvh;overflow:hidden;position:relative');
+
+    // 4. Ouvre le chat directement (mode guest — l'auth s'affiche après 2 messages ou si l'user clique "Connexion")
+    if (auth) auth.setAttribute('style', 'display:none!important');
+    if (chat) chat.setAttribute('style', 'display:flex!important;flex:1;flex-direction:column;min-height:0;overflow:hidden');
+    if (modeBar) modeBar.setAttribute('style', 'display:flex!important');
+
+    window.scrollTo(0, 0);
+  }
+</script>
+
+  <div id="app">
+
+    <header>
       <div class="brand">
         <img src="logo.png" class="brand-logo" alt="Double Mind" onerror="this.style.display='none'">
         <div>
@@ -2969,6 +3852,7 @@
       document.getElementById("mode-bar").style.display = "flex";
       document.getElementById("history-btn").style.display = "block";
       document.getElementById("new-conv-btn").style.display = "block";
+      document.querySelector(".header-row-2").classList.add("visible");
       if (guestWall) guestWall.style.display = "none";
       limitWall.style.display = "none";
       bottomBar.style.display = "block";
@@ -2988,6 +3872,7 @@
       document.getElementById("history-btn").style.display = "none";
       document.getElementById("new-conv-btn").style.display = "none";
       counter.style.display = "none";
+      document.querySelector(".header-row-2").classList.remove("visible");
       // Retour au chat sans compte (pas à l'écran d'auth)
       document.getElementById("auth-screen").style.display = "none";
       document.getElementById("chat-screen").style.display = "flex";
