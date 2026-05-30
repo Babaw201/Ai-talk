@@ -2323,6 +2323,9 @@
           <button id="auth-btn" onclick="handleAuthBtn()">Connexion</button>
         </div>
       </div>
+
+      <!-- Ligne mobile uniquement : Partager + Historique + Nouvelle -->
+      <div class="header-row header-row-2" id="mobile-action-row"></div>
     </header>
 
     <!-- AUTH SCREEN -->
@@ -5475,6 +5478,215 @@
     #app > header #pricing-link::before { content: "€"; font-size: 13px; }
     #app > header #auth-btn.connected { font-size: 0 !important; width: 34px !important; }
     #app > header #auth-btn.connected::before { content: "⏻"; font-size: 13px; }
+  }
+</style>
+
+
+<script id="dm-responsive-header-switcher">
+  (function () {
+    const mq = window.matchMedia("(max-width: 820px)");
+
+    function arrangeResponsiveHeader() {
+      const headerLeft = document.querySelector("#app > header .header-row-1-left");
+      const mobileRow = document.getElementById("mobile-action-row") || document.querySelector("#app > header .header-row-2");
+      const modeBar = document.getElementById("mode-bar");
+      const chatArea = document.getElementById("chat-area");
+      const controls = document.getElementById("conversation-controls");
+      const historyBtn = document.getElementById("history-btn");
+      const newConvBtn = document.getElementById("new-conv-btn");
+      const shareBtn = document.getElementById("share-btn");
+
+      if (!headerLeft || !mobileRow || !modeBar || !controls || !historyBtn || !newConvBtn || !shareBtn) return;
+
+      if (mq.matches) {
+        // Version portable : ligne 1 = titre + Tarifs + prompts + Connexion/Déconnexion,
+        // ligne 2 = Partager + Historique + Nouvelle, ligne 3 = Modes.
+        if (shareBtn.parentElement !== mobileRow) mobileRow.appendChild(shareBtn);
+        if (historyBtn.parentElement !== mobileRow) mobileRow.appendChild(historyBtn);
+        if (newConvBtn.parentElement !== mobileRow) mobileRow.appendChild(newConvBtn);
+
+        if (chatArea && controls.parentElement !== chatArea.parentElement) {
+          chatArea.insertAdjacentElement("afterend", controls);
+        }
+      } else {
+        // Version PC : ligne 1 gauche = titre + Historique + Nouvelle,
+        // ligne 1 droite = Tarifs + prompts + Connexion/Déconnexion,
+        // ligne 2 = Modes + Continuer/Verdict/Partager/Nouveau départ.
+        if (historyBtn.parentElement !== headerLeft) headerLeft.appendChild(historyBtn);
+        if (newConvBtn.parentElement !== headerLeft) headerLeft.appendChild(newConvBtn);
+
+        if (controls.parentElement !== modeBar) modeBar.appendChild(controls);
+        if (shareBtn.parentElement !== controls) {
+          const resetBtn = controls.querySelector('button[onclick="resetConversationState()"]');
+          controls.insertBefore(shareBtn, resetBtn || null);
+        }
+      }
+    }
+
+    arrangeResponsiveHeader();
+    window.addEventListener("resize", arrangeResponsiveHeader);
+    if (mq.addEventListener) mq.addEventListener("change", arrangeResponsiveHeader);
+  })();
+</script>
+
+<style id="dm-responsive-pc-mobile-header">
+  /* PC : garde la version finale précédente */
+  #app > header #mobile-action-row {
+    display: none !important;
+  }
+
+  @media (max-width: 820px) {
+    /* Portable : revient à la logique de l'avant-dernière version */
+    #app > header .header-row-1 {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      padding: 6px 8px !important;
+      gap: 6px !important;
+    }
+
+    #app > header .header-row-1-left {
+      flex: 1 1 auto !important;
+      min-width: 0 !important;
+      overflow: hidden !important;
+    }
+
+    #app > header .header-row-1-right {
+      flex: 0 0 auto !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 5px !important;
+      justify-content: flex-end !important;
+    }
+
+    #app > header .brand {
+      flex: 1 1 auto !important;
+      min-width: 0 !important;
+      overflow: hidden !important;
+    }
+
+    #app > header .brand-title {
+      max-width: 108px !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      white-space: nowrap !important;
+    }
+
+    #app > header .brand-subtitle {
+      display: none !important;
+    }
+
+    /* Ordre portable demandé : Tarifs puis prompts puis Déconnexion/Connexion */
+    #app > header #pricing-link { order: 1 !important; }
+    #app > header .status-wrap { order: 2 !important; }
+    #app > header #auth-btn { order: 3 !important; }
+
+    #app > header #pricing-link,
+    #app > header #auth-btn,
+    #app > header .status-wrap {
+      padding: 6px 8px !important;
+      font-size: 10.5px !important;
+      border-radius: 9px !important;
+      white-space: nowrap !important;
+    }
+
+    #app > header #msg-counter {
+      font-size: 10.5px !important;
+      white-space: nowrap !important;
+    }
+
+    #app > header #mobile-action-row {
+      display: none !important;
+      width: 100% !important;
+      align-items: center !important;
+      gap: 5px !important;
+      padding: 0 8px 6px !important;
+      border-top: 1px solid rgba(255,255,255,0.055) !important;
+    }
+
+    #app > header #mobile-action-row.visible {
+      display: flex !important;
+    }
+
+    #app > header #mobile-action-row #share-btn,
+    #app > header #mobile-action-row #history-btn,
+    #app > header #mobile-action-row #new-conv-btn {
+      flex: 1 1 0 !important;
+      min-width: 0 !important;
+      width: auto !important;
+      height: auto !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 7px 8px !important;
+      border-radius: 10px !important;
+      font-size: 11px !important;
+      text-align: center !important;
+      white-space: nowrap !important;
+    }
+
+    /* Garde les textes complets en ligne 2 mobile, pas seulement les icônes */
+    #app > header #mobile-action-row #history-btn::before,
+    #app > header #mobile-action-row #new-conv-btn::before,
+    #app > header #mobile-action-row #pricing-link::before,
+    #app > header #mobile-action-row #auth-btn::before {
+      content: none !important;
+    }
+
+    #app > header #mobile-action-row #share-btn[style*="display:none"],
+    #app > header #mobile-action-row #share-btn[style*="display: none"] {
+      display: none !important;
+    }
+
+    /* Ligne 3 mobile : seulement les modes */
+    #mode-bar.mode-action-row {
+      padding: 0 8px !important;
+      gap: 0 !important;
+      overflow: hidden !important;
+    }
+
+    #mode-bar-scroll {
+      flex: 1 1 auto !important;
+      gap: 6px !important;
+      padding: 7px 0 !important;
+    }
+
+    /* Les boutons Continuer/Verdict/Nouveau départ reviennent sous le chat sur mobile */
+    #chat-screen > #conversation-controls {
+      display: none;
+      padding: 0 8px 7px !important;
+      gap: 6px !important;
+      flex-wrap: nowrap !important;
+      overflow-x: auto !important;
+      scrollbar-width: none !important;
+    }
+
+    #chat-screen > #conversation-controls::-webkit-scrollbar { display: none !important; }
+
+    #chat-screen > #conversation-controls .control-btn {
+      flex: 0 0 auto !important;
+      min-width: max-content !important;
+      font-size: 11px !important;
+      padding: 8px 10px !important;
+      border-radius: 11px !important;
+      white-space: nowrap !important;
+    }
+
+    /* Annule la transformation icône seule appliquée par d'anciens correctifs */
+    #app > header #auth-btn.connected {
+      font-size: 10.5px !important;
+      width: auto !important;
+    }
+    #app > header #auth-btn.connected::before {
+      content: none !important;
+    }
+    #app > header #pricing-link {
+      font-size: 10.5px !important;
+      width: auto !important;
+    }
+    #app > header #pricing-link::before {
+      content: none !important;
+    }
   }
 </style>
 
