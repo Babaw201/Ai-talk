@@ -2300,7 +2300,7 @@
   <div id="app">
 
     <header>
-      <!-- Ligne 1 : à gauche nom du site + Historique + Nouvelle, à droite Tarifs + prompts + Connexion/Déconnexion -->
+      <!-- Ligne 1 : à gauche nom du site + Historique + Nouvelle, à droite Tarifs + compteur + Connexion/Déconnexion -->
       <div class="header-row header-row-1">
         <div class="header-row-1-left">
           <div class="brand">
@@ -2316,8 +2316,8 @@
 
         <div class="header-row-1-right">
           <a href="abonnements.html" id="pricing-link" title="Voir les tarifs">Tarifs</a>
-          <div class="status-wrap" title="Prompts restants aujourd'hui">
-            <div id="msg-counter">5/5 prompts</div>
+          <div class="status-wrap" title="Messages restants aujourd'hui">
+            <div id="msg-counter">5/5</div>
             <div class="status-dot"></div>
           </div>
           <button id="auth-btn" onclick="handleAuthBtn()">Connexion</button>
@@ -2466,7 +2466,7 @@
 
       <div id="limit-wall">
         <p>⛔ Limite de 5 messages atteinte</p>
-        <small>Reviens demain — ou passe à un plan avec plus de prompts.</small>
+        <small>Reviens demain — ou passe à un plan avec plus de messages.</small>
         <a href="abonnements.html" style="display:inline-block;margin-top:12px;color:var(--blue);font-weight:800;font-size:13px;text-decoration:none;">Voir les tarifs →</a>
       </div>
 
@@ -2833,12 +2833,12 @@
       const isAdmin = currentUser.toLowerCase() === ADMIN;
       counter.style.display = "block";
       if (isAdmin) {
-        counter.textContent = "∞/∞ prompts";
+        counter.textContent = "∞/∞";
         counter.className = "";
         return;
       }
       const remaining = Math.max(0, 5 - Number(msgCount || 0));
-      counter.textContent = remaining + "/5 prompts";
+      counter.textContent = remaining + "/5";
       counter.className = remaining <= 0 ? "blocked" : remaining <= 1 ? "warning" : "";
     }
     function backToAuthForm() {
@@ -5499,7 +5499,7 @@
       if (!headerLeft || !mobileRow || !modeBar || !controls || !historyBtn || !newConvBtn || !shareBtn) return;
 
       if (mq.matches) {
-        // Version portable : ligne 1 = titre + Tarifs + prompts + Connexion/Déconnexion,
+        // Version portable : ligne 1 = titre + Tarifs + compteur + Connexion/Déconnexion,
         // ligne 2 = Partager + Historique + Nouvelle, ligne 3 = Modes.
         if (shareBtn.parentElement !== mobileRow) mobileRow.appendChild(shareBtn);
         if (historyBtn.parentElement !== mobileRow) mobileRow.appendChild(historyBtn);
@@ -5510,7 +5510,7 @@
         }
       } else {
         // Version PC : ligne 1 gauche = titre + Historique + Nouvelle,
-        // ligne 1 droite = Tarifs + prompts + Connexion/Déconnexion,
+        // ligne 1 droite = Tarifs + compteur + Connexion/Déconnexion,
         // ligne 2 = Modes + Continuer/Verdict/Partager/Nouveau départ.
         if (historyBtn.parentElement !== headerLeft) headerLeft.appendChild(historyBtn);
         if (newConvBtn.parentElement !== headerLeft) headerLeft.appendChild(newConvBtn);
@@ -5576,7 +5576,7 @@
       display: none !important;
     }
 
-    /* Ordre portable demandé : Tarifs puis prompts puis Déconnexion/Connexion */
+    /* Ordre portable demandé : Tarifs puis compteur puis Déconnexion/Connexion */
     #app > header #pricing-link { order: 1 !important; }
     #app > header .status-wrap { order: 2 !important; }
     #app > header #auth-btn { order: 3 !important; }
