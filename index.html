@@ -2300,23 +2300,30 @@
   <div id="app">
 
     <header>
-      <div class="brand">
-        <img src="logo.png" class="brand-logo" alt="Double Mind" onerror="this.style.display='none'">
-        <div>
-          <div class="brand-title"><span class="blue">Double</span> <span class="orange">Mind</span></div>
-          <div class="brand-subtitle">Compare two minds. Make better decisions.</div>
+      <!-- Ligne 1 : nom du site + déconnexion/connexion + prompts restants + tarifs -->
+      <div class="header-row header-row-1">
+        <div class="brand">
+          <img src="logo.png" class="brand-logo" alt="Double Mind" onerror="this.style.display='none'">
+          <div>
+            <div class="brand-title"><span class="blue">Double</span> <span class="orange">Mind</span></div>
+            <div class="brand-subtitle">Compare two minds. Make better decisions.</div>
+          </div>
+        </div>
+        <div class="header-row-1-right">
+          <button id="auth-btn" onclick="handleAuthBtn()">Connexion</button>
+          <div class="status-wrap" title="Prompts restants aujourd'hui">
+            <div id="msg-counter">5 prompts</div>
+            <div class="status-dot"></div>
+          </div>
+          <a href="abonnements.html" id="pricing-link" title="Voir les tarifs">Tarifs</a>
         </div>
       </div>
-      <div class="header-right">
-        <button id="new-conv-btn" onclick="startNewConversation()" title="Nouvelle conversation">✦ Nouvelle</button>
-        <button id="history-btn" onclick="openHistoryDrawer()" title="Mes conversations">🕐 Historique</button>
+
+      <!-- Ligne 2 : actions conversation -->
+      <div class="header-row header-row-2">
         <button id="share-btn" onclick="openShareModal()" title="Partager cette conversation" style="display:none;">🔗 Partager</button>
-        <a href="abonnements.html" id="pricing-link" title="Voir les tarifs">Tarifs</a>
-        <div class="status-wrap">
-          <div id="msg-counter">0 / 5</div>
-          <div class="status-dot"></div>
-        </div>
-        <button id="auth-btn" onclick="handleAuthBtn()">Connexion</button>
+        <button id="history-btn" onclick="openHistoryDrawer()" title="Mes conversations">🕐 Historique</button>
+        <button id="new-conv-btn" onclick="startNewConversation()" title="Nouvelle conversation">✦ Nouvelle</button>
       </div>
     </header>
 
@@ -2428,7 +2435,6 @@
           <button class="mode-btn creative" data-mode="creative" onclick="setMode(this)">🎨 Créatif</button>
           <button class="mode-btn clash" data-mode="clash" onclick="setMode(this)">🔥 Clash</button>
         </div>
-        <a href="abonnements.html" id="mode-bar-tarifs">Tarifs</a>
       </div>
 
       <div id="chat-area">
@@ -2823,8 +2829,14 @@
       if (!currentUser) return;
       const isAdmin = currentUser.toLowerCase() === ADMIN;
       counter.style.display = "block";
-      counter.textContent = msgCount + " / " + (isAdmin ? "∞" : "5");
-      counter.className = isAdmin ? "" : (msgCount >= 5 ? "blocked" : msgCount >= 4 ? "warning" : "");
+      if (isAdmin) {
+        counter.textContent = "∞ prompts";
+        counter.className = "";
+        return;
+      }
+      const remaining = Math.max(0, 5 - Number(msgCount || 0));
+      counter.textContent = remaining + " prompt" + (remaining > 1 ? "s" : "");
+      counter.className = remaining <= 0 ? "blocked" : remaining <= 1 ? "warning" : "";
     }
     function backToAuthForm() {
       document.getElementById("verify-box").style.display = "none";
@@ -5259,6 +5271,131 @@
     }
   })();
 </script>
+
+
+<style id="dm-header-3-lines-fix">
+  /* Header demandé : ligne 1 infos, ligne 2 actions, ligne 3 modes */
+  #app > header {
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    overflow: visible !important;
+  }
+
+  #app > header .header-row {
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  #app > header .header-row-1 {
+    justify-content: space-between !important;
+    gap: 10px !important;
+    padding: 8px 14px !important;
+  }
+
+  #app > header .header-row-1-right {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 8px !important;
+    flex-shrink: 0 !important;
+    flex-wrap: nowrap !important;
+  }
+
+  #app > header .header-row-2 {
+    display: none !important;
+    gap: 8px !important;
+    padding: 0 14px 8px !important;
+    border-top: 1px solid rgba(255,255,255,0.055) !important;
+  }
+
+  #app > header .header-row-2.visible {
+    display: flex !important;
+  }
+
+  #app > header .header-row-2 #share-btn,
+  #app > header .header-row-2 #history-btn,
+  #app > header .header-row-2 #new-conv-btn {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    justify-content: center !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+  }
+
+  #app > header .status-wrap {
+    flex-shrink: 0 !important;
+  }
+
+  #app > header #msg-counter {
+    min-width: auto !important;
+    white-space: nowrap !important;
+  }
+
+  #mode-bar {
+    border-top: 1px solid rgba(255,255,255,0.055) !important;
+  }
+
+  @media (max-width: 720px) {
+    #app > header {
+      min-height: auto !important;
+    }
+
+    #app > header .header-row-1 {
+      padding: 6px 8px !important;
+      gap: 6px !important;
+    }
+
+    #app > header .brand {
+      min-width: 0 !important;
+      flex: 1 1 auto !important;
+    }
+
+    #app > header .brand-title {
+      max-width: 108px !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      white-space: nowrap !important;
+    }
+
+    #app > header .header-row-1-right {
+      gap: 5px !important;
+    }
+
+    #app > header #auth-btn,
+    #app > header #pricing-link,
+    #app > header .status-wrap {
+      padding: 6px 8px !important;
+      font-size: 10.5px !important;
+      border-radius: 9px !important;
+    }
+
+    #app > header #msg-counter {
+      font-size: 10.5px !important;
+    }
+
+    #app > header .header-row-2 {
+      padding: 0 8px 6px !important;
+      gap: 5px !important;
+    }
+
+    #app > header .header-row-2 #share-btn,
+    #app > header .header-row-2 #history-btn,
+    #app > header .header-row-2 #new-conv-btn {
+      display: inline-flex !important;
+      align-items: center !important;
+      font-size: 11px !important;
+      padding: 7px 8px !important;
+      border-radius: 10px !important;
+    }
+
+    #mode-bar {
+      padding: 0 8px !important;
+    }
+  }
+</style>
 
 </body>
 </html>
